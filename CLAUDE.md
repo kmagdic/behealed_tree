@@ -186,6 +186,8 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 - **Prelamanje ispisa**: `.pcard` ima `break-inside: avoid`, naslovi `break-after: avoid`. Nakon zahvata u molitveni ekran uvijek pregledaj generirani PDF — kartice se ne smiju lomiti preko stranica.
 
+- **Molitve su u muškom rodu.** Sav tekst koji korisnik izgovara o sebi piše se muškim rodom — `bio`, `sam`, `voljen`, `slobodan`, `Sklopio` — nikad `bio/bila`. Prije je bilo pomiješano. Dvije iznimke ostaju s kosom crtom jer se **ne odnose na molitelja nego na druge ljude**: `sina/kćer kakvim/kakvom ga/ju je Bog stvorio` (molitva bludnosti). Pazi i na slaganje pridjeva pri promjeni — `sin/kći Očeva` mora postati `sin Očev`, ne `sin Očeva`.
+
 - **Ton poticaja u poljima**: topao i pozivajući, nikad zapovjedan. Obrazac je *"Napiši… npr. …"* s trotočjem, a poziv na konkretnost dolazi kao blaga ponuda (*"Ako ti dođe neka konkretna situacija, slobodno je opiši"*), ne kao uputa (*"piši konkretno: kad, s kim"*). Ovo je duhovni dnevnik — korisnik piše o vlastitoj boli.
 
 - **Podloga slike stabla**: `tree-bg.jpg` ima podlogu `#F8F8F8`, a `.tree-pane` je topla krem `#F2EDE6`. Bez `mix-blend-mode: multiply` na `.tree-bg` vidi se pravokutni šav ondje gdje slika staje. Ne mijenjaj paletu da se to riješi — multiply stapa bijelo, a crtež ostaje.

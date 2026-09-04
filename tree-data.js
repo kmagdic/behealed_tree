@@ -95,27 +95,27 @@ window.TREE_DATA = {
 
   raneDjetinjstva: [
     { id:"d_nisam_radost",   tip:"A", tekst:"Nitko mi nije dao do znanja da sam nekome radost", rane:["odbacenost","napustenost"] },
-    { id:"d_nisam_slavljen", tip:"A", tekst:"Nisam bio/bila njegovan/a i slavljen/a takav/takva kakav/kakva jesam", rane:["odbacenost","sramota"] },
+    { id:"d_nisam_slavljen", tip:"A", tekst:"Nisam bio njegovan i slavljen takav kakav jesam", rane:["odbacenost","sramota"] },
     { id:"d_neshvacen",      tip:"A", tekst:"Nitko me nije istinski razumio", rane:["napustenost","zbunjenost"] },
-    { id:"d_bez_granica",    tip:"A", tekst:"Nisam dobio/dobila granice ni primjerenu disciplinu", rane:["bespomoćnost","zbunjenost"] },
-    { id:"d_bez_darova",     tip:"A", tekst:"Nisam smio/smjela razvijati svoje darove i sklonosti", rane:["bespomoćnost","beznade"] },
+    { id:"d_bez_granica",    tip:"A", tekst:"Nisam dobio granice ni primjerenu disciplinu", rane:["bespomoćnost","zbunjenost"] },
+    { id:"d_bez_darova",     tip:"A", tekst:"Nisam smio razvijati svoje darove i sklonosti", rane:["bespomoćnost","beznade"] },
     { id:"d_srcem_odsutni",  tip:"A", tekst:"Roditelji su bili tjelesno prisutni, ali srcem odsutni", rane:["napustenost","odbacenost"] },
     { id:"d_bez_osjecaja",   tip:"A", tekst:"Osjećaji se u našoj kući nisu pokazivali ni spominjali", rane:["napustenost","sramota"] },
-    { id:"d_samo_uspjeh",    tip:"A", tekst:"Bio/bila sam hvaljen/a samo za uspjeh, ne za to tko jesam", rane:["odbacenost","sramota"] },
-    { id:"d_bez_utjehe",     tip:"A", tekst:"Nitko me nije tješio kad sam plakao/plakala", rane:["napustenost","bespomoćnost"] },
-    { id:"d_prerano_odrastao",tip:"A",tekst:"Morao/morala sam prerano odrasti i brinuti se za druge", rane:["bespomoćnost","napustenost"] },
+    { id:"d_samo_uspjeh",    tip:"A", tekst:"Bio sam hvaljen samo za uspjeh, ne za to tko jesam", rane:["odbacenost","sramota"] },
+    { id:"d_bez_utjehe",     tip:"A", tekst:"Nitko me nije tješio kad sam plakao", rane:["napustenost","bespomoćnost"] },
+    { id:"d_prerano_odrastao",tip:"A",tekst:"Morao sam prerano odrasti i brinuti se za druge", rane:["bespomoćnost","napustenost"] },
 
     { id:"d_odlazak_roditelja", tip:"B", tekst:"Roditelj je otišao ili su se razveli", rane:["napustenost","odbacenost"] },
     { id:"d_smrt",              tip:"B", tekst:"Smrt bliske osobe u mom djetinjstvu", rane:["napustenost","beznade"] },
     { id:"d_nasilje",           tip:"B", tekst:"Tjelesno nasilje u obitelji", rane:["strah","bespomoćnost"] },
     { id:"d_vrijedjanje",       tip:"B", tekst:"Vikanje, vrijeđanje i omalovažavanje", rane:["sramota","strah"] },
     { id:"d_zlostavljanje",     tip:"B", tekst:"Seksualno zlostavljanje ili povreda mojih granica", rane:["sramota","bespomoćnost","strah"] },
-    { id:"d_svjedok",           tip:"B", tekst:"Gledao/gledala sam kako netko drugi biva povrijeđen", rane:["strah","bespomoćnost"] },
+    { id:"d_svjedok",           tip:"B", tekst:"Gledao sam kako netko drugi biva povrijeđen", rane:["strah","bespomoćnost"] },
     { id:"d_vrsnjaci",          tip:"B", tekst:"Vršnjačko nasilje ili isključenost iz društva", rane:["odbacenost","sramota"] },
     { id:"d_ovisnost",          tip:"B", tekst:"Alkohol ili ovisnost u obitelji", rane:["strah","zbunjenost","bespomoćnost"] },
     { id:"d_bolest",            tip:"B", tekst:"Teška bolest — moja ili u obitelji", rane:["strah","bespomoćnost"] },
     { id:"d_usporedjivan",      tip:"B", tekst:"Stalno su me uspoređivali s bratom/sestrom ili drugima", rane:["odbacenost","sramota"] },
-    { id:"d_nepredvidiv",       tip:"B", tekst:"Roditelj je bio nepredvidiv — nikad nisam znao/znala što slijedi", rane:["strah","zbunjenost"] },
+    { id:"d_nepredvidiv",       tip:"B", tekst:"Roditelj je bio nepredvidiv — nikad nisam znao što slijedi", rane:["strah","zbunjenost"] },
     { id:"d_prekrsena_obecanja",tip:"B", tekst:"Obećanja su mi se stalno kršila", rane:["beznade","napustenost"] }
   ],
 
@@ -123,7 +123,7 @@ window.TREE_DATA = {
     {
       id: "napustenost",
       naziv: "Napuštenost",
-      laz: "Sam/sama sam. Nitko me ne razumije. Nitko se ne brine za mene.",
+      laz: "Sam sam. Nitko me ne razumije. Nitko se ne brine za mene.",
       opis: "Rana nastaje kad onaj tko je trebao biti prisutan nije bio — fizički ili srcem. Ne mora biti odlazak; dovoljna je odsutnost.",
       osjecaj: "praznina, čežnja, osjećaj da si nevidljiv",
       znakIscjeljenja: "Povezanost i razumijevanje zamjenjuje napuštenost",
@@ -132,8 +132,8 @@ window.TREE_DATA = {
       poslanje: "Utjeloviti Kristovu prisutnost",
       vodiKaGrijesima: ["pohota", "prozdrljivost", "pohlepa"],
       lazi: "U ime Isusa Krista odričem se laži da sam sam i da me nitko ne razumije niti se brine za mene. U ime Isusa Krista odričem se laži da sam nezaštićen i da me Bog napustio.",
-      istina: "U ime Isusa Krista proglašavam istinu koju mi je sam Isus obećao: 'Ne, neću te zapustiti i neću te ostaviti.' (Hebrejima 13,5); 'Ja ću uvijek biti s vama do svršetka vremena' (Matej 28). U ime Isusa Krista proglašavam istinu da sam povezan, da sam duboko shvaćen i da se za mene brine te naviještam istinu u svetoj pričesti da sam sjedinjen s Kristom i zajedništvom svetih. Oni su uvijek sa mnom, tako da nikada nisam sam/a.",
-      molitva: "U ime Isusa Krista odričem se laži da sam sam i da me nitko ne razumije niti se brine za mene. U ime Isusa Krista odričem se laži da sam nezaštićen i da me Bog napustio.\n\nU ime Isusa Krista proglašavam istinu koju mi je sam Isus obećao: 'Ne, neću te zapustiti i neću te ostaviti.' (Hebrejima 13,5); 'Ja ću uvijek biti s vama do svršetka vremena' (Matej 28). U ime Isusa Krista proglašavam istinu da sam povezan, da sam duboko shvaćen i da se za mene brine te naviještam istinu u svetoj pričesti da sam sjedinjen s Kristom i zajedništvom svetih. Oni su uvijek sa mnom, tako da nikada nisam sam/a."
+      istina: "U ime Isusa Krista proglašavam istinu koju mi je sam Isus obećao: 'Ne, neću te zapustiti i neću te ostaviti.' (Hebrejima 13,5); 'Ja ću uvijek biti s vama do svršetka vremena' (Matej 28). U ime Isusa Krista proglašavam istinu da sam povezan, da sam duboko shvaćen i da se za mene brine te naviještam istinu u svetoj pričesti da sam sjedinjen s Kristom i zajedništvom svetih. Oni su uvijek sa mnom, tako da nikada nisam sam.",
+      molitva: "U ime Isusa Krista odričem se laži da sam sam i da me nitko ne razumije niti se brine za mene. U ime Isusa Krista odričem se laži da sam nezaštićen i da me Bog napustio.\n\nU ime Isusa Krista proglašavam istinu koju mi je sam Isus obećao: 'Ne, neću te zapustiti i neću te ostaviti.' (Hebrejima 13,5); 'Ja ću uvijek biti s vama do svršetka vremena' (Matej 28). U ime Isusa Krista proglašavam istinu da sam povezan, da sam duboko shvaćen i da se za mene brine te naviještam istinu u svetoj pričesti da sam sjedinjen s Kristom i zajedništvom svetih. Oni su uvijek sa mnom, tako da nikada nisam sam."
     },
     {
       id: "sramota",
@@ -153,7 +153,7 @@ window.TREE_DATA = {
     {
       id: "strah",
       naziv: "Strah",
-      laz: "Ako se povjerim, progovorim ili se suprotstavim, bit ću povrijeđen/a ili ću umrijeti.",
+      laz: "Ako se povjerim, progovorim ili se suprotstavim, bit ću povrijeđen ili ću umrijeti.",
       opis: "Rana straha zatvara srce. Ono što je nekoć bilo zaštita postaje zid koji više ne znaš spustiti.",
       osjecaj: "napetost, budnost, nemogućnost opuštanja",
       znakIscjeljenja: "Sigurnost i zaštita zamjenjuje strah",
@@ -192,8 +192,8 @@ window.TREE_DATA = {
       poslanje: "Nasljedovati Očevu ljubav",
       vodiKaGrijesima: ["zavist", "ponos", "pohota"],
       lazi: "U ime Isusa Krista odričem se laži da nisam voljen i da nisam vrijedan ljubavi. Odričem se laži da nisam poželjan, da nisam željen i da nisam dovoljno dobar.",
-      istina: "U ime Isusa Krista proglašavam istinu da sam snagom svoga krštenja ljubljeni sin/kći Očeva. Objavljujem istinu da me toliko voli da je dao svoj život za mene i da nema veće ljubavi (Ivan 15). Proglašavam istinu da je Božja ljubav izlivena u moje srce po Duhu Svetom. U ime Isusa Krista proglašavam istinu da sam ljubljen, željen i da sam dragocjen u Očevim očima.",
-      molitva: "U ime Isusa Krista odričem se laži da nisam voljen i da nisam vrijedan ljubavi. Odričem se laži da nisam poželjan, da nisam željen i da nisam dovoljno dobar.\n\nU ime Isusa Krista proglašavam istinu da sam snagom svoga krštenja ljubljeni sin/kći Očeva. Objavljujem istinu da me toliko voli da je dao svoj život za mene i da nema veće ljubavi (Ivan 15). Proglašavam istinu da je Božja ljubav izlivena u moje srce po Duhu Svetom. U ime Isusa Krista proglašavam istinu da sam ljubljen, željen i da sam dragocjen u Očevim očima."
+      istina: "U ime Isusa Krista proglašavam istinu da sam snagom svoga krštenja ljubljeni sin Očev. Objavljujem istinu da me toliko voli da je dao svoj život za mene i da nema veće ljubavi (Ivan 15). Proglašavam istinu da je Božja ljubav izlivena u moje srce po Duhu Svetom. U ime Isusa Krista proglašavam istinu da sam ljubljen, željen i da sam dragocjen u Očevim očima.",
+      molitva: "U ime Isusa Krista odričem se laži da nisam voljen i da nisam vrijedan ljubavi. Odričem se laži da nisam poželjan, da nisam željen i da nisam dovoljno dobar.\n\nU ime Isusa Krista proglašavam istinu da sam snagom svoga krštenja ljubljeni sin Očeva. Objavljujem istinu da me toliko voli da je dao svoj život za mene i da nema veće ljubavi (Ivan 15). Proglašavam istinu da je Božja ljubav izlivena u moje srce po Duhu Svetom. U ime Isusa Krista proglašavam istinu da sam ljubljen, željen i da sam dragocjen u Očevim očima."
     },
     {
       id: "beznade",
@@ -250,15 +250,15 @@ window.TREE_DATA = {
     },
     {
       id: "nikad_ranjiv",
-      tekst: "Nikada neću biti ranjiv/ranjiva",
+      tekst: "Nikada neću biti ranjiv",
       rane: ["strah", "sramota"],
       grijesi: ["ponos", "ljenost"],
-      zastita: "od toga da me netko vidi slabog/slabu",
-      zamjena: "dopustiti da me vidiš i voliš takvog/takvu kakav/kakva jesam"
+      zastita: "od toga da me netko vidi slabog",
+      zamjena: "dopustiti da me vidiš i voliš takvog kakav jesam"
     },
     {
       id: "sam_za_sebe",
-      tekst: "Uvijek ću se sam/sama pobrinuti za sebe",
+      tekst: "Uvijek ću se sam pobrinuti za sebe",
       rane: ["napustenost", "bespomoćnost"],
       grijesi: ["pohlepa", "ponos"],
       zastita: "od toga da ovisim o nekome tko me može iznevjeriti",
@@ -274,7 +274,7 @@ window.TREE_DATA = {
     },
     {
       id: "uvijek_jak",
-      tekst: "Uvijek ću biti jak/jaka i neću pokazati slabost",
+      tekst: "Uvijek ću biti jak i neću pokazati slabost",
       rane: ["bespomoćnost", "sramota"],
       grijesi: ["ponos", "ljutnja"],
       zastita: "od toga da me netko iskoristi",
@@ -290,7 +290,7 @@ window.TREE_DATA = {
     },
     {
       id: "moram_savrsen",
-      tekst: "Moram biti savršen/savršena da bih bio/bila voljen/voljena",
+      tekst: "Moram biti savršen da bih bio voljen",
       rane: ["odbacenost", "sramota"],
       grijesi: ["ponos", "ljutnja"],
       zastita: "od odbacivanja",
@@ -314,7 +314,7 @@ window.TREE_DATA = {
     },
     {
       id: "uvijek_dostupan",
-      tekst: "Uvijek ću biti dostupan/dostupna drugima",
+      tekst: "Uvijek ću biti dostupan drugima",
       rane: ["odbacenost", "napustenost"],
       grijesi: ["ponos", "prozdrljivost"],
       zastita: "od toga da me netko napusti ako kažem ne",
@@ -322,7 +322,7 @@ window.TREE_DATA = {
     },
     {
       id: "odlazim_prvi",
-      tekst: "Otići ću prvi/prva, prije nego što mene ostave",
+      tekst: "Otići ću prvi, prije nego što mene ostave",
       rane: ["napustenost", "odbacenost"],
       grijesi: ["pohota", "ljenost"],
       zastita: "od boli napuštanja",
@@ -378,7 +378,7 @@ window.TREE_DATA = {
     },
     {
       id: "sam_sve_razumjeti",
-      tekst: "Moram sam/sama sve razumjeti i razriješiti",
+      tekst: "Moram sam sve razumjeti i razriješiti",
       rane: ["zbunjenost", "bespomoćnost"],
       grijesi: ["ponos", "ljenost"],
       zastita: "od zbunjenosti i osjećaja gubitka tla",
@@ -412,7 +412,7 @@ window.TREE_DATA = {
       osudio: "svoje roditelje",
       tekst: "Mojim roditeljima nije bilo istinski stalo do mene",
       rane: ["napustenost", "odbacenost"],
-      oprastam: "svojim roditeljima za sve u čemu nisu bili ono što sam trebao/trebala",
+      oprastam: "svojim roditeljima za sve u čemu nisu bili ono što sam trebao",
       istina: "si me želio prije nego su me oni poznavali (Jr 1,5)"
     },
     {
@@ -491,10 +491,10 @@ window.TREE_DATA = {
     },
     {
       id: "nitko_ne_razumije",
-      osudio: "one koji me nisu čuli kad sam govorio/govorila",
+      osudio: "one koji me nisu čuli kad sam govorio",
       tekst: "Nitko me nikada neće razumjeti",
       rane: ["zbunjenost", "napustenost"],
-      oprastam: "onima koji me nisu čuli kad sam govorio/govorila",
+      oprastam: "onima koji me nisu čuli kad sam govorio",
       istina: "Ti me poznaješ do dna i razumiješ me potpuno (Ps 139)"
     }
   ],
@@ -578,7 +578,7 @@ window.TREE_DATA = {
       korijen: {
         naziv: "Bezbožno oslanjanje na sebe",
         opis: "Oslanjam se na sebe kada...",
-        primjeri: ["...osjećam da moram sam/sama preuzeti kontrolu", "...mislim da se moram boriti za pravdu", "...ne vjerujem da će Bog intervenirati"]
+        primjeri: ["...osjećam da moram sam preuzeti kontrolu", "...mislim da se moram boriti za pravdu", "...ne vjerujem da će Bog intervenirati"]
       },
       rane: ["bespomoćnost", "odbacenost", "strah"],
       plodovi: [
@@ -770,14 +770,14 @@ window.TREE_DATA = {
   D.molitvaSlikeBoga = function(k){
     if (typeof k === 'string') {
       return "U ime Isusovo odričem se krive slike Boga: \u201C" + k + "\u201D. " +
-             "Oče, oprosti mi što sam Te takvim zamišljao/zamišljala i pokaži mi svoje pravo lice. Amen.";
+             "Oče, oprosti mi što sam Te takvim zamišljao i pokaži mi svoje pravo lice. Amen.";
     }
-    var t = "Oče, priznajem da sam Te u srcu držao/držala ovakvim: " + k.opis + "\n\n";
+    var t = "Oče, priznajem da sam Te u srcu držao ovakvim: " + k.opis + "\n\n";
     if (k.projekcija) {
       var koga = (k.projekcija === 'majka') ? "svoju majku" : "svoga oca";
       var kome = (k.projekcija === 'majka') ? "svojoj majci" : "svome ocu";
-      t += "Priznajem da ta slika ne dolazi od Tebe, nego iz moje rane. U srcu sam osudio/osudila " + koga +
-           " i tu sam osudu nesvjesno prenio/prenijela na Tebe. U ime Isusovo opraštam " + kome +
+      t += "Priznajem da ta slika ne dolazi od Tebe, nego iz moje rane. U srcu sam osudio " + koga +
+           " i tu sam osudu nesvjesno prenio na Tebe. U ime Isusovo opraštam " + kome +
            " i povlačim tu osudu. ";
     }
     t += "U ime Isusovo odričem se ove krive slike Boga i svake laži o Tebi koju je moje ranjeno srce povjerovalo. ";
@@ -788,13 +788,13 @@ window.TREE_DATA = {
   // Molitva odricanja od unutarnjeg zavjeta (HWP, Appendix 1 — "Renouncing: Inner Vows")
   D.molitvaZavjeta = function(z){
     var tekst = (typeof z === 'string') ? z : z.tekst;
-    var t = "Oče, priznajem da sam pokušavao/pokušavala spasiti sebe umjesto da se oslonim na Tebe za svoje spasenje. " +
+    var t = "Oče, priznajem da sam pokušavao spasiti sebe umjesto da se oslonim na Tebe za svoje spasenje. " +
             "Oprosti mi grijehe ponosa i samodostatnosti. Priznajem da me je moj trud da zaštitim samoga sebe ostavio " +
-            "zatvorenog/zatvorenu iza zidova koji me sprječavaju da slobodno dajem i primam ljubav. " +
-            "Želim biti slobodan/slobodna od ovog ropstva koje je došlo kao posljedica mojih vlastitih izbora.\n\n" +
+            "zatvorenog iza zidova koji me sprječavaju da slobodno dajem i primam ljubav. " +
+            "Želim biti slobodan od ovog ropstva koje je došlo kao posljedica mojih vlastitih izbora.\n\n" +
             "U ime Isusovo odričem se unutarnjeg zavjeta: \u201C" + tekst + "\u201D.";
     if (typeof z !== 'string') {
-      if (z.zastita) t += " Sklopio/sklopila sam ga da me zaštiti " + z.zastita + ".";
+      if (z.zastita) t += " Sklopio sam ga da me zaštiti " + z.zastita + ".";
       if (z.zamjena) t += " Odričem se te lažne zaštite i biram " + z.zamjena + ".";
     }
     return t + " Molim Te da me sada oslobodiš od ropstva ovog zavjeta. Hvala Ti. Amen.";
@@ -802,15 +802,15 @@ window.TREE_DATA = {
 
   // Skupna molitva odricanja od zavjeta — uvod jednom, pa svaki zavjet
   D.molitvaZavjetaSkupno = function(list){
-    var t = "Oče, priznajem da sam pokušavao/pokušavala spasiti sebe umjesto da se oslonim na Tebe za svoje spasenje. " +
+    var t = "Oče, priznajem da sam pokušavao spasiti sebe umjesto da se oslonim na Tebe za svoje spasenje. " +
             "Oprosti mi grijehe ponosa i samodostatnosti. Priznajem da me je moj trud da zaštitim samoga sebe ostavio " +
-            "zatvorenog/zatvorenu iza zidova koji me sprječavaju da slobodno dajem i primam ljubav. " +
-            "Želim biti slobodan/slobodna od ovog ropstva koje je došlo kao posljedica mojih vlastitih izbora.\n";
+            "zatvorenog iza zidova koji me sprječavaju da slobodno dajem i primam ljubav. " +
+            "Želim biti slobodan od ovog ropstva koje je došlo kao posljedica mojih vlastitih izbora.\n";
     list.forEach(function(z){
       var tekst = (typeof z === 'string') ? z : z.tekst;
       t += "\nU ime Isusovo odričem se unutarnjeg zavjeta: \u201C" + tekst + "\u201D.";
       if (typeof z !== 'string') {
-        if (z.zastita) t += " Sklopio/sklopila sam ga da me zaštiti " + z.zastita + ".";
+        if (z.zastita) t += " Sklopio sam ga da me zaštiti " + z.zastita + ".";
         if (z.zamjena) t += " Odričem se te lažne zaštite i biram " + z.zamjena + ".";
       }
     });
@@ -819,15 +819,15 @@ window.TREE_DATA = {
 
   // Skupna molitva odricanja od gorkih osuda
   D.molitvaOsudeSkupno = function(list){
-    var t = "Oče, priznajem da sam osuđivao/osuđivala. Shvaćam da sam to činio/činila kako bih se zaštitio/zaštitila " +
-            "od osjećaja ranjivosti i nemoći, da ne bih bio/bila ponovno povrijeđen/povrijeđena. " +
-            "Shvaćam također da je osuda grijeh i da me drži vezanim/vezanom.\n";
+    var t = "Oče, priznajem da sam osuđivao. Shvaćam da sam to činio kako bih se zaštitio " +
+            "od osjećaja ranjivosti i nemoći, da ne bih bio ponovno povrijeđen. " +
+            "Shvaćam također da je osuda grijeh i da me drži vezanim.\n";
     list.forEach(function(o){
       var tekst = (typeof o === 'string') ? o : o.tekst;
       var bogu  = (typeof o !== 'string') && o.premaBogu;
       t += "\nU ime Isusovo odričem se osude: \u201C" + tekst + "\u201D.";
       if (typeof o !== 'string') {
-        if (bogu) t += " Molim Te za oprost što sam Te optuživao/optuživala i povlačim tu presudu.";
+        if (bogu) t += " Molim Te za oprost što sam Te optuživao i povlačim tu presudu.";
         else if (o.oprastam) t += " Opraštam " + o.oprastam + " i molim Te da mi daš svoje srce suosjećanja prema njima.";
         if (o.istina) t += " Proglašavam istinu da " + o.istina + ".";
       }
@@ -843,13 +843,13 @@ window.TREE_DATA = {
     var kogaA = (typeof o === 'string') ? null : (o.premaBogu ? null : o.osudio);     // akuzativ: "osudio sam ..."
     var bogu  = (typeof o !== 'string') && o.premaBogu;
 
-    var t = "Oče, priznajem da sam osudio/osudila " + (bogu ? "Tebe" : (kogaA || "one koji su me povrijedili")) + ". " +
-            "Shvaćam da sam to učinio/učinila kako bih se zaštitio/zaštitila od osjećaja ranjivosti i bespomoćnosti, " +
-            "da ne bih bio/bila ponovno povrijeđen/povrijeđena. " +
-            "Shvaćam također da je ta osuda grijeh i da me drži vezanim/vezanom.\n\n";
+    var t = "Oče, priznajem da sam osudio " + (bogu ? "Tebe" : (kogaA || "one koji su me povrijedili")) + ". " +
+            "Shvaćam da sam to učinio kako bih se zaštitio od osjećaja ranjivosti i bespomoćnosti, " +
+            "da ne bih bio ponovno povrijeđen. " +
+            "Shvaćam također da je ta osuda grijeh i da me drži vezanim.\n\n";
 
     if (bogu) {
-      t += "Molim Te za oprost što sam Te optuživao/optuživala i povlačim tu presudu. ";
+      t += "Molim Te za oprost što sam Te optuživao i povlačim tu presudu. ";
     } else {
       t += "Molim Te sada za oprost i da oslobodiš mene i " + (kogaA || "njih") +
            " od ropstva ove osude i izolacije. ";
@@ -863,7 +863,7 @@ window.TREE_DATA = {
     }
 
     if (!bogu) {
-      t += "\n\nZnam da ne mogu sam/sama promijeniti svoje srce, pa Te molim da mi daš svoje srce suosjećanja prema " +
+      t += "\n\nZnam da ne mogu sam promijeniti svoje srce, pa Te molim da mi daš svoje srce suosjećanja prema " +
            (koga || "njima") + ".";
     }
     return t + " Amen.";
