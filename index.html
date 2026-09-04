@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stablo života</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WX9RNFYH86"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-WX9RNFYH86');</script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="tree-data.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#F7F3EE;--warm:#FDFAF6;--bark:#8B6B4A;--bark-l:#C4A882;--bark-d:#5C4030;
+  --leaf:#7A9E7E;--leaf-l:#B5CEB8;--root:#B0A090;--txt:#2C1F14;--mid:#6B5040;
+  --light:#9E8B7A;--gold:#C49A3C;--gold-l:#E8C97A;
+  --sh:rgba(92,64,48,0.12);--shd:rgba(44,31,20,0.20);
+}
+html,body{height:100%;background:var(--cream);overflow:hidden;}
+/* ── CONFIG FLAG (uredi ovdje) ── */
+body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
+#root{height:100vh;display:flex;flex-direction:column;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:var(--bark-l);border-radius:3px;}
+
+/* SHELL */
+.shell{display:flex;flex-direction:column;height:100vh;}
+
+/* HEADER */
+.hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 22px;background:rgba(253,250,246,0.96);
+  border-bottom:1px solid rgba(139,107,74,0.12);
+  backdrop-filter:blur(8px);z-index:200;flex-shrink:0;
+}
+.hdr-brand{display:flex;align-items:center;gap:9px;cursor:pointer;}
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);}
+.hdr-sub{font-size:10px;color:var(--light);letter-spacing:.08em;text-transform:uppercase;}
+.hdr-tree{display:flex;align-items:center;gap:6px;min-width:0;}
+.hdr-tree-name{font-size:11px;font-weight:400;color:var(--light);background:transparent;border:none;outline:none;font-family:'Inter',sans-serif;padding:2px 4px;border-radius:4px;min-width:60px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .15s,color .15s;cursor:text;}
+@media(max-width:860px){.hdr-tree-name{max-width:140px;}}
+.hdr-tree-name:focus{background:rgba(139,107,74,.08);color:var(--mid);text-overflow:clip;overflow:visible;}
+.hdr-tree-del{width:18px;height:18px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0;}
+.hdr-tree-del:hover,.hdr-tree-del:active{background:rgba(180,60,60,.15);color:#a03030;}
+@media(max-width:500px){.hdr-tree-name{max-width:100px;}.hdr-sub{display:none;}}
+.hdr-right{display:flex;gap:8px;align-items:center;}
+
+/* SPLIT */
+.split{flex:1;display:grid;grid-template-columns:1fr 400px;overflow:hidden;}
+@media(max-width:860px){
+  .split{grid-template-columns:1fr;display:flex;flex-direction:column;}
+  .tree-pane{display:flex;height:260px;flex-shrink:0;order:2;}
+  .left{order:1;overflow-y:auto;flex:1;}
+  html,body{overflow:auto;height:auto;}
+  .shell{height:auto;min-height:100vh;}
+  #root{height:auto;}
+}
+@media print{
+  html,body{overflow:visible!important;height:auto!important;}
+  .shell{height:auto!important;}
+  .split{display:block!important;}
+  .left{overflow:visible!important;}
+  .hdr,.step-bar,.sfooter,.hdr-right{display:none!important;}
+  .tree-pane{display:none!important;}
+  .print-only{display:block!important;}
+  .pcard{break-inside:avoid;}
+  .print-tree{display:block!important;text-align:center;margin:20px auto;}
+}
+
+/* LEFT */
+.left{overflow-y:auto;display:flex;flex-direction:column;background:var(--warm);border-right:1px solid rgba(139,107,74,0.1);}
+
+/* TREE PANE */
+.tree-pane{position:relative;overflow:hidden;background:#F2EDE6;display:flex;flex-direction:column;}
+.tree-bg{
+  position:absolute;inset:0;
+  background-image:url('tree-bg.jpg');
+  background-size:contain;background-repeat:no-repeat;background-position:center 52%;
+  transition:opacity .7s ease;
+}
+.tree-pane-inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
+.tree-pane-title{padding:18px 18px 10px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--bark-d);opacity:.65;letter-spacing:.02em;}
+
+.tree-overlay{position:relative;flex:1;}
+
+/* LABELS */
+.lbl{
+  position:absolute;transform:translate(-50%,-50%);
+  background:white;border-radius:20px;padding:4px 10px;
+  font-size:11px;font-weight:500;color:var(--txt);
+  box-shadow:0 2px 10px var(--shd);white-space:nowrap;
+  max-width:120px;overflow:hidden;text-overflow:ellipsis;
+  pointer-events:all;z-index:10;border:1.5px solid transparent;
+  animation:pop .4s cubic-bezier(.34,1.56,.64,1) both;
+  cursor:pointer;
+}
+.lbl:hover{z-index:20;box-shadow:0 4px 16px var(--shd);}
+.lbl.sin{border-color:var(--bark);background:var(--bark);color:white;font-family:'Cormorant Garamond',serif;font-size:13px;padding:5px 14px;cursor:default;}
+.lbl.fruit{border-color:var(--leaf);color:#2C5A30;}
+.lbl.fruit.p2{font-size:12.5px;padding:5px 12px;}
+.lbl.fruit.p3{font-size:14px;padding:6px 14px;font-weight:600;}
+.lbl.wound{border-color:var(--root);color:var(--bark-d);}
+.lbl.wound.p2{font-size:12.5px;padding:5px 12px;}
+.lbl.wound.p3{font-size:14px;padding:6px 14px;font-weight:600;}
+.lbl.vow{border-color:var(--gold);color:#5C4010;}
+/* Tooltip popup */
+.lbl-tooltip{
+  position:absolute;transform:translate(-50%,-50%);
+  background:var(--bark-d);color:white;
+  border-radius:10px;padding:8px 12px;
+  font-size:12px;line-height:1.5;
+  box-shadow:0 6px 20px var(--shd);
+  z-index:50;pointer-events:none;
+  max-width:180px;white-space:normal;text-align:center;
+  animation:pop .2s ease both;
+}
+.lbl-tooltip::after{
+  content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-bottom:none;
+  border-top-color:var(--bark-d);
+}
+@keyframes pop{from{opacity:0;transform:translate(-50%,-50%) scale(.5);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+.tree-hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--light);text-align:center;font-style:italic;pointer-events:none;width:200px;line-height:1.5;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;transition:all .18s ease;}
+.btn:disabled{opacity:.42;cursor:not-allowed;}
+.btn-p{background:var(--bark);color:white;}
+.btn-p:not(:disabled):hover{background:var(--bark-d);transform:translateY(-1px);box-shadow:0 4px 12px var(--shd);}
+.btn-s{background:transparent;color:var(--bark);border:1.5px solid var(--bark-l);}
+.btn-s:hover{background:rgba(139,107,74,.06);}
+.btn-g{background:transparent;color:var(--mid);padding:7px 11px;}
+.btn-g:hover{color:var(--bark);background:rgba(139,107,74,.06);}
+.btn-sm{padding:5px 11px;font-size:12px;}
+.btn-lg{padding:12px 22px;font-size:14px;}
+
+/* WELCOME */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 28px;text-align:center;}
+.w-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,46px);font-weight:300;color:var(--bark-d);line-height:1.15;margin-bottom:14px;}
+.w-desc{font-size:13px;color:var(--mid);line-height:1.7;max-width:380px;margin-bottom:8px;}
+.w-verse{background:rgba(139,107,74,.06);border-left:3px solid var(--bark-l);padding:13px 16px;border-radius:0 8px 8px 0;max-width:360px;margin:20px 0 28px;text-align:left;}
+.w-verse p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--mid);line-height:1.6;margin-bottom:3px;}
+.w-verse cite{font-size:10px;color:var(--light);}
+.w-actions{display:flex;flex-direction:column;gap:9px;width:100%;max-width:270px;}
+
+/* TREES LIST */
+.trees-wrap{padding:26px 26px 36px;}
+.s-head{margin-bottom:22px;}
+.s-head h2{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;color:var(--bark-d);margin-bottom:5px;}
+.s-head p{font-size:13px;color:var(--mid);line-height:1.5;}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
+.tcard{background:white;border-radius:11px;padding:15px;cursor:pointer;border:2px solid transparent;box-shadow:0 2px 8px var(--sh);transition:all .2s ease;position:relative;overflow:hidden;}
+.tcard:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shd);border-color:var(--bark-l);}
+.tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cc,var(--bark));}
+.tcard-icon{font-size:22px;margin-bottom:7px;}
+.tcard-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);margin-bottom:3px;}
+.tcard-status{font-size:11px;color:var(--light);margin-bottom:9px;}
+.tcard-prog{height:3px;background:var(--cream);border-radius:2px;overflow:hidden;}
+.tcard-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+.tcard-add{background:rgba(139,107,74,.04);border:2px dashed var(--bark-l);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:100px;color:var(--bark);cursor:pointer;}
+.tcard-add:hover{background:rgba(139,107,74,.08);border-color:var(--bark);}
+.tcard-add span{font-size:11px;font-weight:500;}
+.tcard-del{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.tcard-del:hover,.tcard-del:active{background:rgba(180,60,60,.15);color:#a03030;}
+
+/* GUIDED */
+.guided{flex:1;display:flex;flex-direction:column;}
+.step-bar{display:flex;align-items:center;padding:14px 24px 0;gap:0;flex-shrink:0;}
+.si{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;}
+.sdot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all .3s;}
+.sdot.done{background:var(--bark);color:white;}
+.sdot.active{background:var(--bark-d);color:white;box-shadow:0 0 0 3px rgba(139,107,74,.2);}
+.sdot.fut{background:white;color:var(--light);border:1.5px solid var(--bark-l);}
+.slbl{font-size:9px;color:var(--light);white-space:nowrap;}
+.sline{flex:1;height:2px;background:var(--bark-l);opacity:.35;margin-bottom:14px;}
+.sline.done{opacity:1;background:var(--bark);}
+
+.scontent{flex:1;overflow-y:auto;padding:18px 24px 20px;}
+.anim{animation:slideIn .3s ease both;}
+@keyframes slideIn{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bark-l);margin-bottom:5px;}
+.stitle{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;color:var(--bark-d);margin-bottom:9px;line-height:1.25;}
+.sbody{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px;}
+.scripture{background:var(--cream);border-left:3px solid var(--gold-l);padding:11px 15px;border-radius:0 8px 8px 0;margin-bottom:16px;}
+.scripture p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:3px;}
+.scripture cite{font-size:10px;color:var(--light);}
+
+.sfooter{padding:13px 24px 18px;border-top:1px solid rgba(139,107,74,.1);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:var(--warm);}
+
+/* SIN GRID */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:7px;margin-bottom:18px;}
+.sopt{padding:11px 9px;border-radius:9px;border:2px solid transparent;background:var(--cream);cursor:pointer;transition:all .18s;text-align:center;}
+.sopt:hover{border-color:var(--bark-l);background:white;transform:translateY(-1px);box-shadow:0 3px 10px var(--sh);}
+.sopt.sel{border-color:var(--bark);background:white;box-shadow:0 3px 14px var(--shd);}
+.sopt-ico{font-size:19px;margin-bottom:4px;}
+.sopt-n{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--bark-d);margin-bottom:1px;}
+.sopt-s{font-size:10px;color:var(--light);}
+
+/* PRIORITY CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 11px;border-radius:20px;
+  border:1.5px solid var(--bark-l);background:white;
+  font-size:12px;color:var(--mid);cursor:pointer;
+  transition:all .18s ease;position:relative;
+  user-select:none;
+}
+.chip:hover{border-color:var(--bark);color:var(--bark);}
+.chip.sel{background:var(--bark);color:white;border-color:var(--bark);}
+.chip.sug{border-color:var(--gold);background:rgba(196,154,60,.07);}
+.chip.sug::before{content:'✦';font-size:8px;color:var(--gold);}
+.chip.sel.sug{background:var(--bark);border-color:var(--bark);}
+.chip.sel.sug::before{color:rgba(255,255,255,.6);}
+
+/* PRIORITY SIZE VARIANTS */
+.chip.p2{font-size:13px;padding:6px 13px;}
+.chip.p3{font-size:15px;padding:8px 16px;font-weight:600;border-width:2px;}
+.chip.sel.p2{transform:scale(1.02);}
+.chip.sel.p3{transform:scale(1.04);box-shadow:0 3px 12px var(--shd);}
+
+/* Priority indicator dots */
+.chip .prio-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:currentColor;opacity:.5;flex-shrink:0;
+  display:none;
+}
+.chip.sel .prio-dot{display:inline-block;}
+.chip.sel.p3 .prio-dot{width:8px;height:8px;opacity:.9;}
+
+/* Priority toggle */
+.prio-toggle{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;color:var(--light);cursor:pointer;
+  padding:2px 6px;border-radius:10px;
+  transition:all .15s;
+  background:rgba(139,107,74,.06);
+  margin-left:2px;
+  border:none;
+}
+.prio-toggle:hover{background:rgba(139,107,74,.14);color:var(--bark);}
+
+.suggest-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:4px;}
+.more-tag{font-size:10px;color:var(--light);margin:10px 0 6px;letter-spacing:.03em;}
+.divider{height:1px;background:rgba(139,107,74,.1);margin:16px 0;}
+
+/* FIELDS */
+.field{margin-bottom:14px;}
+.flabel{display:block;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);margin-bottom:5px;}
+textarea,input[type="text"]{width:100%;padding:9px 12px;border:1.5px solid rgba(139,107,74,.22);border-radius:8px;background:white;font-family:'Inter',sans-serif;font-size:13px;color:var(--txt);resize:vertical;line-height:1.5;transition:border-color .2s;}
+textarea:focus,input:focus{outline:none;border-color:var(--bark);box-shadow:0 0 0 3px rgba(139,107,74,.1);}
+textarea::placeholder,input::placeholder{color:var(--light);}
+
+/* WOUND REVEAL */
+.wlies{margin-top:14px;}
+.wlie{background:rgba(176,160,144,.1);border-radius:8px;padding:9px 12px;margin-bottom:7px;}
+.wlie-n{font-weight:600;font-size:12px;color:var(--bark-d);margin-bottom:2px;}
+.wlie-t{font-style:italic;font-size:12px;color:var(--mid);line-height:1.5;}
+
+/* AI PANEL */
+.ai-panel{
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(196,154,60,.07);
+  border:1px solid rgba(196,154,60,.25);
+  border-radius:10px;padding:11px 13px;
+  margin-bottom:14px;
+}
+.ai-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.ai-body{flex:1;min-width:0;}
+.ai-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.ai-loading{font-size:12px;color:var(--light);font-style:italic;}
+.ai-dots span{display:inline-block;animation:blink 1.2s infinite;}
+.ai-dots span:nth-child(2){animation-delay:.2s;}
+.ai-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.2;}40%{opacity:1;}}
+.ai-recs{display:flex;flex-wrap:wrap;gap:6px;}
+.ai-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:5px 11px;border-radius:20px;
+  background:white;border:1.5px solid var(--gold);
+  font-size:12px;color:var(--bark-d);
+  cursor:pointer;transition:all .18s;
+}
+.ai-chip:hover{background:var(--gold);color:white;}
+.ai-chip::before{content:'✦';font-size:8px;color:var(--gold);}
+.ai-chip:hover::before{color:white;}
+
+/* SUMMARY */
+.sum-block{margin-bottom:20px;}
+.sum-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;color:var(--bark-d);margin-bottom:11px;padding-bottom:6px;border-bottom:1px solid rgba(139,107,74,.12);}
+
+/* PRAYER */
+.prayer-wrap{padding:22px 24px 36px;}
+.p-banner{background:linear-gradient(135deg,#F2EAE0,#E8DDD0);border:1px solid var(--bark-l);border-radius:13px;padding:20px;text-align:center;margin-bottom:22px;}
+.p-banner h2{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:400;color:var(--bark-d);margin-bottom:5px;}
+.p-banner p{font-size:13px;color:var(--mid);}
+.pcard{background:white;border-radius:11px;padding:20px;box-shadow:0 2px 12px var(--sh);margin-bottom:14px;}
+.pcard-head{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.fico{width:30px;height:30px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.pcard-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--bark-d);}
+.ptext{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;line-height:1.85;color:var(--mid);white-space:pre-wrap;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bark-d);color:white;padding:8px 18px;border-radius:20px;font-size:12px;z-index:999;pointer-events:none;animation:tIn .3s ease,tOut .3s ease 2.5s forwards;}
+@keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+@keyframes tOut{to{opacity:0;}}
+
+@media print{.hdr,.step-bar,.sfooter,.hdr-right,.tree-pane{display:none!important;}.split{display:block;}.left{overflow:visible;}.pcard{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+const DATA = window.TREE_DATA;
+const SK = 'drvo_v3';
+
+// ── CONFIG ── uredi po potrebi
+const CONFIG = /*EDITMODE-BEGIN*/{
+  "showAISuggestions": true
+}/*EDITMODE-END*/;
+
+function load() { try { return JSON.parse(localStorage.getItem(SK)) || { trees: [] }; } catch { return { trees: [] }; } }
+function save(s) { localStorage.setItem(SK, JSON.stringify(s)); }
+
+// ── ICONS ──
+const I = ({ d, s=16 }) => <svg width={s} height={s} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d={d}/></svg>;
+const IPlus = () => <I d="M8 3v10M3 8h10"/>;
+const ICheck = () => <I d="M3 8l3.5 3.5L13 5"/>;
+const IPrint = () => <I d="M4 5V2h8v3M4 11H2V7h12v4h-2M4 14h8v-5H4z"/>;
+const IBack = () => <I d="M10 3L5 8l5 5"/>;
+const ISpark = () => <I d="M8 2v2M8 12v2M2 8h2M12 8h2M4 4l1.4 1.4M10.6 10.6L12 12M4 12l1.4-1.4M10.6 5.4L12 4"/>;
+
+const ITree = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+    <path d="M11 21v-8"/><path d="M11 13C11 13 5 10 5 5C5 2.2 7.7 1 11 1C14.3 1 17 2.2 17 5C17 10 11 13 11 13Z"/>
+    <path d="M8 18C6.5 17 5 15.5 5 14M14 18C15.5 17 17 15.5 17 14"/>
+  </svg>
+);
+
+const STEPS = ['Grijeh','Plodovi','Rane','Zavjeti','Pregled'];
+
+// ── PRIORITY SYSTEM ──
+// p1 = small (normal), p2 = medium, p3 = large (most important)
+function getPriority(priorities, id) { return priorities?.[id] || 1; }
+function cyclePriority(priorities, id) {
+  const cur = getPriority(priorities, id);
+  const next = cur >= 3 ? 1 : cur + 1;
+  return { ...priorities, [id]: next };
+}
+
+// ── AI PANEL ──
+function AIInsight({ sin, fruits, wounds, mode, onAddFruit, onAddWound }) {
+  const [status, setStatus] = useState('idle');
+  const [recs, setRecs] = useState([]);
+  const hasTriggered = useRef(false);
+
+  const sinDef = DATA.smrtniGrijesi.find(s => s.id === sin);
+
+  useEffect(() => {
+    if (!sin) return;
+    if (mode === 'wounds' && fruits.length === 0) return;
+    if (mode === 'fruits' && !sin) return;
+    if (hasTriggered.current) return;
+    hasTriggered.current = true;
+    runAI();
+  }, [sin, fruits.length]);
+
+  async function runAI() {
+    setStatus('loading');
+    try {
+      const fruitNames = fruits.map(f => f.naziv).join(', ');
+
+      let prompt = '';
+      if (mode === 'fruits') {
+        prompt = `Predloži 4 kratka, konkretna ploda/manifestacije grijeha "${sinDef?.naziv}" koji NISU na ovoj listi: ${sinDef?.plodovi.map(p=>p.naziv).join(', ')}.
+VAŽNO: Odgovori ISKLJUČIVO na hrvatskom latiničnom pismu. Nikada ne koristi ćirilicu ni drugi jezik.
+Odgovori SAMO s popisom, svaki odvojen |, bez objašnjenja. Npr: Naziv1 | Naziv2 | Naziv3 | Naziv4`;
+      } else {
+        prompt = `Osoba s grijehom "${sinDef?.naziv}" ima ove plodove: ${fruitNames}.
+Predloži 3 rane srca (od: Napuštenost, Sramota, Strah, Bespomoćnost, Odbačenost, Beznađe, Zbunjenost) koje su NAJVJEROJATNIJE u pozadini upravo ovih plodova.
+VAŽNO: Odgovori ISKLJUČIVO na hrvatskom latiničnom pismu. Nikada ne koristi ćirilicu ni drugi jezik.
+Odgovori SAMO s imenima rana odvojenima |, bez objašnjenja. Npr: Strah | Odbačenost | Sramota`;
+      }
+
+      const response = await window.claude.complete({
+        messages: [{ role: 'user', content: prompt }]
+      });
+
+      const recItems = response.split('|').map(s => s.trim()).filter(Boolean);
+      setRecs(recItems);
+      setStatus('done');
+    } catch (e) {
+      setStatus('error');
+    }
+  }
+
+  if (!sin) return null;
+  if (status === 'error') return null;
+
+  return (
+    <div className="ai-panel">
+      <div className="ai-icon">✦</div>
+      <div className="ai-body">
+        <div className="ai-label">
+          {mode === 'fruits' ? 'Dodatni prijedlozi' : 'Predložene rane'}
+        </div>
+        {status === 'loading' && (
+          <div className="ai-loading">
+            učitavam<div className="ai-dots"><span>•</span><span>•</span><span>•</span></div>
+          </div>
+        )}
+        {status === 'done' && recs.length > 0 && (
+          <div className="ai-recs">
+            {recs.map((r, i) => (
+              <div key={i} className="ai-chip" onClick={() => mode === 'fruits' ? onAddFruit(r) : onAddWound(r)}>
+                {r}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── CLICKABLE LABEL ──
+function TreeLabel({ naziv, fullText, cls, style }) {
+  const [tip, setTip] = useState(false);
+  const truncated = naziv.length > 14;
+  return (
+    <>
+      <div
+        className={`lbl ${cls}`}
+        style={style}
+        onClick={() => truncated && setTip(t => !t)}
+        title={fullText || naziv}
+      >
+        {truncated ? naziv.slice(0,13)+'…' : naziv}
+      </div>
+      {tip && (
+        <div className="lbl-tooltip" style={{
+          left: style.left,
+          top: `calc(${style.top} - 36px)`
+        }} onClick={() => setTip(false)}>
+          {fullText || naziv}
+        </div>
+      )}
+    </>
+  );
+}
+
+// ── LIVE TREE PANEL ──
+function TreePanel({ tree }) {
+  const sinDef = tree?.sinId ? DATA.smrtniGrijesi.find(s => s.id === tree.sinId) : null;
+  const hasData = sinDef || tree?.fruits?.length || tree?.wounds?.length;
+  const fruits = tree?.fruits || [];
+  const wounds = tree?.wounds || [];
+  const vows = [...(tree?.vows||[]), tree?.customVow].filter(Boolean);
+  const judgments = [...(tree?.judgments||[]), tree?.customJudgment].filter(Boolean);
+  const priorities = tree?.priorities || {};
+  const customFruits = (tree?.customFruitsText || '').split('\n').filter(Boolean);
+  // Custom wounds from woundReflection text
+  const customWoundText = tree?.woundReflection || '';
+  const allFruits = [
+    ...fruits.map(f => ({ naziv: f.naziv, p: getPriority(priorities, f.id) })),
+    ...customFruits.map(n => ({ naziv: n, p: 1 }))
+  ];
+  // All wounds including custom comments
+  const allWounds = wounds;
+  // Combine vows + judgments for root area
+  const allRootExtras = [...vows.slice(0,2), ...judgments.slice(0,1)];
+
+  const fruitPos = [
+    {left:'24%',top:'16%'},{left:'50%',top:'11%'},{left:'76%',top:'16%'},
+    {left:'18%',top:'26%'},{left:'82%',top:'26%'},{left:'35%',top:'21%'},
+    {left:'65%',top:'21%'},{left:'50%',top:'19%'},
+  ];
+  const woundPos = [
+    {left:'22%',top:'80%'},{left:'50%',top:'85%'},{left:'78%',top:'80%'},
+    {left:'30%',top:'89%'},{left:'70%',top:'89%'},{left:'14%',top:'73%'},{left:'86%',top:'73%'},
+  ];
+  const vowPos = [
+    {left:'30%',top:'93%'},{left:'56%',top:'94%'},{left:'72%',top:'92%'},
+  ];
+
+  const bgOpacity = hasData ? 0.55 : 0.22;
+
+  return (
+    <div className="tree-pane">
+      <div className="tree-bg" style={{opacity: bgOpacity}}/>
+      <div className="tree-pane-inner">
+        <div className="tree-pane-title">
+          {sinDef ? `Stablo — ${sinDef.naziv}` : 'Tvoje stablo raste ovdje...'}
+        </div>
+        <div className="tree-overlay">
+          {sinDef && (
+            <div className="lbl sin" style={{left:'50%',top:'57%'}}>
+              {sinDef.ikona} {sinDef.naziv}
+            </div>
+          )}
+          {allFruits.slice(0,8).map(({ naziv, p }, i) => (
+            <TreeLabel key={`f${i}`} naziv={naziv} cls={`fruit p${p}`} style={fruitPos[i]}/>
+          ))}
+          {allWounds.slice(0,7).map((w, i) => {
+            const rd = DATA.smrtneRane.find(r => r.id === w.id);
+            const p = getPriority(priorities, w.id);
+            const name = rd ? rd.naziv : w.naziv;
+            const comment = (tree?.woundComments||{})[w.id];
+            const fullText = rd?.laz ? `${name}: "${rd.laz}"${comment?' — '+comment:''}` : name;
+            return (
+              <TreeLabel key={`w${i}`} naziv={name} fullText={fullText} cls={`wound p${p}`} style={woundPos[i]}/>
+            );
+          })}
+          {allRootExtras.slice(0,3).map((v, i) => (
+            <TreeLabel key={`v${i}`} naziv={v} cls="vow" style={vowPos[i]}/>
+          ))}
+        </div>
+        {!hasData && (
+          <div className="tree-hint">Popuni korake s lijeve strane<br/>da vidiš svoje drvo...</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── STEP BAR ──
+function StepBar({ cur }) {
+  return (
+    <div className="step-bar">
+      {STEPS.map((lbl, i) => (
+        <React.Fragment key={i}>
+          <div className="si">
+            <div className={`sdot ${i<cur?'done':i===cur?'active':'fut'}`}>
+              {i<cur?<ICheck/>:i+1}
+            </div>
+            <div className="slbl">{lbl}</div>
+          </div>
+          {i<STEPS.length-1 && <div className={`sline ${i<cur?'done':''}`}/>}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+// ── PRIORITY CHIP ──
+function PChip({ label, id, selected, suggested, priority, onToggle, onPriority }) {
+  const p = priority || 1;
+  const cls = ['chip', selected?'sel':'', suggested?'sug':'', `p${p}`].filter(Boolean).join(' ');
+  return (
+    <div className={cls} onClick={() => onToggle(id)}>
+      {selected && <span className="prio-dot"/>}
+      {label}
+      {selected && onPriority && (
+        <button
+          className="prio-toggle"
+          title={`Prioritet: ${p}/3 — klikni za promjenu`}
+          onClick={e => { e.stopPropagation(); onPriority(id); }}
+        >
+          {'●'.repeat(p)}{'○'.repeat(3-p)}
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ── GUIDED FLOW ──
+function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
+  const [step, setStep] = useState(tree.step || 0);
+  const [data, setData] = useState(tree);
+  const [showSuggested, setShowSuggested] = useState(false);
+  const [showAI, setShowAI] = useState(false);
+  const [showSuggestedW, setShowSuggestedW] = useState(false);
+  const [showAllW, setShowAllW] = useState(false);
+  const [showAIW, setShowAIW] = useState(false);
+  const [showVowList, setShowVowList] = useState(false);
+  const [showJudgeList, setShowJudgeList] = useState(false);
+
+  const sinDef = DATA.smrtniGrijesi.find(s => s.id === data.sinId);
+
+  function patch(u) {
+    const next = { ...data, ...u };
+    setData(next);
+    onUpdate(next);
+  }
+
+  function setPriority(id) {
+    patch({ priorities: cyclePriority(data.priorities, id) });
+  }
+
+  function next() {
+    const ns=step+1; setStep(ns); patch({step:ns});
+    if(typeof gtag!=='undefined') gtag('event','stablo_korak',{korak:ns,naziv_koraka:STEPS[ns]||'Pregled',grijeh:data.sinId||'nije_odabran'});
+  }
+  function prev() { if(step===0){onBack();return;} setStep(s=>s-1); }
+
+  // STEP 0 — Sin selection
+  if (step === 0) return (
+    <div className="guided">
+      <StepBar cur={0}/>
+      <div className="scontent"><div className="anim">
+        <div className="eyebrow">Korak 1 — Deblo</div>
+        <h2 className="stitle">Koji je tvoj primarni smrtni grijeh?</h2>
+        <p className="sbody">Razmisli o grijesima kojima se stalno vraćaš. Koji ti je najsnažniji obrazac ponašanja?</p>
+        <div className="scripture"><p>"Svako se stablo poznaje po svom rodu."</p><cite>— Luka 6,44</cite></div>
+        <div className="sgrid">
+          {DATA.smrtniGrijesi.map(sin => (
+            <div key={sin.id} className={`sopt ${data.sinId===sin.id?'sel':''}`}
+              style={{borderColor: data.sinId===sin.id ? sin.bojaBg : undefined}}
+              onClick={() => {
+                const autoName = data._autoName !== false
+                  ? `#${data._ordinal||1} ${sin.naziv} ${data._shortDate||''}`
+                  : data.name;
+                patch({sinId: sin.id, name: autoName, _autoName: data._autoName !== false});
+              }}>
+              <div className="sopt-ico">{sin.ikona}</div>
+              <div className="sopt-n">{sin.naziv}</div>
+              <div className="sopt-s">{sin.idolatrija}</div>
+            </div>
+          ))}
+        </div>
+      </div></div>
+      <div className="sfooter">
+        <button className="btn btn-g" onClick={onBack}><IBack/> Natrag</button>
+        <button className="btn btn-p" onClick={next} disabled={!data.sinId}>Dalje →</button>
+      </div>
+    </div>
+  );
+
+  // STEP 1 — Fruits: textarea first, suggestions reveal progressively
+  if (step === 1 && sinDef) {
+    const sel = data.fruits || [];
+    const priorities = data.priorities || {};
+    const customAI = data.customAIFruits || [];
+
+    function toggleFruit(id, name) {
+      const exists = sel.find(x => x.id === id);
+      if (exists) patch({ fruits: sel.filter(x => x.id !== id) });
+      else {
+        const fromData = sinDef.plodovi.find(p => p.id === id);
+        patch({ fruits: [...sel, fromData || { id, naziv: name }] });
+      }
+    }
+
+    function addAIFruit(naziv) {
+      const id = 'ai_' + naziv.replace(/\s+/g,'_').toLowerCase();
+      if (!sel.find(x => x.id === id)) {
+        patch({
+          fruits: [...sel, { id, naziv }],
+          customAIFruits: [...(data.customAIFruits||[]), { id, naziv }]
+        });
+      }
+    }
+
+    return (
+      <div className="guided">
+        <StepBar cur={1}/>
+        <div className="scontent"><div className="anim">
+          <div className="eyebrow">Korak 2 — Plodovi (grane)</div>
+          <h2 className="stitle">Kako se ovaj grijeh manifestira u tvom životu?</h2>
+          <p className="sbody">Napiši svojim riječima što primjećuješ u sebi.</p>
+
+          {/* PRIMARY: free text */}
+          <div className="field">
+            <textarea rows={3} placeholder="Napiši što primjećuješ u sebi... npr. povlačim se kad sam povrijeđen/a, koristim sarkazam, kontroliram druge..."
+              value={data.customFruitsText||''}
+              onChange={e => patch({customFruitsText: e.target.value})}
+              autoFocus/>
+          </div>
+
+          {/* Reveal suggestions after typing or explicitly */}
+          {!showSuggested && (
+            <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowSuggested(true)}>
+              + Pogledaj prijedloge
+            </button>
+          )}
+
+          {showSuggested && (
+            <div style={{animation:'fadeIn .3s ease'}}>
+              <div className="suggest-tag">✦ Česti plodovi — {sinDef.naziv}</div>
+              <div className="chips">
+                {sinDef.plodovi.map(f => (
+                  <PChip key={f.id} id={f.id} label={f.naziv}
+                    selected={!!sel.find(x=>x.id===f.id)}
+                    suggested={true}
+                    priority={getPriority(priorities, f.id)}
+                    onToggle={(id) => toggleFruit(id, f.naziv)}
+                    onPriority={setPriority}
+                  />
+                ))}
+              </div>
+
+              {/* AI extra suggestions */}
+              {CONFIG.showAISuggestions && !showAI && (
+                <button className="btn btn-g btn-sm" style={{marginBottom:10,fontSize:11}} onClick={()=>setShowAI(true)}>
+                  + Još prijedloga
+                </button>
+              )}
+              {CONFIG.showAISuggestions && showAI && (
+                <div style={{animation:'fadeIn .3s ease'}}>
+                  <AIInsight
+                    sin={data.sinId} fruits={sel} wounds={[]}
+                    mode="fruits"
+                    onAddFruit={addAIFruit}
+                    onAddWound={() => {}}
+                  />
+                  {customAI.length > 0 && (
+                    <div className="chips" style={{marginTop:4}}>
+                      {customAI.map(f => (
+                        <PChip key={f.id} id={f.id} label={f.naziv}
+                          selected={!!sel.find(x=>x.id===f.id)}
+                          suggested={true}
+                          priority={getPriority(priorities, f.id)}
+                          onToggle={(id) => toggleFruit(id, f.naziv)}
+                          onPriority={setPriority}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {sel.length > 0 && (
+            <p style={{fontSize:11,color:'var(--light)',marginTop:8}}>
+              {sel.length} označeno — klikni ●○○ za prioritet
+            </p>
+          )}
+        </div></div>
+        <div className="sfooter">
+          <button className="btn btn-g" onClick={prev}><IBack/> Natrag</button>
+          <button className="btn btn-p" onClick={next}>Dalje →</button>
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 2 — Wounds: free text first, suggestions reveal progressively
+  if (step === 2 && sinDef) {
+    const sel = data.wounds || [];
+    const priorities = data.priorities || {};
+
+    function toggleWound(id, name) {
+      const rd = DATA.smrtneRane.find(r => r.id === id);
+      const exists = sel.find(x => x.id === id);
+      if (exists) patch({ wounds: sel.filter(x => x.id !== id) });
+      else patch({ wounds: [...sel, rd || { id, naziv: name }] });
+    }
+
+    function addAIWound(naziv) {
+      const match = DATA.smrtneRane.find(r =>
+        r.naziv.toLowerCase().includes(naziv.toLowerCase()) ||
+        naziv.toLowerCase().includes(r.naziv.toLowerCase())
+      );
+      if (match) {
+        if (!sel.find(x => x.id === match.id)) patch({ wounds: [...sel, match] });
+      } else {
+        const id = 'ai_w_' + naziv.replace(/\s+/g,'_').toLowerCase();
+        patch({ wounds: [...sel, { id, naziv }], customAIWounds: [...(data.customAIWounds||[]), { id, naziv }] });
+      }
+    }
+
+    return (
+      <div className="guided">
+        <StepBar cur={2}/>
+        <div className="scontent"><div className="anim">
+          <div className="eyebrow">Korak 3 — Rane (korijenje)</div>
+          <h2 className="stitle">Koje rane kriju se iza ovog grijeha?</h2>
+          <div className="scripture"><p>"Kada Bog gleda grijeh, vidi bol u nama."</p><cite>— Sveta Juliana iz Norwicha</cite></div>
+
+          {/* PRIMARY: free reflection */}
+          <div className="field">
+            <textarea rows={3} placeholder="Opiši svoju ranu... Koji bolan događaj ili iskustvo stoji iza ovog obrasca? Što si tada povjerovao/la o sebi?"
+              value={data.woundReflection||''}
+              onChange={e => patch({woundReflection: e.target.value})}
+              autoFocus/>
+          </div>
+
+          {/* Suggested wounds — automatically shown, sorted by suggested priority */}
+          <div className="suggest-tag">✦ Najčešće rane — {sinDef.naziv}</div>
+          <div className="chips" style={{marginBottom:14}}>
+            {sinDef.rane.map(r => {
+              const rd = DATA.smrtneRane.find(x=>x.id===r.id);
+              return (
+                <PChip key={r.id} id={r.id} label={rd?.naziv||r.naziv}
+                  selected={!!sel.find(x=>x.id===r.id)}
+                  suggested={true}
+                  priority={getPriority(priorities, r.id)}
+                  onToggle={(id) => toggleWound(id, rd?.naziv||r.naziv)}
+                  onPriority={setPriority}
+                />
+              );
+            })}
+          </div>
+
+          {/* Show all wounds toggle */}
+          {!showAllW && (
+            <button className="btn btn-g btn-sm" style={{marginBottom:10,fontSize:11}} onClick={()=>setShowAllW(true)}>
+              + Ostale rane
+            </button>
+          )}
+          {showAllW && (
+            <div style={{animation:'fadeIn .3s ease'}}>
+              <div className="chips" style={{marginBottom:10}}>
+                {DATA.smrtneRane.filter(r => !sinDef.rane.find(s=>s.id===r.id)).map(r => (
+                  <PChip key={r.id} id={r.id} label={r.naziv}
+                    selected={!!sel.find(x=>x.id===r.id)}
+                    priority={getPriority(priorities, r.id)}
+                    onToggle={(id) => toggleWound(id, r.naziv)}
+                    onPriority={setPriority}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* AI suggestions */}
+          {CONFIG.showAISuggestions && !showAIW && (data.fruits||[]).length > 0 && (
+            <button className="btn btn-g btn-sm" style={{marginBottom:10,fontSize:11}} onClick={()=>setShowAIW(true)}>
+              + Prijedlozi na temelju mojih plodova
+            </button>
+          )}
+          {CONFIG.showAISuggestions && showAIW && (
+            <div style={{animation:'fadeIn .3s ease'}}>
+              <AIInsight
+                sin={data.sinId} fruits={data.fruits||[]} wounds={sel}
+                mode="wounds" onAddFruit={() => {}} onAddWound={addAIWound}
+              />
+            </div>
+          )}
+
+          {/* Selected wounds with lie + comment */}
+          {sel.length > 0 && (
+            <div className="wlies" style={{marginTop:14}}>
+              <div className="suggest-tag" style={{color:'var(--root)'}}>Odabrane rane — od najdublje</div>
+              {sel.slice().sort((a,b)=>getPriority(priorities,b.id)-getPriority(priorities,a.id)).map(w => {
+                const rd = DATA.smrtneRane.find(r=>r.id===w.id);
+                const p = getPriority(priorities, w.id);
+                return (
+                  <div key={w.id} className="wlie" style={{borderLeft:`3px solid ${p===3?'var(--bark)':p===2?'var(--bark-l)':'var(--root)'}`}}>
+                    <div className="wlie-n">{rd?.naziv||w.naziv} {'●'.repeat(p)}{'○'.repeat(3-p)}</div>
+                    {rd && <div className="wlie-t" style={{marginBottom:6}}>"{rd.laz}"</div>}
+                    <textarea
+                      rows={2}
+                      placeholder="Dodaj svoj komentar uz ovu ranu (neobavezno)..."
+                      style={{fontSize:12,marginTop:4,borderRadius:6,padding:'6px 8px'}}
+                      value={(data.woundComments||{})[w.id]||''}
+                      onChange={e => patch({woundComments:{...(data.woundComments||{}), [w.id]: e.target.value}})}
+                      onClick={e => e.stopPropagation()}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div></div>
+        <div className="sfooter">
+          <button className="btn btn-g" onClick={prev}><IBack/> Natrag</button>
+          <button className="btn btn-p" onClick={next}>Dalje →</button>
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 3 — Vows & Judgments: textarea first, suggestions reveal
+  if (step === 3) {
+    const sv = data.vows||[], sj = data.judgments||[];
+    function tv(v){ patch({vows: sv.includes(v)?sv.filter(x=>x!==v):[...sv,v]}); }
+    function tj(j){ patch({judgments: sj.includes(j)?sj.filter(x=>x!==j):[...sj,j]}); }
+    return (
+      <div className="guided">
+        <StepBar cur={3}/>
+        <div className="scontent"><div className="anim">
+          <div className="eyebrow">Korak 4 — Duboki korijeni</div>
+          <h2 className="stitle">Zavjeti i gorke osude</h2>
+          <p className="sbody">U ranama donosimo odluke da se zaštitimo — <strong>unutarnji zavjeti</strong>. Također <strong>osuđujemo</strong> druge ili Boga kao odgovor na bol.</p>
+
+          <div className="suggest-tag" style={{color:'var(--gold)'}}>⛓ Unutarnji zavjeti</div>
+          <div className="field">
+            <textarea rows={2} placeholder="Napiši vlastiti zavjet... npr. 'Nikad neću pokazati slabost', 'Uvijek ću se sam/a pobrinuti'..."
+              value={data.customVow||''} onChange={e=>patch({customVow:e.target.value})}/>
+          </div>
+          {!showVowList
+            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowVowList(true)}>+ Prijedlozi zavjeta</button>
+            : <div style={{animation:'fadeIn .3s ease'}}>
+                <p style={{fontSize:11,color:'var(--light)',marginBottom:7}}>Odaberi one koje prepoznaješ</p>
+                <div className="chips" style={{marginBottom:8}}>
+                  {DATA.unutarnjeZavjete.filter(v=>v!=='Ostalo (vlastito)').map(v => (
+                    <div key={v} className={`chip ${sv.includes(v)?'sel':''}`}
+                      style={sv.includes(v)?{background:'var(--gold)',borderColor:'var(--gold)'}:{borderColor:'var(--gold)',background:'rgba(196,154,60,.07)'}}
+                      onClick={()=>tv(v)}>{v}</div>
+                  ))}
+                </div>
+              </div>
+          }
+
+          <div className="divider"/>
+
+          <div className="suggest-tag" style={{color:'var(--root)'}}>🪨 Gorke osude</div>
+          <div className="field">
+            <textarea rows={2} placeholder="Napiši vlastitu osudu... npr. 'Muškarci su sebični', 'Nikad ne mogu dobiti što trebam'..."
+              value={data.customJudgment||''} onChange={e=>patch({customJudgment:e.target.value})}/>
+          </div>
+          {!showJudgeList
+            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowJudgeList(true)}>+ Prijedlozi osuda</button>
+            : <div style={{animation:'fadeIn .3s ease'}}>
+                <p style={{fontSize:11,color:'var(--light)',marginBottom:7}}>Odaberi one koje prepoznaješ</p>
+                <div className="chips" style={{marginBottom:8}}>
+                  {DATA.unutarnjeOsude.filter(j=>j!=='Ostalo (vlastito)').map(j => (
+                    <div key={j} className={`chip ${sj.includes(j)?'sel':''}`}
+                      style={sj.includes(j)?{background:'var(--root)',borderColor:'var(--root)',color:'white'}:{borderColor:'var(--root)',background:'rgba(176,160,144,.07)'}}
+                      onClick={()=>tj(j)}>{j}</div>
+                  ))}
+                </div>
+              </div>
+          }
+
+          <div className="divider"/>
+          <div className="field">
+            <label className="flabel">Rana iz djetinjstva (neobavezno)</label>
+            <textarea rows={3} placeholder="Opiši događaj u kojemu si bio/bila ranjen/a. Što se dogodilo?"
+              value={data.woundEvent||''} onChange={e=>patch({woundEvent:e.target.value})}/>
+          </div>
+        </div></div>
+        <div className="sfooter">
+          <button className="btn btn-g" onClick={prev}><IBack/> Natrag</button>
+          <button className="btn btn-p" onClick={next}>Pregled →</button>
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 4 — Summary: show everything
+  if (step === 4 && sinDef) {
+    const priorities = data.priorities || {};
+    const woundComments = data.woundComments || {};
+    const allFruits = [
+      ...(data.fruits||[]),
+      ...(data.customFruitsText||'').split('\n').filter(Boolean).map(n=>({id:'c_'+n,naziv:n}))
+    ].sort((a,b) => getPriority(priorities,b.id) - getPriority(priorities,a.id));
+
+    const allVows = [...(data.vows||[]), data.customVow].filter(Boolean);
+    const allJudgments = [...(data.judgments||[]), data.customJudgment].filter(Boolean);
+
+    return (
+      <div className="guided">
+        <StepBar cur={4}/>
+        <div className="scontent"><div className="anim">
+          <div className="eyebrow">Korak 5 — Pregled</div>
+          <h2 className="stitle">Stablo {sinDef.naziv}</h2>
+          <p className="sbody" style={{marginBottom:18}}>Sve što si unio/unijela — sortirano po prioritetu.</p>
+
+          {allFruits.length > 0 && (
+            <div className="sum-block">
+              <div className="sum-title">🌿 Plodovi</div>
+              <div className="chips">
+                {allFruits.map(f => {
+                  const p = getPriority(priorities, f.id);
+                  return <span key={f.id} className={`chip p${p}`} style={{background:sinDef.bojaBg,borderColor:sinDef.bojaBg,color:'white'}}>{f.naziv}</span>;
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="sum-block">
+            <div className="sum-title">🌳 Grijeh</div>
+            <div style={{display:'flex',alignItems:'center',gap:10,padding:'9px 13px',background:sinDef.bojaBg,borderRadius:9,color:'white',width:'fit-content'}}>
+              <span style={{fontSize:17}}>{sinDef.ikona}</span>
+              <span style={{fontFamily:'Cormorant Garamond,serif',fontSize:17}}>{sinDef.naziv}</span>
+              <span style={{fontSize:11,opacity:.8}}>— {sinDef.idolatrija}</span>
+            </div>
+            {data.woundReflection && (
+              <div className="wlie" style={{marginTop:8}}>
+                <div className="wlie-n" style={{fontWeight:400,fontStyle:'italic',color:'var(--mid)'}}>"{data.woundReflection}"</div>
+              </div>
+            )}
+          </div>
+
+          {(data.wounds||[]).length > 0 && (
+            <div className="sum-block">
+              <div className="sum-title">🌱 Rane</div>
+              {(data.wounds||[]).slice().sort((a,b)=>getPriority(priorities,b.id)-getPriority(priorities,a.id)).map(w => {
+                const rd = DATA.smrtneRane.find(r=>r.id===w.id);
+                const p = getPriority(priorities, w.id);
+                const comment = woundComments[w.id];
+                return (
+                  <div key={w.id} className="wlie" style={{borderLeft:`3px solid ${p===3?'var(--bark)':p===2?'var(--bark-l)':'var(--root)'}`}}>
+                    <div className="wlie-n">{rd?.naziv||w.naziv} {'●'.repeat(p)}{'○'.repeat(3-p)}</div>
+                    {rd && <div className="wlie-t">"{rd.laz}"</div>}
+                    {comment && <div style={{fontSize:12,color:'var(--mid)',marginTop:4,fontStyle:'italic'}}>💬 {comment}</div>}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {allVows.length > 0 && (
+            <div className="sum-block">
+              <div className="sum-title">⛓️ Zavjeti</div>
+              <div className="chips">
+                {allVows.map(v => <span key={v} className="chip" style={{borderColor:'var(--gold)'}}>{v}</span>)}
+              </div>
+            </div>
+          )}
+
+          {allJudgments.length > 0 && (
+            <div className="sum-block">
+              <div className="sum-title">🪨 Gorke osude</div>
+              <div className="chips">
+                {allJudgments.map(j => <span key={j} className="chip" style={{borderColor:'var(--root)'}}>{j}</span>)}
+              </div>
+            </div>
+          )}
+
+          {data.woundEvent && (
+            <div className="sum-block">
+              <div className="sum-title">📖 Rana iz djetinjstva</div>
+              <div className="wlie">
+                <div className="wlie-t" style={{fontStyle:'normal',color:'var(--mid)'}}>{data.woundEvent}</div>
+              </div>
+            </div>
+          )}
+
+        </div></div>
+        <div className="sfooter">
+          <button className="btn btn-g" onClick={prev}><IBack/> Uredi</button>
+          <button className="btn btn-p btn-lg" onClick={()=>onFinish(data)}>Molitve ✝</button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
+// ── PRINT TREE (uses uploaded image) ──
+function PrintTree({ tree }) {
+  const sinDef = DATA.smrtniGrijesi.find(s=>s.id===tree?.sinId);
+  const fruits = tree?.fruits || [];
+  const wounds = tree?.wounds || [];
+  const priorities = tree?.priorities || {};
+  const customFruits = (tree?.customFruitsText||'').split('\n').filter(Boolean);
+  const allFruits = [...fruits.map(f=>f.naziv), ...customFruits];
+  const allVows = [...(tree?.vows||[]), tree?.customVow].filter(Boolean);
+  const allJudgments = [...(tree?.judgments||[]), tree?.customJudgment].filter(Boolean);
+
+  return (
+    <div className="print-tree" style={{display:'none',position:'relative',width:320,margin:'0 auto'}}>
+      <img src="tree-bg.jpg" alt="Stablo života" style={{width:'100%',opacity:0.55,display:'block'}}/>
+      {/* Fruit labels overlaid on image */}
+      {allFruits.slice(0,6).map((naziv,i) => {
+        const positions = [
+          {left:'20%',top:'12%'},{left:'50%',top:'7%'},{left:'78%',top:'12%'},
+          {left:'16%',top:'22%'},{left:'84%',top:'22%'},{left:'50%',top:'18%'}
+        ];
+        const pos = positions[i]||{left:'50%',top:'15%'};
+        return (
+          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #7A9E7E',borderRadius:12,padding:'2px 7px',fontSize:9,color:'#2C5A30',fontWeight:500,whiteSpace:'nowrap',...pos}}>
+            {naziv.length>14?naziv.slice(0,13)+'…':naziv}
+          </div>
+        );
+      })}
+      {sinDef && (
+        <div style={{position:'absolute',left:'50%',top:'56%',transform:'translate(-50%,-50%)',background:sinDef.bojaBg,borderRadius:8,padding:'3px 10px',fontSize:10,color:'white',fontFamily:'serif',whiteSpace:'nowrap'}}>
+          {sinDef.ikona} {sinDef.naziv}
+        </div>
+      )}
+      {wounds.slice(0,5).map((w,i) => {
+        const rd = DATA.smrtneRane.find(r=>r.id===w.id);
+        const positions = [
+          {left:'18%',top:'78%'},{left:'50%',top:'83%'},{left:'82%',top:'78%'},
+          {left:'32%',top:'88%'},{left:'68%',top:'88%'}
+        ];
+        const pos = positions[i]||{left:'50%',top:'83%'};
+        return (
+          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #B0A090',borderRadius:12,padding:'2px 7px',fontSize:9,color:'#5C4030',fontWeight:500,whiteSpace:'nowrap',...pos}}>
+            {(rd?.naziv||w.naziv).length>13?(rd?.naziv||w.naziv).slice(0,12)+'…':(rd?.naziv||w.naziv)}
+          </div>
+        );
+      })}
+      {allVows.slice(0,2).map((v,i) => {
+        const positions = [{left:'28%',top:'93%'},{left:'65%',top:'93%'}];
+        const pos = positions[i]||{left:'50%',top:'93%'};
+        return (
+          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #C49A3C',borderRadius:12,padding:'2px 7px',fontSize:9,color:'#5C4010',whiteSpace:'nowrap',...pos}}>
+            {v.length>14?v.slice(0,13)+'…':v}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── PRAYER ──
+function PrayerScreen({ tree, onBack }) {
+  const sinDef = DATA.smrtniGrijesi.find(s=>s.id===tree.sinId);
+  const priorities = tree.priorities || {};
+  const woundComments = tree.woundComments || {};
+  if (!sinDef) return null;
+
+  const sortedWounds = (tree.wounds||[]).slice().sort((a,b)=>getPriority(priorities,b.id)-getPriority(priorities,a.id));
+  const allVows = [...(tree.vows||[]), tree.customVow].filter(Boolean);
+  const allJudgments = [...(tree.judgments||[]), tree.customJudgment].filter(Boolean);
+  const allFruits = [
+    ...(tree.fruits||[]),
+    ...(tree.customFruitsText||'').split('\n').filter(Boolean).map(n=>({id:'c_'+n,naziv:n}))
+  ].sort((a,b)=>getPriority(priorities,b.id)-getPriority(priorities,a.id));
+
+  return (
+    <div style={{flex:1,overflowY:'auto'}}>
+      <div className="prayer-wrap">
+
+        {/* ── PRINT ONLY: Summary ── */}
+        <div style={{display:'none'}} className="print-only">
+          <h1 style={{fontFamily:'serif',fontSize:24,color:'#5C4030',marginBottom:4}}>Stablo života</h1>
+          <h2 style={{fontFamily:'serif',fontSize:18,fontWeight:400,color:'#8B6B4A',marginBottom:16}}>Stablo — {sinDef.naziv} {sinDef.ikona}</h2>
+          {allFruits.length>0 && <><h3 style={{fontSize:13,marginBottom:4}}>🌿 Plodovi</h3><p style={{fontSize:12,marginBottom:12}}>{allFruits.map(f=>f.naziv).join(', ')}</p></>}
+          <h3 style={{fontSize:13,marginBottom:4}}>🌳 Grijeh: {sinDef.naziv}</h3>
+          {sortedWounds.length>0 && <>
+            <h3 style={{fontSize:13,margin:'12px 0 4px'}}>🌱 Rane</h3>
+            {sortedWounds.map(w=>{
+              const rd=DATA.smrtneRane.find(r=>r.id===w.id);
+              const comment=woundComments[w.id];
+              return <div key={w.id} style={{marginBottom:6,fontSize:12}}><strong>{rd?.naziv||w.naziv}</strong>: "{rd?.laz}"  {comment&&<em> — {comment}</em>}</div>;
+            })}
+          </>}
+          {allVows.length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>⛓️ Zavjeti</h3><p style={{fontSize:12,marginBottom:8}}>{allVows.join(' • ')}</p></>}
+          {allJudgments.length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>🪨 Osude</h3><p style={{fontSize:12,marginBottom:8}}>{allJudgments.join(' • ')}</p></>}
+          {tree.woundEvent && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>📖 Rana iz djetinjstva</h3><p style={{fontSize:12,marginBottom:12}}>{tree.woundEvent}</p></>}
+          <div style={{borderTop:'1px solid #ccc',margin:'16px 0'}}/>
+          <PrintTree tree={tree}/>
+          <div style={{borderTop:'1px solid #ccc',margin:'16px 0'}}/>
+          <h2 style={{fontFamily:'serif',fontSize:20,color:'#5C4030',marginBottom:12}}>✝ Molitve iscjeljenja</h2>
+        </div>
+
+        {/* ── SCREEN: Banner ── */}
+        <div className="p-banner">
+          <h2>✝ Molitve iscjeljenja</h2>
+          <p>Na temelju tvog Drveta {sinDef.naziv}</p>
+        </div>
+        <div className="pcard">
+          <div className="pcard-head">
+            <div className="fico" style={{background:`${sinDef.bojaBg}22`}}>{sinDef.ikona}</div>
+            <div className="pcard-title">Odricanje: {sinDef.naziv}</div>
+          </div>
+          <div className="ptext">{sinDef.molitvaOdricanja}</div>
+        </div>
+        {sortedWounds.map(w => {
+          const rd = DATA.smrtneRane.find(r=>r.id===w.id);
+          return rd ? (
+            <div key={w.id} className="pcard">
+              <div className="pcard-head">
+                <div className="fico">🌿</div>
+                <div className="pcard-title">Iscjeljenje: {rd.naziv}</div>
+              </div>
+              <div className="ptext">{rd.molitva}</div>
+            </div>
+          ) : null;
+        })}
+        {((tree.vows||[]).length > 0 || tree.customVow) && (
+          <div className="pcard">
+            <div className="pcard-head"><div className="fico">⛓️</div><div className="pcard-title">Odricanje od zavjeta</div></div>
+            <div className="ptext">{"Oče, priznajem da sam pokušavao/pokušavala spasiti sebe umjesto da se oslanjam na Tebe.\n\nU ime Isusovo odričem se unutarnjeg zavjeta da " + [...(tree.vows||[]),tree.customVow].filter(Boolean).join('; ') + ". Molim Te da me oslobodiš od ropstva ovog zavjeta. Hvala Ti. Amen."}</div>
+          </div>
+        )}
+        <div className="pcard" style={{background:'linear-gradient(135deg,#F2EAE0,#E8DDD0)',border:'1px solid var(--bark-l)'}}>
+          <div className="pcard-head"><div className="fico">🌳</div><div className="pcard-title">Znakovi iscjeljenja</div></div>
+          {sortedWounds.map(w => {
+            const z = DATA.znakovi.find(x=>x.rana===w.id);
+            return z ? (
+              <div key={w.id} style={{display:'flex',alignItems:'center',gap:7,padding:'6px 10px',marginBottom:5,background:'rgba(122,158,126,.12)',borderRadius:6,fontSize:13,color:'#2C5A30'}}>
+                <span style={{color:'var(--leaf)'}}>✓</span> {z.znak}
+              </div>
+            ) : null;
+          })}
+          <div style={{marginTop:9,padding:'7px 10px',background:'rgba(196,154,60,.12)',borderRadius:6,fontSize:13,fontStyle:'italic',color:'var(--mid)'}}>
+            Krepost: {sinDef.krepost.naziv} — {sinDef.krepost.opis}
+          </div>
+        </div>
+        <div style={{display:'flex',gap:10,justifyContent:'center',marginTop:22}}>
+          <button className="btn btn-s" onClick={onBack}><IBack/> Natrag</button>
+          <button className="btn btn-p" onClick={()=>window.print()}><IPrint/> Ispiši</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── MAIN APP ──
+function App() {
+  const [state, setState] = useState(load);
+  const [view, setView] = useState('welcome');
+  const [activeId, setActiveId] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [liveTree, setLiveTree] = useState(null);
+
+  useEffect(()=>{ save(state); }, [state]);
+  function showToast(m){ setToast(m); setTimeout(()=>setToast(null),3000); }
+  function getTree(id){ return state.trees.find(t=>t.id===id); }
+
+  function newTree(){
+    const id = Date.now().toString();
+    const createdAt = new Date().toLocaleString('hr-HR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const d = new Date();
+    const shortDate = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+    const ordinal = state.trees.length + 1;
+    const t = {id,sinId:null,name:`#${ordinal} ${shortDate}`,_autoName:true,_ordinal:ordinal,_shortDate:shortDate,fruits:[],wounds:[],vows:[],judgments:[],priorities:{},step:0,completed:false,createdAt};
+    setState(s=>({...s,trees:[...s.trees,t]}));
+    setActiveId(id); setLiveTree(t); setView('guided');
+  }
+
+  function updateTree(u){
+    setState(s=>({...s,trees:s.trees.map(t=>t.id===u.id?u:t)}));
+    setLiveTree(u);
+  }
+
+  function openTree(id){
+    const t=getTree(id); setActiveId(id); setLiveTree(t);
+    setView(t?.completed?'prayer':'guided');
+  }
+
+  function deleteTree(id){
+    if(!window.confirm('Obrisati ovo stablo? Ova radnja se ne može poništiti.')) return;
+    const remaining = state.trees.filter(t=>t.id!==id);
+    setState(s=>({...s,trees:remaining}));
+    if(activeId===id){ setActiveId(null); setLiveTree(null); setView(remaining.length>0?'trees':'welcome'); }
+    showToast('Stablo obrisano');
+  }
+
+  function finishTree(td){
+    const done={...td,completed:true};
+    updateTree(done); setView('prayer'); showToast('Stablo dovršeno ✓');
+    if(typeof gtag!=='undefined') gtag('event','stablo_dovrseno',{grijeh:td.sinId||'nepoznat',broj_plodova:(td.fruits?.length||0)+(td.customAIFruits?.length||0),broj_rana:td.wounds?.length||0});
+  }
+
+  const activeTree = activeId ? getTree(activeId) : null;
+  const displayTree = liveTree || activeTree;
+
+  // WELCOME
+  const Welcome = () => (
+    <div className="welcome">
+      <div className="w-title">Stablo<br/><em>života</em></div>
+      <p className="w-desc">Interaktivni duhovni dnevnik temeljen na knjizi <em>Be Healed</em> dr. Boba Schucthsa — s vodičem koji pomaže otkriti veze između grijeha i rana.</p>
+      <div className="w-verse">
+        <p>"Svako se stablo poznaje po svom rodu. Jer ne beru smokve s trnja, ni grožđa s kupine."</p>
+        <cite>— Luka 6,44</cite>
+      </div>
+      <div className="w-actions">
+        <button className="btn btn-p btn-lg" style={{justifyContent:'center'}} onClick={newTree}><IPlus/> Izgradi novo stablo</button>
+        {state.trees.length > 0 && (
+          <button className="btn btn-s btn-lg" style={{justifyContent:'center'}} onClick={()=>setView('trees')}>
+            Moja stabla ({state.trees.length})
+          </button>
+        )}
+      </div>
+    </div>
+  );
+
+  // TREES LIST
+  const TreesList = () => (
+    <div className="trees-wrap">
+      <div className="s-head"><h2>Moja stabla</h2><p>Jedno stablo za svaki smrtni grijeh koji prepoznaješ.</p></div>
+      <div className="tgrid">
+        {state.trees.map(t => {
+          const sd = DATA.smrtniGrijesi.find(s=>s.id===t.sinId);
+          const prog = t.completed?100:Math.round((t.step||0)/5*100);
+          return (
+            <div key={t.id} className="tcard" style={{'--cc':sd?.bojaBg||'var(--bark)'}} onClick={()=>openTree(t.id)}>
+              <button className="tcard-del" onClick={e=>{e.stopPropagation();deleteTree(t.id);}} title="Obriši stablo">×</button>
+              <div className="tcard-icon">{sd?.ikona||'🌳'}</div>
+              <div className="tcard-name">{sd?.naziv||'Novo stablo'}</div>
+              <div className="tcard-status">{t.completed?'✓ Dovršeno':`Korak ${(t.step||0)+1}/5`}</div>
+              {t.createdAt && <div style={{fontSize:10,color:'var(--light)',marginBottom:6}}>{t.createdAt}</div>}
+              <div className="tcard-prog"><div className="tcard-fill" style={{width:`${prog}%`,background:sd?.bojaBg||'var(--bark)'}}/></div>
+            </div>
+          );
+        })}
+        <div className="tcard tcard-add" onClick={newTree}><IPlus/><span>Novo stablo</span></div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="shell">
+      <header className="hdr">
+        <div className="hdr-brand" onClick={()=>setView('welcome')}>
+          <ITree/>
+          <div>
+            <div className="hdr-title">Stablo života</div>
+            {(view==='guided'||view==='prayer') && activeTree ? (
+              <div className="hdr-tree">
+                <input
+                  className="hdr-tree-name"
+                  value={activeTree.name || ''}
+                  placeholder={activeTree.createdAt?.split(' ')[0] || 'Ime stabla'}
+                  onChange={e=>updateTree({...activeTree,name:e.target.value,_autoName:false})}
+                  onClick={e=>e.stopPropagation()}
+                  title="Klikni za promjenu imena"
+                />
+                <button className="hdr-tree-del" onClick={e=>{e.stopPropagation();deleteTree(activeTree.id);}} title="Obriši stablo">×</button>
+              </div>
+            ) : (
+              <div className="hdr-sub">Healing the whole person</div>
+            )}
+          </div>
+        </div>
+        <div className="hdr-right">
+          {state.trees.length>0 && view!=='trees' && <button className="btn btn-g btn-sm" onClick={()=>setView('trees')}>Sva stabla</button>}
+          {(view==='guided'||view==='prayer') && <button className="btn btn-s btn-sm" onClick={newTree}><IPlus/> Novo</button>}
+        </div>
+      </header>
+
+      <div className="split">
+        <div className="left">
+          {view==='welcome' && <Welcome/>}
+          {view==='trees' && <TreesList/>}
+          {view==='guided' && activeTree && (
+            <GuidedFlow tree={activeTree} onUpdate={updateTree} onFinish={finishTree}
+              onBack={()=>setView(state.trees.length>1?'trees':'welcome')}/>
+          )}
+          {view==='prayer' && activeTree && (
+            <PrayerScreen tree={activeTree}
+              onBack={()=>{ updateTree({...activeTree,completed:false,step:4}); setView('guided'); }}/>
+          )}
+        </div>
+        <TreePanel tree={displayTree}/>
+      </div>
+
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
