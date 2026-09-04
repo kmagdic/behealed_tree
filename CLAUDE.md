@@ -1,65 +1,135 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Upute za Claude Code (claude.ai/code) pri radu na ovom repozitoriju.
 
-## What This Is
+## Što je ovo
 
-A spiritual self-reflection web app ("Drvo života") for Catholic users going through the *Be Healed* retreat by Dr. Bob Schuchts. The app is entirely in **Croatian**.
+Web aplikacija za duhovnu samorefleksiju — **"Stablo života"** — za katoličke korisnike koji prolaze duhovnu obnovu *Be Healed* (dr. Bob Schuchts, HWP Workbook, pogl. 3 "Facing Our Brokenness"). Aplikacija je **u cijelosti na hrvatskom**.
 
-**Live site:** https://ground-hollow-symw.here.now/
+Korisnik gradi svoje stablo: **smrtni grijeh = deblo**, **plodovi = krošnja**, **rane srca = korijenje**, **zavjeti i osude = duboko korijenje**.
 
-## File Overview
+**Objavljeno:** https://ground-hollow-symw.here.now/
 
-| File | Role |
-|------|------|
-| `index.html` | Active app — single-file React 18 + Babel inline, no build step |
-| `tree-data.js` | All spiritual content — sins, wounds, prayers, vows, judgments |
-| `tree-bg.jpg` | Tree illustration background image (used in right panel and print) |
-| `standalone/index.html` | Samostalna inačica — sve ugrađeno (podaci + slika kao base64) |
+## Datoteke
+
+| Datoteka | Uloga |
+|----------|-------|
+| `index.html` | Aktivna aplikacija — React 18 + Babel inline, bez build koraka |
+| `tree-data.js` | Sav duhovni sadržaj (`window.TREE_DATA`) |
+| `tree-bg.jpg` | Ilustracija stabla (desni panel i ispis) |
+| `standalone/index.html` | ⚠️ **ZASTARJELO** — sadrži staru shemu (`unutarnjeZavjete`). Ne koristiti dok se ne regenerira. |
 | `docs/` | Izvori: HWP Workbook, Be Healed, Be Transformed, fotografije hrvatske skripte |
 
-## Publish
+> **`docs/` je u `.gitignore` namjerno** — to su autorske knjige. GitHub Actions workflow objavljuje **cijeli repo** (`path: '.'`), pa bi commit tih datoteka značio njihovo javno objavljivanje. Nikada ih ne dodavati u git.
+
+## Objavljivanje
+
+Dva puta, oba aktivna:
 
 ```bash
+# GitHub Pages — automatski na svaki push u main (.github/workflows/static.yml)
+git push
+
+# here.now
 ~/.agents/skills/here-now/scripts/publish.sh "/Users/kmagdic/Projects/2026/behealed_tree" --slug ground-hollow-symw --client claude-code
 ```
 
-## Architecture
+## Provjera izmjena
 
-The HTML file is a single-file React app (React loaded via CDN, transpiled in-browser with Babel). Key patterns:
+Nema build koraka ni testova, pa se greška u JSX-u vidi tek u pregledniku — i to kao prazan ekran. **Uvijek provjeri prije nego proglasiš gotovim.**
 
-**State**: Single `state` object persisted to `localStorage` under key `drvo_v3`. Shape:
-```js
-{ trees: [TreeObject] }
+`@babel/core` nije u projektu (nema `package.json`), pa ga instaliraj u privremeni direktorij:
+
+```bash
+D=$(mktemp -d)
+npm --prefix "$D" install --silent @babel/core @babel/preset-react
+node -e "
+const fs=require('fs');
+const h=fs.readFileSync('index.html','utf8');
+fs.writeFileSync('$D/app.jsx', h.match(/<script type=\"text\/babel\">([\s\S]*?)<\/script>/)[1]);
+require('$D/node_modules/@babel/core').transformFileSync('$D/app.jsx',
+  {presets:[require('$D/node_modules/@babel/preset-react')]});
+console.log('OK');"
 ```
-One `TreeObject` per deadly sin a user works through (see README for full shape).
 
-**Layout**: Split-screen — left = form/content (`.left`), right = live tree visualization (`.tree-pane`, fixed 400px wide, hidden on mobile). On mobile the tree panel becomes a 260px strip below the form.
+Podaci:
 
-**Views / screens** rendered by the single root component based on `view` state:
-- `welcome` — entry point
-- `list` — grid of existing trees
-- `guided` — 5-step flow for building one tree (steps: Grijeh → Plodovi → Rane → Zavjeti → Pregled)
-- `prayer` — post-completion prayer screen with print support
+```bash
+node -e "global.window={};require('./tree-data.js');console.log('OK')"
+```
 
-**5-step guided flow** (`step` 0–4 on the tree object):
-1. Sin selection (grid of 7 cards)
-2. Fruits — free textarea + predefined chips (prvih 6, pa `+ Još N`)
-3. Wounds — free textarea + predefined wound chips + per-wound lie text + comment textarea
-4. Vows & Judgments — textareas + chip lists + childhood wound textarea
-5. Summary — read-only view of all entered data
+Ispis i prelamanje PDF-a:
 
-**Live tree panel**: Labels (`.lbl`) positioned absolutely over `tree-bg.jpg`. Fruits go in crown area (top 11–26%), sin in trunk (~57%), wounds in roots (73–89%), vows/judgments in deep roots (91–94%). Labels support 3 priority sizes (p1/p2/p3) and show a tooltip on click for truncated text.
+```bash
+python3 -m http.server 8901 &
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+  --virtual-time-budget=15000 --no-pdf-header-footer \
+  --print-to-pdf=/tmp/ispis.pdf "http://localhost:8901/index.html"
+```
 
-**Priority system**: Each selected chip/wound can be cycled p1→p2→p3→p1 via a toggle button. Priority affects label size in the tree panel and sort order in the summary.
+Za korak 4 i molitveni ekran treba stablo u `localStorage` (ključ `drvo_v3`). Zasij ga kroz konzolu pa klikni karticu stabla — headless auto-klik zna zatajiti, pravi preglednik je pouzdaniji.
 
-**Delete tree**: Each tree card shows a × button on hover. Clicking it calls `deleteTree(id)` which asks for confirmation via `window.confirm`, removes the tree from state, and shows a toast.
+## Arhitektura
 
-## Data (`tree-data.js`)
+Jedna HTML datoteka: React preko CDN-a (unpkg, s SRI hashevima), Babel transpilira u pregledniku. Google Analytics `G-WX9RNFYH86`.
 
-Sadržaj je usklađen sa **službenim hrvatskim prijevodom skripte** (Dodatak A — rane, Dodatak B — grijesi) i s HWP Workbookom, pogl. 3. Izvori su u `docs/`.
+**Stanje**: jedan objekt u `localStorage` pod ključem `drvo_v3`, oblika `{ trees: [TreeObject] }` — jedno stablo po grijehu.
 
-**Službena terminologija** (ID-evi su namjerno ostali stari radi spremljenih podataka u `localStorage`):
+```js
+{
+  id, createdAt,                    // "dd.mm.yyyy hh:mm"
+  name, _autoName, _ordinal, _shortDate,
+  sinId,                            // npr. "ljutnja"
+  fruits: [{id, naziv}],
+  customFruitsText,                 // vlastiti plodovi, odvojeni \n
+  wounds: [{id, naziv}],
+  woundReflection,                  // slobodni tekst, može biti višeredan
+  woundComments: {[woundId]: string},
+  vows: [string],    customVow,
+  judgments: [string], customJudgment,
+  godImages: [string],              // nazivi krivih slika Boga
+  woundEvent,                       // rana iz djetinjstva, može biti višeredna
+  priorities: {[id]: 1|2|3},
+  step: 0-4, completed
+}
+```
+
+**Raspored**: lijevo forma (`.left`), desno živa vizualizacija (`.tree-pane`, 400px, skriveno na mobitelu — ondje postaje traka od 260px ispod forme).
+
+**Prikazi** (`view` u `App`): `welcome` → `list` → `guided` → `prayer`.
+
+**Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `App` + pomoćne `slugHR`, `Redovi`, `getPriority`, `cyclePriority`.
+
+**`CONFIG`** (unutar `EDITMODE` markera): `showKriveSlikeBoga` — prekidač za cijelu sekciju krivih slika Boga.
+
+### Tijek u 5 koraka (`step` 0–4)
+
+1. **Grijeh** — mreža od 7 kartica
+2. **Plodovi** — slobodni textarea + chipovi (prvih 6, pa `+ Još N plodova s popisa`)
+3. **Rane** — slobodni textarea + 3 predložene rane za taj grijeh + `+ Ostale rane` + po rani laž i komentar
+4. **Zavjeti i osude** — zavjeti, gorke osude, *(sklopljeno)* krive slike Boga, rana iz djetinjstva
+5. **Pregled** — sve uneseno, sortirano po prioritetu
+
+**Živi panel**: labeli (`.lbl`) apsolutno pozicionirani nad `tree-bg.jpg` — plodovi u krošnji (11–26%), grijeh u deblu (~57%), rane u korijenju (73–89%), zavjeti/osude duboko (91–94%). Tri veličine po prioritetu; klik na skraćeni tekst otvara tooltip.
+
+**Prioriteti**: chip se ciklički mijenja p1→p2→p3→p1; utječe na veličinu labela i redoslijed u pregledu.
+
+**Brisanje stabla**: × na kartici → `deleteTree(id)` → `window.confirm` → toast.
+
+## Podaci (`tree-data.js`)
+
+Sadržaj je usklađen sa **službenim hrvatskim prijevodom skripte** (Dodatak A — rane, Dodatak B — grijesi) i s HWP Workbookom pogl. 3. Izvori su u `docs/`.
+
+### Lanac koji model utjelovljuje
+
+```
+rana → laž → unutarnji zavjet + gorka osuda
+     → bezbožno oslanjanje na sebe → smrtni grijeh → plodovi
+```
+
+### Službena terminologija
+
+ID-evi su **namjerno ostali stari** radi spremljenih podataka u `localStorage`. Mijenjaj samo `naziv`, nikad `id`.
 
 | ID | Prikazani naziv |
 |----|-----------------|
@@ -70,35 +140,66 @@ Sadržaj je usklađen sa **službenim hrvatskim prijevodom skripte** (Dodatak A 
 | `sramota` | Sram |
 | `bespomoćnost` | Nemoć |
 
-`window.TREE_DATA` sadrži:
+### `window.TREE_DATA`
 
-- `deblo` — "Bezbožno oslanjanje na sebe", zajednički korijen svih sedam grijeha
-- `smrtneRane[]` — 7 rana; uz `laz`/`molitva` još i `lazi` + `istina` (razdvojeno kako je u skripti), `sakrament`, `identitet`, `poslanje` (HWP str. 71) i `vodiKaGrijesima[]`
-- `smrtniGrijesi[]` — `rane[]` (ID-evi rana), `plodovi[]` gdje svaki plod ima `izRana[]`, `krepost`, `molitvaOdricanja`
-- `unutarnjiZavjeti[]` — `{id, tekst, rane[], grijesi[], zastita, zamjena}` *(prije: `unutarnjeZavjete`, ravna lista stringova)*
-- `gorkeOsude[]` — `{id, tekst, rane[], oprastam, osudio, premaBogu, istina}` *(prije: `unutarnjeOsude`)*
-  - `oprastam` je **dativ** ("opraštam ocu"), `osudio` je **akuzativ** ("osudio sam oca") — oba trebaju jer hrvatski traži različite padeže
-- `kriveSlikeBoga[]` — laži o Bogu. **Mehanizam** je doslovno Schuchtsov (Be Healed, pogl. 1: rana od roditelja → tiha osuda → projekcija na Boga), ali **popis pojedinih slika nije njegov**. Oznake: `izvor:"schuchts"` (2 — doslovno njegove riječi), `izvor:"izvedeno"` (2), `izvor:"tipologija"` (10 — vanjska katehetska tipologija). **`izvor` se nikad ne prikazuje korisniku.** Sekcija je u koraku 4 **sklopljena** (collapse) i dodatno se može posve ugasiti s `CONFIG.showKriveSlikeBoga`.
-- `raneDjetinjstva[]` — `tip:"A"` (uskrata ljubavi) / `tip:"B"` (povreda granica), prema Be Healed pogl. 7
+- **`deblo`** — "Bezbožno oslanjanje na sebe", zajednički korijen svih sedam grijeha
+- **`smrtneRane[]`** — 7 rana. Uz `laz` (kratka, za labele) i `molitva` još i `lazi` + `istina` razdvojeno kako je u skripti, te `sakrament`, `identitet`, `poslanje` (HWP str. 71) i `vodiKaGrijesima[]`
+- **`smrtniGrijesi[]`** — `rane[]` (ID-evi, razriješe se u objekte pri učitavanju), `plodovi[]` gdje svaki plod ima `izRana[]`, `krepost`, `molitvaOdricanja`, `korijen`
+- **`unutarnjiZavjeti[]`** — `{id, tekst, rane[], grijesi[], zastita, zamjena}`
+- **`gorkeOsude[]`** — `{id, tekst, rane[], oprastam, osudio, premaBogu, istina}`
+  - `oprastam` je **dativ** ("opraštam ocu"), `osudio` je **akuzativ** ("osudio sam oca") — hrvatski traži oba padeža
+  - polja `istina` moraju se nastavljati na *"Proglašavam istinu da…"* → piši `"si Ti Otac koji…"`, ne `"Ti si Otac koji…"`
+- **`kriveSlikeBoga[]`** — laži o Bogu
+- **`raneDjetinjstva[]`** — `tip:"A"` (uskrata ljubavi) / `tip:"B"` (povreda granica), prema Be Healed pogl. 7
 
-**Izvedeni indeksi** (grade se pri učitavanju): `ranaById`, `grijehById`, `zavjetiPoRani`, `osudePoRani`, `znakovi` (kompatibilnost).
+### Krive slike Boga — oprez s atribucijom
 
-**Graditelji molitava**: `molitvaZavjeta(z)`, `molitvaZavjetaSkupno(list)`, `molitvaOsude(o)`, `molitvaOsudeSkupno(list)`, `molitvaSlikeBoga(k)`. Skupne verzije izgovaraju dugi uvod **jednom**, pa nabroje stavke — inače se uvod ponavlja na svakoj kartici.
+**Mehanizam** je doslovno Schuchtsov (Be Healed, pogl. 1: rana od roditelja → tiha osuda → nesvjesna projekcija na Boga). **Popis pojedinih slika nije njegov.** Zato polje `izvor`:
 
-**Personalizacija koraka 4**: prijedlozi zavjeta, osuda, krivih slika Boga i rana iz djetinjstva istaknuti su ako im `rane[]` presijeca rane odabrane u koraku 3; ostali su prigušeni, ali odabirljivi.
+| `izvor` | Broj | Značenje |
+|---------|------|----------|
+| `"schuchts"` | 2 | doslovno njegove riječi |
+| `"izvedeno"` | 2 | izvedeno iz teksta, on to tako ne naziva |
+| `"tipologija"` | 10 | vanjska katehetska tipologija |
 
-**Višeredna slobodna polja** (`woundEvent`, `woundReflection`): HTML sažima prijelaze retka, pa se renderiraju kroz `<Redovi text=… />` koji svaki redak stavlja u svoj blok — inače se sve slijepi u jednu liniju.
+`izvor` se **nikada ne prikazuje korisniku** — zbunilo bi ga. Sekcija je u koraku 4 sklopljena (collapse) i gasi se s `CONFIG.showKriveSlikeBoga`.
 
-**Ime PDF-a**: `ispisi()` u `PrayerScreen` postavi `document.title` na `Stablo-<Grijeh>-<datum stabla>` prije `window.print()` pa ga vrati. Preglednik uzima naslov kao zadano ime datoteke. `slugHR()` miče hrvatsku dijakritiku.
+### Izvedeni indeksi
 
-**Postupno otvaranje**: nijedna lista se ne prikazuje cijela odjednom. Plodovi (korak 2) i sve liste u koraku 4 prikazuju prvih `PRIKAZI` (6) pa gumb `+ Još N`. Kako su liste prethodno sortirane po relevantnosti za odabrane rane, prvih 6 su najkorisniji prijedlozi. Već odabrane stavke ostaju vidljive i kad su izvan reza. Pomoćnici: `dio(kljuc, list, jeOdabran)` i `<JosGumb kljuc ukupno/>`, stanje u `vidiSve`.
+Grade se jednom pri učitavanju: `ranaById`, `grijehById`, `zavjetiPoRani`, `osudePoRani`, `znakovi` (kompatibilnost), `migracijaPlodova`.
 
-## Design Tokens
+### Graditelji molitava
 
-All CSS custom properties defined on `:root`:
+`molitvaZavjeta(z)`, `molitvaZavjetaSkupno(list)`, `molitvaOsude(o)`, `molitvaOsudeSkupno(list)`, `molitvaSlikeBoga(k)`.
+
+Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačne ga ponavljaju na svakoj kartici, što u ispisu izgleda loše. Molitveni ekran koristi skupne.
+
+## Konvencije koje se lako prekrše
+
+- **Postupno otvaranje**: nijedna lista se ne prikazuje cijela odjednom. Plodovi i sve liste u koraku 4 daju prvih `PRIKAZI` (6) pa `+ Još N`. Liste su prethodno sortirane po relevantnosti za odabrane rane, pa je prvih 6 ujedno najkorisnije. Već odabrane stavke ostaju vidljive i izvan reza. Pomoćnici: `dio(kljuc, list, jeOdabran)`, `<JosGumb kljuc ukupno/>`, stanje u `vidiSve`.
+
+- **Personalizacija koraka 4**: prijedlozi zavjeta, osuda, krivih slika Boga i rana iz djetinjstva istaknuti su ako im `rane[]` presijeca rane odabrane u koraku 3; ostali su prigušeni (`opacity .55`) ali odabirljivi. Oznaka `◂ <Rana>` pokazuje vezu.
+
+- **Višeredna slobodna polja** (`woundEvent`, `woundReflection`): HTML sažima prijelaze retka, pa ih renderiraj kroz `<Redovi text=… />`. Bez toga se svi retci slijepe u jednu liniju.
+
+- **Ime PDF-a**: `ispisi()` u `PrayerScreen` postavi `document.title` prije `window.print()` pa ga vrati. Preglednik uzima naslov kao zadano ime datoteke. Format je `Stablo života - <ime stabla>`, npr. `Stablo života - #3 Srditost 04.09.2026`. Koristi `tree.name` jer ga korisnik može preimenovati u headeru; `imeDatoteke()` miče samo znakove koje datotečni sustavi ne dopuštaju, dijakritika ostaje.
+
+- **Prelamanje ispisa**: `.pcard` ima `break-inside: avoid`, naslovi `break-after: avoid`. Nakon zahvata u molitveni ekran uvijek pregledaj generirani PDF — kartice se ne smiju lomiti preko stranica.
+
+- **Ton poticaja u poljima**: topao i pozivajući, nikad zapovjedan. Obrazac je *"Napiši… npr. …"* s trotočjem, a poziv na konkretnost dolazi kao blaga ponuda (*"Ako ti dođe neka konkretna situacija, slobodno je opiši"*), ne kao uputa (*"piši konkretno: kad, s kim"*). Ovo je duhovni dnevnik — korisnik piše o vlastitoj boli.
+
+- **Podloga slike stabla**: `tree-bg.jpg` ima podlogu `#F8F8F8`, a `.tree-pane` je topla krem `#F2EDE6`. Bez `mix-blend-mode: multiply` na `.tree-bg` vidi se pravokutni šav ondje gdje slika staje. Ne mijenjaj paletu da se to riješi — multiply stapa bijelo, a crtež ostaje.
+
+- **Nema AI integracije.** `window.claude.complete()` je uklonjen jer ne postoji ni na objavljenoj stranici — gumb je vodio u prazno. Ako se ikad vraća, mora ići preko serverske rute i imati vidljivo stanje greške.
+
+## Dizajnerski tokeni
+
+CSS custom properties na `:root`:
+
 ```
 --cream: #F7F3EE   --warm: #FDFAF6    --bark: #8B6B4A   --bark-l: #C4A882
 --bark-d: #5C4030  --leaf: #7A9E7E    --root: #B0A090   --txt: #2C1F14
 --mid: #6B5040     --gold: #C49A3C    --gold-l: #E8C97A
 ```
-Fonts: **Cormorant Garamond** (serif, headings/titles) and **Inter** (body/UI), both from Google Fonts.
+
+Pisma: **Cormorant Garamond** (serif, naslovi) i **Inter** (tekst/UI), oba s Google Fonts.

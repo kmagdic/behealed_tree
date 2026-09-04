@@ -79,6 +79,10 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
   position:absolute;inset:0;
   background-image:url('tree-bg.jpg');
   background-size:contain;background-repeat:no-repeat;background-position:center 52%;
+  /* Podloga slike je #F8F8F8 (hladno bijela), panel je topla krem — bez ovoga
+     se vidi pravokutni šav ondje gdje slika staje. Multiply stapa bijelo
+     u boju panela, a crtež stabla ostaje. */
+  mix-blend-mode:multiply;
   transition:opacity .7s ease;
 }
 .tree-pane-inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
@@ -339,13 +343,13 @@ function cyclePriority(priorities, id) {
 }
 
 // Ime datoteke: preglednik uzima document.title kao zadano ime PDF-a.
-// Dijakritiku mičemo da ime ostane čitljivo na svim sustavima.
-function slugHR(t) {
+// Naziv ostaje čitljiv kao u headeru; mičemo samo znakove koje
+// datotečni sustavi ne dopuštaju.
+function imeDatoteke(t) {
   return String(t || '')
-    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^A-Za-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(/[\/\\:*?"<>|]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 // Višeredni tekst: HTML sažima prijelaze retka u razmak, pa bi se sve slijepilo
@@ -585,7 +589,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
 
           {/* PRIMARY: free text */}
           <div className="field">
-            <textarea rows={3} placeholder="Napiši što primjećuješ u sebi... npr. povlačim se kad sam povrijeđen/a, koristim sarkazam, kontroliram druge..."
+            <textarea rows={3} placeholder="Napiši što primjećuješ u sebi... npr. povlačim se kad me netko ispravi pred drugima, koristim sarkazam, kontroliram druge... Ako ti dođe neka konkretna situacija, slobodno je opiši."
               value={data.customFruitsText||''}
               onChange={e => patch({customFruitsText: e.target.value})}
               autoFocus/>
@@ -659,10 +663,12 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
           <div className="eyebrow">Korak 3 — Rane (korijenje)</div>
           <h2 className="stitle">Koje rane kriju se iza ovog grijeha?</h2>
           <div className="scripture"><p>"Kada Bog gleda grijeh, vidi bol u nama."</p><cite>— Sveta Juliana iz Norwicha</cite></div>
+          <p className="sbody">Ako možeš, sjeti se <strong>jednog konkretnog trenutka</strong> — iscjeljenje obično dolazi
+          kroz određeno sjećanje, a ne kroz opći dojam. Ali piši onoliko koliko ti je u ovom trenutku moguće.</p>
 
           {/* PRIMARY: free reflection */}
           <div className="field">
-            <textarea rows={3} placeholder="Opiši svoju ranu... Koji bolan događaj ili iskustvo stoji iza ovog obrasca? Što si tada povjerovao/la o sebi?"
+            <textarea rows={3} placeholder="Opiši svoju ranu... Koji bolan događaj ili iskustvo stoji iza ovog obrasca? Ako se sjećaš jednog određenog trenutka, počni od njega. Što si tada povjerovao/la o sebi?"
               value={data.woundReflection||''}
               onChange={e => patch({woundReflection: e.target.value})}
               autoFocus/>
@@ -719,7 +725,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                     {rd && <div className="wlie-t" style={{marginBottom:6}}>"{rd.laz}"</div>}
                     <textarea
                       rows={2}
-                      placeholder="Dodaj svoj komentar uz ovu ranu (neobavezno)..."
+                      placeholder="Dodaj svoj komentar uz ovu ranu, npr. baš konkretnu situaciju (neobavezno)..."
                       style={{fontSize:12,marginTop:4,borderRadius:6,padding:'6px 8px'}}
                       value={(data.woundComments||{})[w.id]||''}
                       onChange={e => patch({woundComments:{...(data.woundComments||{}), [w.id]: e.target.value}})}
@@ -785,7 +791,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
 
           <div className="suggest-tag" style={{color:'var(--gold)'}}>⛓ Unutarnji zavjeti</div>
           <div className="field">
-            <textarea rows={2} placeholder="Napiši vlastiti zavjet... npr. 'Nikad neću pokazati slabost', 'Uvijek ću se sam/a pobrinuti'..."
+            <textarea rows={2} placeholder="Napiši vlastiti zavjet... npr. 'Nikad neću pokazati slabost', 'Uvijek ću se sam/a pobrinuti'... Možda se sjetiš i trenutka u kojem si ga donio/donijela."
               value={data.customVow||''} onChange={e=>patch({customVow:e.target.value})}/>
           </div>
           {!showVowList
@@ -811,7 +817,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
 
           <div className="suggest-tag" style={{color:'var(--root)'}}>🪨 Gorke osude</div>
           <div className="field">
-            <textarea rows={2} placeholder="Napiši vlastitu osudu... npr. 'Muškarci su sebični', 'Nikad ne mogu dobiti što trebam'..."
+            <textarea rows={2} placeholder="Napiši vlastitu osudu... npr. 'Muškarci su sebični', 'Nikad ne mogu dobiti što trebam'... Možda se sjetiš i kome si je u sebi izrekao/izrekla."
               value={data.customJudgment||''} onChange={e=>patch({customJudgment:e.target.value})}/>
           </div>
           {!showJudgeList
@@ -871,7 +877,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
 
           <div className="field">
             <label className="flabel">Rana iz djetinjstva (neobavezno)</label>
-            <textarea rows={4} placeholder="Opiši događaj u kojemu si bio/bila ranjen/a. Što se dogodilo?"
+            <textarea rows={4} placeholder="Opiši događaj u kojemu si bio/bila ranjen/a. Što se dogodilo? Koliko si tada imao/imala godina, tko je bio uz tebe..."
               value={data.woundEvent||''} onChange={e=>patch({woundEvent:e.target.value})}/>
           </div>
           {!showChildList
@@ -1081,11 +1087,14 @@ function PrintTree({ tree }) {
 function PrayerScreen({ tree, onBack }) {
   const sinDef = DATA.smrtniGrijesi.find(s=>s.id===tree.sinId);
 
-  // Ime PDF-a: Stablo-<Grijeh>-<datum>  (preglednik ga uzima iz document.title)
+  // Ime PDF-a: "Stablo života - #3 Srditost 04.09.2026"
+  // Preglednik uzima document.title kao zadano ime datoteke.
+  // Koristimo tree.name jer ga korisnik može preimenovati u headeru.
   function ispisi() {
     const naslovPrije = document.title;
-    const datum = String(tree.createdAt || '').split(' ')[0].replace(/\./g, '-').replace(/-+$/, '');
-    document.title = ['Stablo', slugHR(sinDef?.naziv), datum].filter(Boolean).join('-');
+    const ime = (tree.name || '').trim()
+      || `#${tree._ordinal || 1} ${sinDef?.naziv || ''} ${tree._shortDate || String(tree.createdAt || '').split(' ')[0]}`;
+    document.title = imeDatoteke('Stablo života - ' + ime);
     window.print();
     setTimeout(() => { document.title = naslovPrije; }, 1500);
   }
