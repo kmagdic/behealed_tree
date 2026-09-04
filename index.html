@@ -262,32 +262,6 @@ textarea::placeholder,input::placeholder{color:var(--light);}
 .wlie-t{font-style:italic;font-size:12px;color:var(--mid);line-height:1.5;}
 
 /* AI PANEL */
-.ai-panel{
-  display:flex;align-items:flex-start;gap:10px;
-  background:rgba(196,154,60,.07);
-  border:1px solid rgba(196,154,60,.25);
-  border-radius:10px;padding:11px 13px;
-  margin-bottom:14px;
-}
-.ai-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
-.ai-body{flex:1;min-width:0;}
-.ai-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
-.ai-loading{font-size:12px;color:var(--light);font-style:italic;}
-.ai-dots span{display:inline-block;animation:blink 1.2s infinite;}
-.ai-dots span:nth-child(2){animation-delay:.2s;}
-.ai-dots span:nth-child(3){animation-delay:.4s;}
-@keyframes blink{0%,80%,100%{opacity:.2;}40%{opacity:1;}}
-.ai-recs{display:flex;flex-wrap:wrap;gap:6px;}
-.ai-chip{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:5px 11px;border-radius:20px;
-  background:white;border:1.5px solid var(--gold);
-  font-size:12px;color:var(--bark-d);
-  cursor:pointer;transition:all .18s;
-}
-.ai-chip:hover{background:var(--gold);color:white;}
-.ai-chip::before{content:'✦';font-size:8px;color:var(--gold);}
-.ai-chip:hover::before{color:white;}
 
 /* SUMMARY */
 .sum-block{margin-bottom:20px;}
@@ -309,7 +283,18 @@ textarea::placeholder,input::placeholder{color:var(--light);}
 @keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 @keyframes tOut{to{opacity:0;}}
 
-@media print{.hdr,.step-bar,.sfooter,.hdr-right,.tree-pane{display:none!important;}.split{display:block;}.left{overflow:visible;}.pcard{break-inside:avoid;}}
+@media print{
+  @page{margin:14mm 15mm;}
+  .hdr,.step-bar,.sfooter,.hdr-right,.tree-pane,.btn,.p-banner{display:none!important;}
+  .split{display:block;}
+  .left{overflow:visible!important;height:auto!important;padding:0!important;}
+  html,body{background:#fff!important;}
+  .pcard{break-inside:avoid;page-break-inside:avoid;box-shadow:none!important;border:1px solid #DDD2C4!important;margin-bottom:10px;}
+  .pcard-head{break-after:avoid;page-break-after:avoid;}
+  .ptext{orphans:3;widows:3;font-size:11.5pt;line-height:1.55;}
+  .p-banner{break-after:avoid;page-break-after:avoid;}
+  h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+}
 </style>
 </head>
 <body>
@@ -321,7 +306,7 @@ const SK = 'drvo_v3';
 
 // ── CONFIG ── uredi po potrebi
 const CONFIG = /*EDITMODE-BEGIN*/{
-  "showAISuggestions": true
+  "showKriveSlikeBoga": true
 }/*EDITMODE-END*/;
 
 function load() { try { return JSON.parse(localStorage.getItem(SK)) || { trees: [] }; } catch { return { trees: [] }; } }
@@ -353,82 +338,23 @@ function cyclePriority(priorities, id) {
   return { ...priorities, [id]: next };
 }
 
-// ── AI PANEL ──
-function AIInsight({ sin, fruits, wounds, mode, onAddFruit, onAddWound }) {
-  const [status, setStatus] = useState('idle');
-  const [recs, setRecs] = useState([]);
-  const hasTriggered = useRef(false);
-
-  const sinDef = DATA.smrtniGrijesi.find(s => s.id === sin);
-
-  useEffect(() => {
-    if (!sin) return;
-    if (mode === 'wounds' && fruits.length === 0) return;
-    if (mode === 'fruits' && !sin) return;
-    if (hasTriggered.current) return;
-    hasTriggered.current = true;
-    runAI();
-  }, [sin, fruits.length]);
-
-  async function runAI() {
-    setStatus('loading');
-    try {
-      const fruitNames = fruits.map(f => f.naziv).join(', ');
-
-      let prompt = '';
-      if (mode === 'fruits') {
-        prompt = `Predloži 4 kratka, konkretna ploda/manifestacije grijeha "${sinDef?.naziv}" koji NISU na ovoj listi: ${sinDef?.plodovi.map(p=>p.naziv).join(', ')}.
-VAŽNO: Odgovori ISKLJUČIVO na hrvatskom latiničnom pismu. Nikada ne koristi ćirilicu ni drugi jezik.
-Odgovori SAMO s popisom, svaki odvojen |, bez objašnjenja. Npr: Naziv1 | Naziv2 | Naziv3 | Naziv4`;
-      } else {
-        prompt = `Osoba s grijehom "${sinDef?.naziv}" ima ove plodove: ${fruitNames}.
-Predloži 3 rane srca (od: Napuštenost, Sramota, Strah, Bespomoćnost, Odbačenost, Beznađe, Zbunjenost) koje su NAJVJEROJATNIJE u pozadini upravo ovih plodova.
-VAŽNO: Odgovori ISKLJUČIVO na hrvatskom latiničnom pismu. Nikada ne koristi ćirilicu ni drugi jezik.
-Odgovori SAMO s imenima rana odvojenima |, bez objašnjenja. Npr: Strah | Odbačenost | Sramota`;
-      }
-
-      const response = await window.claude.complete({
-        messages: [{ role: 'user', content: prompt }]
-      });
-
-      const recItems = response.split('|').map(s => s.trim()).filter(Boolean);
-      setRecs(recItems);
-      setStatus('done');
-    } catch (e) {
-      setStatus('error');
-    }
-  }
-
-  if (!sin) return null;
-  if (status === 'error') return null;
-
-  return (
-    <div className="ai-panel">
-      <div className="ai-icon">✦</div>
-      <div className="ai-body">
-        <div className="ai-label">
-          {mode === 'fruits' ? 'Dodatni prijedlozi' : 'Predložene rane'}
-        </div>
-        {status === 'loading' && (
-          <div className="ai-loading">
-            učitavam<div className="ai-dots"><span>•</span><span>•</span><span>•</span></div>
-          </div>
-        )}
-        {status === 'done' && recs.length > 0 && (
-          <div className="ai-recs">
-            {recs.map((r, i) => (
-              <div key={i} className="ai-chip" onClick={() => mode === 'fruits' ? onAddFruit(r) : onAddWound(r)}>
-                {r}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+// Ime datoteke: preglednik uzima document.title kao zadano ime PDF-a.
+// Dijakritiku mičemo da ime ostane čitljivo na svim sustavima.
+function slugHR(t) {
+  return String(t || '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
-// ── CLICKABLE LABEL ──
+// Višeredni tekst: HTML sažima prijelaze retka u razmak, pa bi se sve slijepilo
+// u jedan red. Svaki redak dobiva svoj blok.
+function Redovi({ text, style }) {
+  const redci = String(text || '').split('\n').map(r => r.trim()).filter(Boolean);
+  return <>{redci.map((r, i) => <div key={i} style={style}>{r}</div>)}</>;
+}
+
 function TreeLabel({ naziv, fullText, cls, style }) {
   const [tip, setTip] = useState(false);
   const truncated = naziv.length > 14;
@@ -573,12 +499,15 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
   const [step, setStep] = useState(tree.step || 0);
   const [data, setData] = useState(tree);
   const [showSuggested, setShowSuggested] = useState(false);
-  const [showAI, setShowAI] = useState(false);
+  const [showAllFruits, setShowAllFruits] = useState(false);
   const [showSuggestedW, setShowSuggestedW] = useState(false);
   const [showAllW, setShowAllW] = useState(false);
-  const [showAIW, setShowAIW] = useState(false);
   const [showVowList, setShowVowList] = useState(false);
   const [showJudgeList, setShowJudgeList] = useState(false);
+  const [showGodList, setShowGodList] = useState(false);
+  const [showChildList, setShowChildList] = useState(false);
+  const [vidiSve, setVidiSve] = useState({});
+  const PRIKAZI = 6;
 
   const sinDef = DATA.smrtniGrijesi.find(s => s.id === data.sinId);
 
@@ -635,7 +564,6 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
   if (step === 1 && sinDef) {
     const sel = data.fruits || [];
     const priorities = data.priorities || {};
-    const customAI = data.customAIFruits || [];
 
     function toggleFruit(id, name) {
       const exists = sel.find(x => x.id === id);
@@ -646,15 +574,6 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
       }
     }
 
-    function addAIFruit(naziv) {
-      const id = 'ai_' + naziv.replace(/\s+/g,'_').toLowerCase();
-      if (!sel.find(x => x.id === id)) {
-        patch({
-          fruits: [...sel, { id, naziv }],
-          customAIFruits: [...(data.customAIFruits||[]), { id, naziv }]
-        });
-      }
-    }
 
     return (
       <div className="guided">
@@ -683,7 +602,10 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             <div style={{animation:'fadeIn .3s ease'}}>
               <div className="suggest-tag">✦ Česti plodovi — {sinDef.naziv}</div>
               <div className="chips">
-                {sinDef.plodovi.map(f => (
+                {(showAllFruits
+                    ? sinDef.plodovi
+                    : sinDef.plodovi.filter((f,i) => i < 6 || sel.find(x=>x.id===f.id))
+                 ).map(f => (
                   <PChip key={f.id} id={f.id} label={f.naziv}
                     selected={!!sel.find(x=>x.id===f.id)}
                     suggested={true}
@@ -693,36 +615,13 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                   />
                 ))}
               </div>
-
-              {/* AI extra suggestions */}
-              {CONFIG.showAISuggestions && !showAI && (
-                <button className="btn btn-g btn-sm" style={{marginBottom:10,fontSize:11}} onClick={()=>setShowAI(true)}>
-                  + Još prijedloga
+              {!showAllFruits && sinDef.plodovi.length > 6 && (
+                <button className="btn btn-g btn-sm" style={{marginBottom:10,marginTop:2,fontSize:11}}
+                  onClick={()=>setShowAllFruits(true)}>
+                  + Još {sinDef.plodovi.length - 6} plodova s popisa
                 </button>
               )}
-              {CONFIG.showAISuggestions && showAI && (
-                <div style={{animation:'fadeIn .3s ease'}}>
-                  <AIInsight
-                    sin={data.sinId} fruits={sel} wounds={[]}
-                    mode="fruits"
-                    onAddFruit={addAIFruit}
-                    onAddWound={() => {}}
-                  />
-                  {customAI.length > 0 && (
-                    <div className="chips" style={{marginTop:4}}>
-                      {customAI.map(f => (
-                        <PChip key={f.id} id={f.id} label={f.naziv}
-                          selected={!!sel.find(x=>x.id===f.id)}
-                          suggested={true}
-                          priority={getPriority(priorities, f.id)}
-                          onToggle={(id) => toggleFruit(id, f.naziv)}
-                          onPriority={setPriority}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+
             </div>
           )}
 
@@ -752,18 +651,6 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
       else patch({ wounds: [...sel, rd || { id, naziv: name }] });
     }
 
-    function addAIWound(naziv) {
-      const match = DATA.smrtneRane.find(r =>
-        r.naziv.toLowerCase().includes(naziv.toLowerCase()) ||
-        naziv.toLowerCase().includes(r.naziv.toLowerCase())
-      );
-      if (match) {
-        if (!sel.find(x => x.id === match.id)) patch({ wounds: [...sel, match] });
-      } else {
-        const id = 'ai_w_' + naziv.replace(/\s+/g,'_').toLowerCase();
-        patch({ wounds: [...sel, { id, naziv }], customAIWounds: [...(data.customAIWounds||[]), { id, naziv }] });
-      }
-    }
 
     return (
       <div className="guided">
@@ -819,21 +706,6 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             </div>
           )}
 
-          {/* AI suggestions */}
-          {CONFIG.showAISuggestions && !showAIW && (data.fruits||[]).length > 0 && (
-            <button className="btn btn-g btn-sm" style={{marginBottom:10,fontSize:11}} onClick={()=>setShowAIW(true)}>
-              + Prijedlozi na temelju mojih plodova
-            </button>
-          )}
-          {CONFIG.showAISuggestions && showAIW && (
-            <div style={{animation:'fadeIn .3s ease'}}>
-              <AIInsight
-                sin={data.sinId} fruits={data.fruits||[]} wounds={sel}
-                mode="wounds" onAddFruit={() => {}} onAddWound={addAIWound}
-              />
-            </div>
-          )}
-
           {/* Selected wounds with lie + comment */}
           {sel.length > 0 && (
             <div className="wlies" style={{marginTop:14}}>
@@ -872,6 +744,32 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
     const sv = data.vows||[], sj = data.judgments||[];
     function tv(v){ patch({vows: sv.includes(v)?sv.filter(x=>x!==v):[...sv,v]}); }
     function tj(j){ patch({judgments: sj.includes(j)?sj.filter(x=>x!==j):[...sj,j]}); }
+    // Rane koje je korisnik odabrao u koraku 3 — po njima personaliziramo prijedloge
+    const selWoundIds = (data.wounds||[]).map(w=>w.id);
+    const selWoundNames = selWoundIds.map(id => DATA.ranaById[id]?.naziv).filter(Boolean);
+    const matchesWounds = (item) => {
+      const hit = (item.rane||[]).filter(id => selWoundIds.includes(id));
+      return hit.length ? hit.map(id => DATA.ranaById[id]?.naziv).filter(Boolean).join(', ') : null;
+    };
+    const sortByWounds = (list) => [...list].sort((a,b) => (matchesWounds(b)?1:0) - (matchesWounds(a)?1:0));
+    // Prikaži prvih PRIKAZI (sortirani su po relevantnosti za odabrane rane) + sve već odabrane
+    const dio = (kljuc, list, jeOdabran) => vidiSve[kljuc]
+      ? list
+      : list.filter((x,i) => i < PRIKAZI || (jeOdabran && jeOdabran(x)));
+    const JosGumb = ({kljuc, ukupno}) => (!vidiSve[kljuc] && ukupno > PRIKAZI) ? (
+      <button className="btn btn-g btn-sm" style={{marginBottom:10,marginTop:2,fontSize:11}}
+        onClick={()=>setVidiSve({...vidiSve,[kljuc]:true})}>
+        + Još {ukupno - PRIKAZI}
+      </button>
+    ) : null;
+    const sgi = data.godImages || [];
+    const tgi = (t) => patch({ godImages: sgi.includes(t) ? sgi.filter(x=>x!==t) : [...sgi, t] });
+    const dodajRanu = (t) => {
+      const cur = data.woundEvent || '';
+      if (cur.includes(t)) return;
+      patch({ woundEvent: (cur ? cur.replace(/\s*$/,'') + '\n' : '') + t });
+    };
+
     return (
       <div className="guided">
         <StepBar cur={3}/>
@@ -879,6 +777,11 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
           <div className="eyebrow">Korak 4 — Duboki korijeni</div>
           <h2 className="stitle">Zavjeti i gorke osude</h2>
           <p className="sbody">U ranama donosimo odluke da se zaštitimo — <strong>unutarnji zavjeti</strong>. Također <strong>osuđujemo</strong> druge ili Boga kao odgovor na bol.</p>
+          {selWoundNames.length > 0 && (
+            <div style={{fontSize:11,color:'var(--mid)',background:'rgba(196,154,60,.08)',border:'1px solid rgba(196,154,60,.3)',borderRadius:7,padding:'8px 11px',marginBottom:13,lineHeight:1.5}}>
+              Istaknuti su prijedlozi koji izviru iz tvojih rana: <strong>{selWoundNames.join(', ')}</strong>. Ostali su prigušeni, ali ih možeš odabrati.
+            </div>
+          )}
 
           <div className="suggest-tag" style={{color:'var(--gold)'}}>⛓ Unutarnji zavjeti</div>
           <div className="field">
@@ -890,12 +793,17 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             : <div style={{animation:'fadeIn .3s ease'}}>
                 <p style={{fontSize:11,color:'var(--light)',marginBottom:7}}>Odaberi one koje prepoznaješ</p>
                 <div className="chips" style={{marginBottom:8}}>
-                  {DATA.unutarnjeZavjete.filter(v=>v!=='Ostalo (vlastito)').map(v => (
-                    <div key={v} className={`chip ${sv.includes(v)?'sel':''}`}
-                      style={sv.includes(v)?{background:'var(--gold)',borderColor:'var(--gold)'}:{borderColor:'var(--gold)',background:'rgba(196,154,60,.07)'}}
-                      onClick={()=>tv(v)}>{v}</div>
-                  ))}
+                  {dio('zavjeti', sortByWounds(DATA.unutarnjiZavjeti), z=>sv.includes(z.tekst)).map(z => {
+                    const veza = matchesWounds(z);
+                    return (
+                      <div key={z.id} className={`chip ${sv.includes(z.tekst)?'sel':''}`}
+                        title={veza ? 'Izvire iz rane: '+veza : ''}
+                        style={sv.includes(z.tekst)?{background:'var(--gold)',borderColor:'var(--gold)'}:{borderColor:'var(--gold)',background: veza?'rgba(196,154,60,.16)':'rgba(196,154,60,.04)', opacity: veza?1:.55}}
+                        onClick={()=>tv(z.tekst)}>{z.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                    );
+                  })}
                 </div>
+                <JosGumb kljuc="zavjeti" ukupno={DATA.unutarnjiZavjeti.length}/>
               </div>
           }
 
@@ -911,21 +819,94 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             : <div style={{animation:'fadeIn .3s ease'}}>
                 <p style={{fontSize:11,color:'var(--light)',marginBottom:7}}>Odaberi one koje prepoznaješ</p>
                 <div className="chips" style={{marginBottom:8}}>
-                  {DATA.unutarnjeOsude.filter(j=>j!=='Ostalo (vlastito)').map(j => (
-                    <div key={j} className={`chip ${sj.includes(j)?'sel':''}`}
-                      style={sj.includes(j)?{background:'var(--root)',borderColor:'var(--root)',color:'white'}:{borderColor:'var(--root)',background:'rgba(176,160,144,.07)'}}
-                      onClick={()=>tj(j)}>{j}</div>
-                  ))}
+                  {dio('osude', sortByWounds(DATA.gorkeOsude), o=>sj.includes(o.tekst)).map(o => {
+                    const veza = matchesWounds(o);
+                    return (
+                      <div key={o.id} className={`chip ${sj.includes(o.tekst)?'sel':''}`}
+                        title={veza ? 'Izvire iz rane: '+veza : ''}
+                        style={sj.includes(o.tekst)?{background:'var(--root)',borderColor:'var(--root)',color:'white'}:{borderColor:'var(--root)',background: veza?'rgba(176,160,144,.18)':'rgba(176,160,144,.04)', opacity: veza?1:.55}}
+                        onClick={()=>tj(o.tekst)}>{o.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                    );
+                  })}
                 </div>
+                <JosGumb kljuc="osude" ukupno={DATA.gorkeOsude.length}/>
               </div>
           }
 
           <div className="divider"/>
+
+          {CONFIG.showKriveSlikeBoga && <>
+          <div onClick={()=>setShowGodList(!showGodList)}
+            style={{display:'flex',alignItems:'center',gap:7,cursor:'pointer',userSelect:'none',
+                    padding:'7px 0',marginBottom: showGodList?4:0}}>
+            <span style={{fontSize:10,color:'var(--bark-d)',transition:'transform .2s',
+                          transform: showGodList?'rotate(90deg)':'none'}}>▶</span>
+            <span className="suggest-tag" style={{color:'var(--bark-d)',margin:0,cursor:'pointer'}}>🕊 Kriva slika Boga</span>
+            {!showGodList && sgi.length>0 &&
+              <span style={{fontSize:10,color:'var(--bark-d)',background:'rgba(92,64,48,.12)',
+                            borderRadius:8,padding:'1px 7px'}}>{sgi.length}</span>}
+          </div>
+          {showGodList && (
+            <div style={{animation:'fadeIn .3s ease',marginBottom:6}}>
+              <p style={{fontSize:11.5,color:'var(--mid)',marginBottom:9,lineHeight:1.5}}>
+                Iz rane u srcu osudimo roditelja — a tu osudu onda nesvjesno prenesemo na Boga.
+                Prepoznaješ li ovakvog Boga u svom srcu, čak i ako znaš da nije istina?
+              </p>
+              <div className="chips" style={{marginBottom:8}}>
+                {dio('bog', sortByWounds(DATA.kriveSlikeBoga), k=>sgi.includes(k.naziv)).map(k => {
+                  const veza = matchesWounds(k);
+                  return (
+                    <div key={k.id} className={`chip ${sgi.includes(k.naziv)?'sel':''}`}
+                      title={k.opis}
+                      style={sgi.includes(k.naziv)?{background:'var(--bark-d)',borderColor:'var(--bark-d)',color:'#fff'}:{borderColor:'var(--bark-d)',background: veza?'rgba(92,64,48,.13)':'rgba(92,64,48,.04)', opacity: veza?1:.55}}
+                      onClick={()=>tgi(k.naziv)}>{k.naziv}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                  );
+                })}
+              </div>
+              <JosGumb kljuc="bog" ukupno={DATA.kriveSlikeBoga.length}/>
+            </div>
+          )}
+          <div className="divider"/>
+          </>}
+
           <div className="field">
             <label className="flabel">Rana iz djetinjstva (neobavezno)</label>
-            <textarea rows={3} placeholder="Opiši događaj u kojemu si bio/bila ranjen/a. Što se dogodilo?"
+            <textarea rows={4} placeholder="Opiši događaj u kojemu si bio/bila ranjen/a. Što se dogodilo?"
               value={data.woundEvent||''} onChange={e=>patch({woundEvent:e.target.value})}/>
           </div>
+          {!showChildList
+            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowChildList(true)}>+ Što se najčešće dogodi</button>
+            : <div style={{animation:'fadeIn .3s ease'}}>
+                <p style={{fontSize:11,color:'var(--mid)',marginBottom:6,lineHeight:1.5}}>
+                  <strong>Uskrata ljubavi</strong> — ono što <em>nismo</em> dobili. Najčešće je, a najlakše se previdi.
+                </p>
+                <div className="chips" style={{marginBottom:10}}>
+                  {dio('djA', sortByWounds(DATA.raneDjetinjstva.filter(r=>r.tip==='A'))).map(r => {
+                    const veza = matchesWounds(r);
+                    return (
+                      <div key={r.id} className="chip" onClick={()=>dodajRanu(r.tekst)}
+                        style={{borderColor:'var(--root)',background: veza?'rgba(176,160,144,.18)':'rgba(176,160,144,.04)', opacity: veza?1:.55}}>
+                        {r.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                    );
+                  })}
+                </div>
+                <JosGumb kljuc="djA" ukupno={DATA.raneDjetinjstva.filter(r=>r.tip==='A').length}/>
+                <p style={{fontSize:11,color:'var(--mid)',marginBottom:6,lineHeight:1.5}}>
+                  <strong>Povreda</strong> — ono što nam se <em>dogodilo</em>.
+                </p>
+                <div className="chips" style={{marginBottom:8}}>
+                  {dio('djB', sortByWounds(DATA.raneDjetinjstva.filter(r=>r.tip==='B'))).map(r => {
+                    const veza = matchesWounds(r);
+                    return (
+                      <div key={r.id} className="chip" onClick={()=>dodajRanu(r.tekst)}
+                        style={{borderColor:'var(--root)',background: veza?'rgba(176,160,144,.18)':'rgba(176,160,144,.04)', opacity: veza?1:.55}}>
+                        {r.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                    );
+                  })}
+                </div>
+                <JosGumb kljuc="djB" ukupno={DATA.raneDjetinjstva.filter(r=>r.tip==='B').length}/>
+              </div>
+          }
         </div></div>
         <div className="sfooter">
           <button className="btn btn-g" onClick={prev}><IBack/> Natrag</button>
@@ -976,7 +957,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             </div>
             {data.woundReflection && (
               <div className="wlie" style={{marginTop:8}}>
-                <div className="wlie-n" style={{fontWeight:400,fontStyle:'italic',color:'var(--mid)'}}>"{data.woundReflection}"</div>
+                <Redovi text={data.woundReflection} style={{fontWeight:400,fontStyle:'italic',color:'var(--mid)',marginBottom:4}}/>
               </div>
             )}
           </div>
@@ -1021,7 +1002,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             <div className="sum-block">
               <div className="sum-title">📖 Rana iz djetinjstva</div>
               <div className="wlie">
-                <div className="wlie-t" style={{fontStyle:'normal',color:'var(--mid)'}}>{data.woundEvent}</div>
+                <Redovi text={data.woundEvent} style={{fontStyle:'normal',color:'var(--mid)',marginBottom:4}}/>
               </div>
             </div>
           )}
@@ -1099,6 +1080,16 @@ function PrintTree({ tree }) {
 // ── PRAYER ──
 function PrayerScreen({ tree, onBack }) {
   const sinDef = DATA.smrtniGrijesi.find(s=>s.id===tree.sinId);
+
+  // Ime PDF-a: Stablo-<Grijeh>-<datum>  (preglednik ga uzima iz document.title)
+  function ispisi() {
+    const naslovPrije = document.title;
+    const datum = String(tree.createdAt || '').split(' ')[0].replace(/\./g, '-').replace(/-+$/, '');
+    document.title = ['Stablo', slugHR(sinDef?.naziv), datum].filter(Boolean).join('-');
+    window.print();
+    setTimeout(() => { document.title = naslovPrije; }, 1500);
+  }
+
   const priorities = tree.priorities || {};
   const woundComments = tree.woundComments || {};
   if (!sinDef) return null;
@@ -1131,7 +1122,8 @@ function PrayerScreen({ tree, onBack }) {
           </>}
           {allVows.length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>⛓️ Zavjeti</h3><p style={{fontSize:12,marginBottom:8}}>{allVows.join(' • ')}</p></>}
           {allJudgments.length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>🪨 Osude</h3><p style={{fontSize:12,marginBottom:8}}>{allJudgments.join(' • ')}</p></>}
-          {tree.woundEvent && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>📖 Rana iz djetinjstva</h3><p style={{fontSize:12,marginBottom:12}}>{tree.woundEvent}</p></>}
+          {CONFIG.showKriveSlikeBoga && (tree.godImages||[]).length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>🕊 Kriva slika Boga</h3><p style={{fontSize:12,marginBottom:8}}>{(tree.godImages||[]).join(' • ')}</p></>}
+          {tree.woundEvent && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>📖 Rana iz djetinjstva</h3><div style={{marginBottom:12}}><Redovi text={tree.woundEvent} style={{fontSize:12,marginBottom:3}}/></div></>}
           <div style={{borderTop:'1px solid #ccc',margin:'16px 0'}}/>
           <PrintTree tree={tree}/>
           <div style={{borderTop:'1px solid #ccc',margin:'16px 0'}}/>
@@ -1139,9 +1131,10 @@ function PrayerScreen({ tree, onBack }) {
         </div>
 
         {/* ── SCREEN: Banner ── */}
+
         <div className="p-banner">
           <h2>✝ Molitve iscjeljenja</h2>
-          <p>Na temelju tvog Drveta {sinDef.naziv}</p>
+          <p>Na temelju tvog stabla — {sinDef.naziv}</p>
         </div>
         <div className="pcard">
           <div className="pcard-head">
@@ -1162,19 +1155,50 @@ function PrayerScreen({ tree, onBack }) {
             </div>
           ) : null;
         })}
-        {((tree.vows||[]).length > 0 || tree.customVow) && (
-          <div className="pcard">
-            <div className="pcard-head"><div className="fico">⛓️</div><div className="pcard-title">Odricanje od zavjeta</div></div>
-            <div className="ptext">{"Oče, priznajem da sam pokušavao/pokušavala spasiti sebe umjesto da se oslanjam na Tebe.\n\nU ime Isusovo odričem se unutarnjeg zavjeta da " + [...(tree.vows||[]),tree.customVow].filter(Boolean).join('; ') + ". Molim Te da me oslobodiš od ropstva ovog zavjeta. Hvala Ti. Amen."}</div>
-          </div>
-        )}
+        {(() => {
+          const vs = [...(tree.vows||[]), tree.customVow].filter(Boolean)
+                      .map(v => DATA.unutarnjiZavjeti.find(z => z.tekst === v) || v);
+          return vs.length ? (
+            <div className="pcard">
+              <div className="pcard-head"><div className="fico">⛓️</div><div className="pcard-title">Odricanje od zavjeta</div></div>
+              <div className="ptext">{DATA.molitvaZavjetaSkupno(vs)}</div>
+            </div>
+          ) : null;
+        })()}
+        {(() => {
+          const js = [...(tree.judgments||[]), tree.customJudgment].filter(Boolean)
+                      .map(j => DATA.gorkeOsude.find(o => o.tekst === j) || j);
+          return js.length ? (
+            <div className="pcard">
+              <div className="pcard-head"><div className="fico">🪨</div><div className="pcard-title">Odricanje od gorkih osuda</div></div>
+              <div className="ptext">{DATA.molitvaOsudeSkupno(js)}</div>
+            </div>
+          ) : null;
+        })()}
+        {CONFIG.showKriveSlikeBoga && (tree.godImages||[]).map((g,i) => {
+          const kd = DATA.kriveSlikeBoga.find(k => k.naziv === g);
+          return (
+            <div key={'g'+i} className="pcard">
+              <div className="pcard-head"><div className="fico">🕊</div><div className="pcard-title">Odricanje od krive slike Boga</div></div>
+              <div className="ptext">{DATA.molitvaSlikeBoga(kd || g)}</div>
+            </div>
+          );
+        })}
         <div className="pcard" style={{background:'linear-gradient(135deg,#F2EAE0,#E8DDD0)',border:'1px solid var(--bark-l)'}}>
           <div className="pcard-head"><div className="fico">🌳</div><div className="pcard-title">Znakovi iscjeljenja</div></div>
           {sortedWounds.map(w => {
-            const z = DATA.znakovi.find(x=>x.rana===w.id);
-            return z ? (
-              <div key={w.id} style={{display:'flex',alignItems:'center',gap:7,padding:'6px 10px',marginBottom:5,background:'rgba(122,158,126,.12)',borderRadius:6,fontSize:13,color:'#2C5A30'}}>
-                <span style={{color:'var(--leaf)'}}>✓</span> {z.znak}
+            const rd = DATA.ranaById[w.id];
+            return rd ? (
+              <div key={w.id} style={{padding:'7px 10px',marginBottom:6,background:'rgba(122,158,126,.12)',borderRadius:6,fontSize:13,color:'#2C5A30'}}>
+                <div style={{display:'flex',alignItems:'center',gap:7}}>
+                  <span style={{color:'var(--leaf)'}}>✓</span>
+                  <strong>{rd.naziv}</strong> → {rd.znakIscjeljenja}
+                </div>
+                {rd.sakrament && (
+                  <div style={{marginTop:3,marginLeft:20,fontSize:11.5,color:'var(--mid)'}}>
+                    Sakrament: <strong>{rd.sakrament}</strong> · Identitet: {rd.identitet} · Poslanje: {rd.poslanje}
+                  </div>
+                )}
               </div>
             ) : null;
           })}
@@ -1184,7 +1208,7 @@ function PrayerScreen({ tree, onBack }) {
         </div>
         <div style={{display:'flex',gap:10,justifyContent:'center',marginTop:22}}>
           <button className="btn btn-s" onClick={onBack}><IBack/> Natrag</button>
-          <button className="btn btn-p" onClick={()=>window.print()}><IPrint/> Ispiši</button>
+          <button className="btn btn-p" onClick={ispisi}><IPrint/> Ispiši</button>
         </div>
       </div>
     </div>
@@ -1235,7 +1259,7 @@ function App() {
   function finishTree(td){
     const done={...td,completed:true};
     updateTree(done); setView('prayer'); showToast('Stablo dovršeno ✓');
-    if(typeof gtag!=='undefined') gtag('event','stablo_dovrseno',{grijeh:td.sinId||'nepoznat',broj_plodova:(td.fruits?.length||0)+(td.customAIFruits?.length||0),broj_rana:td.wounds?.length||0});
+    if(typeof gtag!=='undefined') gtag('event','stablo_dovrseno',{grijeh:td.sinId||'nepoznat',broj_plodova:(td.fruits?.length||0),broj_rana:td.wounds?.length||0});
   }
 
   const activeTree = activeId ? getTree(activeId) : null;

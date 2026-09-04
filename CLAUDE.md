@@ -15,7 +15,8 @@ A spiritual self-reflection web app ("Drvo života") for Catholic users going th
 | `index.html` | Active app — single-file React 18 + Babel inline, no build step |
 | `tree-data.js` | All spiritual content — sins, wounds, prayers, vows, judgments |
 | `tree-bg.jpg` | Tree illustration background image (used in right panel and print) |
-| `Drvo spoznaje.html` | Original prototype (stale — `index.html` is the source of truth) |
+| `standalone/index.html` | Samostalna inačica — sve ugrađeno (podaci + slika kao base64) |
+| `docs/` | Izvori: HWP Workbook, Be Healed, Be Transformed, fotografije hrvatske skripte |
 
 ## Publish
 
@@ -43,7 +44,7 @@ One `TreeObject` per deadly sin a user works through (see README for full shape)
 
 **5-step guided flow** (`step` 0–4 on the tree object):
 1. Sin selection (grid of 7 cards)
-2. Fruits — free textarea + predefined chips + optional AI suggestions
+2. Fruits — free textarea + predefined chips (prvih 6, pa `+ Još N`)
 3. Wounds — free textarea + predefined wound chips + per-wound lie text + comment textarea
 4. Vows & Judgments — textareas + chip lists + childhood wound textarea
 5. Summary — read-only view of all entered data
@@ -54,18 +55,43 @@ One `TreeObject` per deadly sin a user works through (see README for full shape)
 
 **Delete tree**: Each tree card shows a × button on hover. Clicking it calls `deleteTree(id)` which asks for confirmation via `window.confirm`, removes the tree from state, and shows a toast.
 
-**AI integration**: `window.claude.complete()` (prototype helper). In production, replace with a server-side API route calling the Anthropic SDK to protect the API key. Controlled by `CONFIG.showAISuggestions`. Two modes:
-- `"fruits"` (step 2): suggests 4 additional fruit manifestations, pipe-separated Croatian response
-- `"wounds"` (step 3): suggests 3 likely wounds given selected fruits, pipe-separated
-
 ## Data (`tree-data.js`)
 
-`window.TREE_DATA` contains:
-- `smrtniGrijesi[]` — 7 deadly sins, each with `id`, `naziv`, `ikona`, `bojaBg`, `bojaLight`, `plodovi[]`, `rane[]`, `krepost`, `molitvaOdricanja`, `znakIscjeljenja`
-- `smrtneRane[]` — 7 wounds: abandonment, shame, fear, powerlessness, rejection, hopelessness, confusion — each with `laz` (the lie) and full prayer text
-- `unutarnjeZavjete[]` — inner vow suggestion strings
-- `unutarnjeOsude[]` — bitter judgment suggestion strings
-- `znakovi[]` — wound → healing sign mappings
+Sadržaj je usklađen sa **službenim hrvatskim prijevodom skripte** (Dodatak A — rane, Dodatak B — grijesi) i s HWP Workbookom, pogl. 3. Izvori su u `docs/`.
+
+**Službena terminologija** (ID-evi su namjerno ostali stari radi spremljenih podataka u `localStorage`):
+
+| ID | Prikazani naziv |
+|----|-----------------|
+| `ponos` | Oholost |
+| `ljutnja` | Srditost |
+| `pohlepa` | Škrtost |
+| `prozdrljivost` | Neumjerenost u jelu i piću |
+| `sramota` | Sram |
+| `bespomoćnost` | Nemoć |
+
+`window.TREE_DATA` sadrži:
+
+- `deblo` — "Bezbožno oslanjanje na sebe", zajednički korijen svih sedam grijeha
+- `smrtneRane[]` — 7 rana; uz `laz`/`molitva` još i `lazi` + `istina` (razdvojeno kako je u skripti), `sakrament`, `identitet`, `poslanje` (HWP str. 71) i `vodiKaGrijesima[]`
+- `smrtniGrijesi[]` — `rane[]` (ID-evi rana), `plodovi[]` gdje svaki plod ima `izRana[]`, `krepost`, `molitvaOdricanja`
+- `unutarnjiZavjeti[]` — `{id, tekst, rane[], grijesi[], zastita, zamjena}` *(prije: `unutarnjeZavjete`, ravna lista stringova)*
+- `gorkeOsude[]` — `{id, tekst, rane[], oprastam, osudio, premaBogu, istina}` *(prije: `unutarnjeOsude`)*
+  - `oprastam` je **dativ** ("opraštam ocu"), `osudio` je **akuzativ** ("osudio sam oca") — oba trebaju jer hrvatski traži različite padeže
+- `kriveSlikeBoga[]` — laži o Bogu. **Mehanizam** je doslovno Schuchtsov (Be Healed, pogl. 1: rana od roditelja → tiha osuda → projekcija na Boga), ali **popis pojedinih slika nije njegov**. Oznake: `izvor:"schuchts"` (2 — doslovno njegove riječi), `izvor:"izvedeno"` (2), `izvor:"tipologija"` (10 — vanjska katehetska tipologija). **`izvor` se nikad ne prikazuje korisniku.** Sekcija je u koraku 4 **sklopljena** (collapse) i dodatno se može posve ugasiti s `CONFIG.showKriveSlikeBoga`.
+- `raneDjetinjstva[]` — `tip:"A"` (uskrata ljubavi) / `tip:"B"` (povreda granica), prema Be Healed pogl. 7
+
+**Izvedeni indeksi** (grade se pri učitavanju): `ranaById`, `grijehById`, `zavjetiPoRani`, `osudePoRani`, `znakovi` (kompatibilnost).
+
+**Graditelji molitava**: `molitvaZavjeta(z)`, `molitvaZavjetaSkupno(list)`, `molitvaOsude(o)`, `molitvaOsudeSkupno(list)`, `molitvaSlikeBoga(k)`. Skupne verzije izgovaraju dugi uvod **jednom**, pa nabroje stavke — inače se uvod ponavlja na svakoj kartici.
+
+**Personalizacija koraka 4**: prijedlozi zavjeta, osuda, krivih slika Boga i rana iz djetinjstva istaknuti su ako im `rane[]` presijeca rane odabrane u koraku 3; ostali su prigušeni, ali odabirljivi.
+
+**Višeredna slobodna polja** (`woundEvent`, `woundReflection`): HTML sažima prijelaze retka, pa se renderiraju kroz `<Redovi text=… />` koji svaki redak stavlja u svoj blok — inače se sve slijepi u jednu liniju.
+
+**Ime PDF-a**: `ispisi()` u `PrayerScreen` postavi `document.title` na `Stablo-<Grijeh>-<datum stabla>` prije `window.print()` pa ga vrati. Preglednik uzima naslov kao zadano ime datoteke. `slugHR()` miče hrvatsku dijakritiku.
+
+**Postupno otvaranje**: nijedna lista se ne prikazuje cijela odjednom. Plodovi (korak 2) i sve liste u koraku 4 prikazuju prvih `PRIKAZI` (6) pa gumb `+ Još N`. Kako su liste prethodno sortirane po relevantnosti za odabrane rane, prvih 6 su najkorisniji prijedlozi. Već odabrane stavke ostaju vidljive i kad su izvan reza. Pomoćnici: `dio(kljuc, list, jeOdabran)` i `<JosGumb kljuc ukupno/>`, stanje u `vidiSve`.
 
 ## Design Tokens
 

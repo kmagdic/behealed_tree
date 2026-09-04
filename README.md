@@ -28,7 +28,6 @@ The app is a **single-page React app** with:
 - Split-screen layout: left = form/content, right = live tree visualization
 - 5-step guided flow per "tree"
 - Multiple trees supported (one per deadly sin)
-- Claude API integration for AI suggestions (`window.claude.complete`)
 - Print/PDF support
 - Delete tree support (× button on hover in the trees list)
 
@@ -42,11 +41,9 @@ The app is a **single-page React app** with:
   sinId: string,            // e.g. "ljutnja"
   fruits: [{id, naziv}],    // selected fruits
   customFruitsText: string, // user's own fruits (newline-separated)
-  customAIFruits: [{id, naziv}], // AI-suggested fruits user added
   wounds: [{id, naziv}],    // selected wounds
   woundReflection: string,  // free text reflection on wounds
   woundComments: {[id]: string}, // comment per wound
-  customAIWounds: [{id, naziv}],
   vows: string[],           // selected vow strings
   customVow: string,        // user's own vow
   judgments: string[],      // selected judgment strings
@@ -76,7 +73,7 @@ Grid of 7 sin cards.
 #### Step 2 — Fruits (Plodovi)
 - **Primary:** `<textarea>` for free input
 - **Secondary:** "✦ Česti plodovi" predefined chips
-- **Tertiary:** AI suggestions panel (if `CONFIG.showAISuggestions`)
+- Prikazuje se prvih 6, ostatak na `+ Još N plodova s popisa`
 
 **Priority chips:** Each chip cycles p1→p2→p3 on ●○○ button click. Size increases with priority.
 
@@ -113,17 +110,6 @@ Truncated labels (>14 chars) show tooltip on click.
 
 ---
 
-## AI Integration
-
-Uses `window.claude.complete()` (built-in helper). Controlled by `CONFIG.showAISuggestions`.
-
-**Mode "fruits"** (Step 2): Suggests 4 additional fruit manifestations. Pipe-separated Croatian response.
-**Mode "wounds"** (Step 3): Suggests 3 most likely wounds given selected fruits. Pipe-separated.
-
-In production, replace with a server-side API route to protect the API key.
-
----
-
 ## Design Tokens
 
 ```
@@ -137,7 +123,7 @@ Colors:
   --root:     #B0A090   (wounds/roots taupe)
   --txt:      #2C1F14   (body text)
   --mid:      #6B5040   (secondary text)
-  --gold:     #C49A3C   (vows, AI panel)
+  --gold:     #C49A3C   (vows)
 
 Typography:
   Headings/titles:  Cormorant Garamond (serif), weights 300/400/500/600
