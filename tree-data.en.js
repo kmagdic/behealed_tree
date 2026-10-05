@@ -135,6 +135,13 @@ window.JEZICI.en = {
       mojaStablaN: n => `My trees (${n})`
     },
 
+    instalacija: {
+      gumb: "Install the app",
+      naslov: "Add to your home screen",
+      ios: "**iPhone / iPad (Safari):** tap the _Share_ button (square with an arrow pointing up) → _Add to Home Screen_.",
+      ostali: "**Android / computer (Chrome, Edge):** menu ⋮ → _Install app_, or the install icon in the address bar."
+    },
+
     stabla: {
       naslov: "My trees",
       opis: "One tree for each deadly sin you recognize.",

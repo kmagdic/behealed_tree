@@ -18,6 +18,7 @@ Korisnik gradi svoje stablo: **smrtni grijeh = deblo**, **plodovi = krošnja**, 
 | `tree-data.hr.js` | Hrvatski: sadržaj, tekst sučelja i graditelji molitava (`window.JEZICI.hr`) |
 | `tree-data.en.js` | Engleski — ista struktura i isti ID-evi (`window.JEZICI.en`) |
 | `tree-bg.jpg` | Ilustracija stabla (desni panel i ispis) |
+| `manifest.webmanifest`, `sw.js`, `icons/` | PWA — instalacija na početni zaslon + offline |
 | `standalone/index.html` | ⚠️ **ZASTARJELO** — sadrži staru shemu (`unutarnjeZavjete`). Ne koristiti dok se ne regenerira. |
 | `.github/workflows/static.yml` | Deploy na GitHub Pages + cache-busting |
 | `docs/` | Izvori: HWP Workbook, Be Healed, Be Transformed, fotografije hrvatske skripte |
@@ -217,6 +218,8 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 - **Ton poticaja u poljima**: topao i pozivajući, nikad zapovjedan. Obrazac je *"Napiši… npr. …"* s trotočjem, a poziv na konkretnost dolazi kao blaga ponuda (*"Ako ti dođe neka konkretna situacija, slobodno je opiši"*), ne kao uputa (*"piši konkretno: kad, s kim"*). Ovo je duhovni dnevnik — korisnik piše o vlastitoj boli.
 
 - **Podloga slike stabla**: `tree-bg.jpg` ima podlogu `#F8F8F8`, a `.tree-pane` je topla krem `#F2EDE6`. Bez `mix-blend-mode: multiply` na `.tree-bg` vidi se pravokutni šav ondje gdje slika staje. Ne mijenjaj paletu da se to riješi — multiply stapa bijelo, a crtež ostaje.
+
+- **PWA.** Početna ima gumb *Instaliraj aplikaciju* (skriven kad je app već instalirana, `display-mode: standalone`). Chrome/Edge/Android → native dijalog (`beforeinstallprompt`); Safari/iOS → upute (Podijeli → Dodaj na početni zaslon). `sw.js` je **network-first za vlastite datoteke** — cache-first bi poništio cache-busting gore i korisnici bi vidjeli stare molitve; predmemorija služi samo offline. CDN (unpkg, fontovi) ide cache-first jer je verzioniran. Prvo učitavanje ide mimo SW-a, pa mu stranica nakon registracije pošalje popis dohvaćenih URL-ova (`predmemoriraj`). SW radi samo preko HTTPS-a ili `localhost`. Ako mijenjaš strategiju u `sw.js`, podigni `CACHE` (`stablo-v1` → `v2`). Ikone su generirane iz `ITree` glifa (`rsvg-convert`); manifest je samo hrvatski (ime aplikacije ne prati jezik).
 
 - **Nema AI integracije.** `window.claude.complete()` je uklonjen jer ne postoji ni na objavljenoj stranici — gumb je vodio u prazno. Ako se ikad vraća, mora ići preko serverske rute i imati vidljivo stanje greške.
 

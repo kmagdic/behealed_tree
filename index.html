@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stablo života</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F7F3EE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Stablo života">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX9RNFYH86"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-WX9RNFYH86');</script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -154,6 +161,11 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .w-verse p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--mid);line-height:1.6;margin-bottom:3px;}
 .w-verse cite{font-size:10px;color:var(--light);}
 .w-actions{display:flex;flex-direction:column;gap:9px;width:100%;max-width:270px;}
+.w-install{margin-top:18px;width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;}
+.w-help{margin-top:10px;background:rgba(139,107,74,.06);border:1px solid rgba(139,107,74,.14);border-radius:8px;padding:14px 16px;text-align:left;font-size:12.5px;color:var(--mid);line-height:1.6;}
+.w-help h4{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);margin-bottom:6px;}
+.w-help p+p{margin-top:5px;}
+.w-help strong{color:var(--bark);font-weight:600;}
 
 /* TREES LIST */
 .trees-wrap{padding:26px 26px 36px;}
@@ -458,6 +470,7 @@ const IPlus = () => <I d="M8 3v10M3 8h10"/>;
 const ICheck = () => <I d="M3 8l3.5 3.5L13 5"/>;
 const IPrint = () => <I d="M4 5V2h8v3M4 11H2V7h12v4h-2M4 14h8v-5H4z"/>;
 const IBack = () => <I d="M10 3L5 8l5 5"/>;
+const IDownload = () => <I d="M8 2v8M5 7l3 3 3-3M3 11v2h10v-2"/>;
 const ISpark = () => <I d="M8 2v2M8 12v2M2 8h2M12 8h2M4 4l1.4 1.4M10.6 10.6L12 12M4 12l1.4-1.4M10.6 5.4L12 4"/>;
 
 const ITree = () => (
@@ -1382,6 +1395,38 @@ function App() {
   }
 
   useEffect(()=>{ save(state); }, [state]);
+
+  // PWA: Chrome/Edge/Android daju native dijalog (beforeinstallprompt); Safari/iOS
+  // ga nema, pa isti gumb ondje otvori upute. Instalirana app gumb ne prikazuje.
+  const [instalirano, setInstalirano] = useState(() =>
+    window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true);
+  const [uputeInstalacije, setUputeInstalacije] = useState(false);
+  const instalPrompt = useRef(null);
+  useEffect(()=>{
+    const ponudi = e => { e.preventDefault(); instalPrompt.current = e; };
+    const gotovo = () => { instalPrompt.current = null; setInstalirano(true);
+      if(typeof gtag!=='undefined') gtag('event','aplikacija_instalirana',{jezik:LANG}); };
+    window.addEventListener('beforeinstallprompt', ponudi);
+    window.addEventListener('appinstalled', gotovo);
+    // Service worker samo preko HTTPS-a (ili localhosta) i ne unutar iframea.
+    if ('serviceWorker' in navigator && window.top === window.self &&
+        (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(reg => {
+        // Prvo učitavanje prošlo je mimo SW-a — javi mu što treba za offline.
+        const urls = performance.getEntriesByType('resource').map(r => r.name);
+        reg.active?.postMessage({ predmemoriraj: urls });
+      }).catch(() => {});
+    }
+    return () => { window.removeEventListener('beforeinstallprompt', ponudi); window.removeEventListener('appinstalled', gotovo); };
+  }, []);
+  function instaliraj(){
+    const ip = instalPrompt.current;
+    if(typeof gtag!=='undefined') gtag('event','instalacija_klik',{nativno:!!ip,jezik:LANG});
+    if(!ip){ setUputeInstalacije(v=>!v); return; }
+    ip.prompt();
+    ip.userChoice.finally(()=>{ instalPrompt.current = null; });
+  }
+
   function showToast(m){ setToast(m); setTimeout(()=>setToast(null),3000); }
   function getTree(id){ return state.trees.find(st=>st.id===id); }
 
@@ -1440,6 +1485,18 @@ function App() {
           </button>
         )}
       </div>
+      {!instalirano && (
+        <div className="w-install">
+          <button className="btn btn-g" onClick={instaliraj}><IDownload/> {t('instalacija.gumb')}</button>
+          {uputeInstalacije && (
+            <div className="w-help">
+              <h4>{t('instalacija.naslov')}</h4>
+              <p><Bogato text={t('instalacija.ios')}/></p>
+              <p><Bogato text={t('instalacija.ostali')}/></p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 

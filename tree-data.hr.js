@@ -149,6 +149,13 @@ window.JEZICI.hr = {
       mojaStablaN: n => `Moja stabla (${n})`
     },
 
+    instalacija: {
+      gumb: "Instaliraj aplikaciju",
+      naslov: "Dodavanje na početni zaslon",
+      ios: "**iPhone / iPad (Safari):** dodirni gumb _Podijeli_ (kvadratić sa strelicom prema gore) → _Dodaj na početni zaslon_.",
+      ostali: "**Android / računalo (Chrome, Edge):** izbornik ⋮ → _Instaliraj aplikaciju_, ili ikona instalacije u adresnoj traci."
+    },
+
     stabla: {
       naslov: "Moja stabla",
       opis: "Jedno stablo za svaki smrtni grijeh koji prepoznaješ.",
