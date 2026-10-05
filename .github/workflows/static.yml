@@ -33,6 +33,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      # tree-data.<jezik>.js se mijenja često; bez ovoga preglednici serviraju staru
+      # kopiju i korisnici vide zastarjele molitve. SHA je jedinstven po deployu.
+      # Hvata sve jezične datoteke, pa novi jezik ne traži izmjenu ovdje.
+      - name: Cache-busting za tree-data.*.js
+        run: sed -i "s/\(tree-data\.[a-z]*\.js\)?v=dev/\1?v=${GITHUB_SHA}/g" index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

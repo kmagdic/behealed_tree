@@ -4,7 +4,7 @@ Upute za Claude Code (claude.ai/code) pri radu na ovom repozitoriju.
 
 ## Što je ovo
 
-Web aplikacija za duhovnu samorefleksiju — **"Stablo života"** — za katoličke korisnike koji prolaze duhovnu obnovu *Be Healed* (dr. Bob Schuchts, HWP Workbook, pogl. 3 "Facing Our Brokenness"). Aplikacija je **u cijelosti na hrvatskom**.
+Web aplikacija za duhovnu samorefleksiju — **"Stablo života"** — za katoličke korisnike koji prolaze duhovnu obnovu *Be Healed* (dr. Bob Schuchts, HWP Workbook, pogl. 3 "Facing Our Brokenness"). Aplikacija je **dvojezična — hrvatski (zadano) i engleski**, a arhitektura je spremna za treći jezik.
 
 Korisnik gradi svoje stablo: **smrtni grijeh = deblo**, **plodovi = krošnja**, **rane srca = korijenje**, **zavjeti i osude = duboko korijenje**.
 
@@ -15,9 +15,11 @@ Korisnik gradi svoje stablo: **smrtni grijeh = deblo**, **plodovi = krošnja**, 
 | Datoteka | Uloga |
 |----------|-------|
 | `index.html` | Aktivna aplikacija — React 18 + Babel inline, bez build koraka |
-| `tree-data.js` | Sav duhovni sadržaj (`window.TREE_DATA`) |
+| `tree-data.hr.js` | Hrvatski: sadržaj, tekst sučelja i graditelji molitava (`window.JEZICI.hr`) |
+| `tree-data.en.js` | Engleski — ista struktura i isti ID-evi (`window.JEZICI.en`) |
 | `tree-bg.jpg` | Ilustracija stabla (desni panel i ispis) |
 | `standalone/index.html` | ⚠️ **ZASTARJELO** — sadrži staru shemu (`unutarnjeZavjete`). Ne koristiti dok se ne regenerira. |
+| `.github/workflows/static.yml` | Deploy na GitHub Pages + cache-busting |
 | `docs/` | Izvori: HWP Workbook, Be Healed, Be Transformed, fotografije hrvatske skripte |
 
 > **`docs/` je u `.gitignore` namjerno** — to su autorske knjige. GitHub Actions workflow objavljuje **cijeli repo** (`path: '.'`), pa bi commit tih datoteka značio njihovo javno objavljivanje. Nikada ih ne dodavati u git.
@@ -28,6 +30,7 @@ Dva puta, oba aktivna:
 
 ```bash
 # GitHub Pages — automatski na svaki push u main (.github/workflows/static.yml)
+# Workflow usput ubaci commit SHA u tree-data.<jezik>.js?v=… da probije predmemoriju.
 git push
 
 # here.now
@@ -55,7 +58,7 @@ console.log('OK');"
 Podaci:
 
 ```bash
-node -e "global.window={};require('./tree-data.js');console.log('OK')"
+node -e "global.window={};require('./tree-data.hr.js');require('./tree-data.en.js');console.log('OK')"
 ```
 
 Ispis i prelamanje PDF-a:
@@ -85,20 +88,38 @@ Jedna HTML datoteka: React preko CDN-a (unpkg, s SRI hashevima), Babel transpili
   wounds: [{id, naziv}],
   woundReflection,                  // slobodni tekst, može biti višeredan
   woundComments: {[woundId]: string},
-  vows: [string],    customVow,
-  judgments: [string], customJudgment,
-  godImages: [string],              // nazivi krivih slika Boga
+  vows: [id],        customVow,     // ID-evi iz unutarnjiZavjeti
+  judgments: [id],   customJudgment, // ID-evi iz gorkeOsude
+  godImages: [id],                  // ID-evi iz kriveSlikeBoga
   woundEvent,                       // rana iz djetinjstva, može biti višeredna
   priorities: {[id]: 1|2|3},
   step: 0-4, completed
 }
 ```
 
+Zavjeti, osude i slike Boga spremaju se kao **ID, ne tekst** — tekst ovisi o jeziku. Stari zapisi (tekst) prevode se u ID pri učitavanju (`migriraj()` u `load()`, idempotentno). Ono što se ne prepozna ostaje string i prikazuje se kakvo jest. `fruits`/`wounds` i dalje nose `naziv` radi kompatibilnosti, ali se prikaz uvijek čita iz podataka aktivnog jezika (`nazivPloda`, `nazivRane`). Odabrani jezik je u `localStorage` pod `drvo_lang`.
+
 **Raspored**: lijevo forma (`.left`), desno živa vizualizacija (`.tree-pane`, 400px, skriveno na mobitelu — ondje postaje traka od 260px ispod forme).
 
 **Prikazi** (`view` u `App`): `welcome` → `list` → `guided` → `prayer`.
 
-**Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `App` + pomoćne `slugHR`, `Redovi`, `getPriority`, `cyclePriority`.
+**Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `App`, `Bogato`, `Redovi` + pomoćne `t`, `pripremiPodatke`, `migriraj`, `imeStabla`, `getPriority`, `cyclePriority`.
+
+### Jezici
+
+- Svaka `tree-data.<kod>.js` puni `window.JEZICI[kod] = { kod, oznaka, naslov, ui, data, molitve }`. `data` je struktura opisana dolje, `ui` je sav tekst sučelja, a `molitve` su graditelji molitava (gramatika je jezična).
+- U `index.html`: `PODRZANI = ['hr','en']`, `ZADANI = 'hr'`. Jezik se bira redom: `?lang=xx` → `localStorage.drvo_lang` → zadani.
+- Prekidač u headeru (`.jezik`) renderira se iz `PODRZANI`. Promjena je **živa**, bez reloada (`promijeniJezik` → `postaviJezik` zamijeni globalne `LANG` i `DATA`), a `history.replaceState` upiše `?lang=` u URL.
+- Sav tekst ide kroz `t('k2.naslov')` / `t('k2.josPlodova', n)`. Ključ koji nedostaje pada na zadani jezik i ispisuje `console.warn`. Tekst s naglascima renderira `<Bogato text=…/>` (`**podebljano**`, `_kurziv_`, `\n`).
+- Auto-ime stabla (`_autoName`) gradi `imeStabla()` uživo, pa se prevodi. Ime koje je korisnik sam upisao ostaje kakvo jest.
+- GA: `naziv_koraka` šalje uvijek hrvatske nazive (`KORACI_GA`) da se povijest ne raspadne. Eventovi nose `jezik`.
+
+**Dodavanje trećeg jezika** (npr. `de`):
+1. kopiraj `tree-data.en.js` u `tree-data.de.js`, promijeni `kod`/`oznaka`/`naslov` i prevedi sve tekstove (**ID-eve i relacije ne diraj**)
+2. u `<head>` dodaj `<script src="tree-data.de.js?v=dev"></script>`
+3. dodaj `'de'` u `PODRZANI`
+
+Workflow i prekidač ne treba dirati. Prije objave provjeri da se strukture poklapaju s `hr`: isti ID-evi, iste `rane[]`/`izRana[]`/`tip`/`premaBogu` i svi `ui` ključevi.
 
 **`CONFIG`** (unutar `EDITMODE` markera): `showKriveSlikeBoga` — prekidač za cijelu sekciju krivih slika Boga.
 
@@ -116,9 +137,11 @@ Jedna HTML datoteka: React preko CDN-a (unpkg, s SRI hashevima), Babel transpili
 
 **Brisanje stabla**: × na kartici → `deleteTree(id)` → `window.confirm` → toast.
 
-## Podaci (`tree-data.js`)
+## Podaci (`tree-data.<jezik>.js`)
 
-Sadržaj je usklađen sa **službenim hrvatskim prijevodom skripte** (Dodatak A — rane, Dodatak B — grijesi) i s HWP Workbookom pogl. 3. Izvori su u `docs/`.
+Hrvatski sadržaj je usklađen sa **službenim hrvatskim prijevodom skripte** (Dodatak A — rane, Dodatak B — grijesi) i s HWP Workbookom pogl. 3. Izvori su u `docs/`.
+
+Engleski koristi terminologiju HWP Workbooka (*Seven Deadly Wounds*, *Ungodly Self-Reliance*, *Inner Vows*, *Bitter Root Judgments*, *Seven Signs of Healing*, grijesi Pride/Envy/Anger/Lust/Gluttony/Greed/Sloth). Molitve su vjerna parafraza, ne doslovni tekst workbooka. Engleski se piše iz izvornika, **ne prevodi se s hrvatskog**.
 
 ### Lanac koji model utjelovljuje
 
@@ -140,7 +163,7 @@ ID-evi su **namjerno ostali stari** radi spremljenih podataka u `localStorage`. 
 | `sramota` | Sram |
 | `bespomoćnost` | Nemoć |
 
-### `window.TREE_DATA`
+### `JEZICI[kod].data`
 
 - **`deblo`** — "Bezbožno oslanjanje na sebe", zajednički korijen svih sedam grijeha
 - **`smrtneRane[]`** — 7 rana. Uz `laz` (kratka, za labele) i `molitva` još i `lazi` + `istina` razdvojeno kako je u skripti, te `sakrament`, `identitet`, `poslanje` (HWP str. 71) i `vodiKaGrijesima[]`
@@ -149,6 +172,7 @@ ID-evi su **namjerno ostali stari** radi spremljenih podataka u `localStorage`. 
 - **`gorkeOsude[]`** — `{id, tekst, rane[], oprastam, osudio, premaBogu, istina}`
   - `oprastam` je **dativ** ("opraštam ocu"), `osudio` je **akuzativ** ("osudio sam oca") — hrvatski traži oba padeža
   - polja `istina` moraju se nastavljati na *"Proglašavam istinu da…"* → piši `"si Ti Otac koji…"`, ne `"Ti si Otac koji…"`
+  - u engleskom oba polja imaju isti oblik ("I forgive / I have judged *my father*"), a `istina` se nastavlja na *"I proclaim the truth that…"*. U `unutarnjiZavjeti` polje `zamjena` počinje s `to …` jer se nastavlja na *"…and choose"*
 - **`kriveSlikeBoga[]`** — laži o Bogu
 - **`raneDjetinjstva[]`** — `tip:"A"` (uskrata ljubavi) / `tip:"B"` (povreda granica), prema Be Healed pogl. 7
 
@@ -166,7 +190,7 @@ ID-evi su **namjerno ostali stari** radi spremljenih podataka u `localStorage`. 
 
 ### Izvedeni indeksi
 
-Grade se jednom pri učitavanju: `ranaById`, `grijehById`, `zavjetiPoRani`, `osudePoRani`, `znakovi` (kompatibilnost), `migracijaPlodova`.
+`pripremiPodatke(J)` u `index.html` gradi ih jednom za svaki jezik: `ranaById`, `grijehById`, `zavjetById`, `osudaById`, `slikaById`, `plodById`, `zavjetiPoRani`, `osudePoRani`, `znakovi` (kompatibilnost), `migracijaPlodova`. Graditelje molitava iz `J.molitve` kopira u `DATA`.
 
 ### Graditelji molitava
 
@@ -186,7 +210,9 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 - **Prelamanje ispisa**: `.pcard` ima `break-inside: avoid`, naslovi `break-after: avoid`. Nakon zahvata u molitveni ekran uvijek pregledaj generirani PDF — kartice se ne smiju lomiti preko stranica.
 
-- **Molitve su u muškom rodu.** Sav tekst koji korisnik izgovara o sebi piše se muškim rodom — `bio`, `sam`, `voljen`, `slobodan`, `Sklopio` — nikad `bio/bila`. Prije je bilo pomiješano. Dvije iznimke ostaju s kosom crtom jer se **ne odnose na molitelja nego na druge ljude**: `sina/kćer kakvim/kakvom ga/ju je Bog stvorio` (molitva bludnosti). Pazi i na slaganje pridjeva pri promjeni — `sin/kći Očeva` mora postati `sin Očev`, ne `sin Očeva`.
+- **Predmemorija za `tree-data.<jezik>.js`.** Svaka se učitava kao `tree-data.<jezik>.js?v=dev`; GitHub Actions pri deployu zamijeni `dev` commit SHA-om (korak *Cache-busting*, hvata sve jezike). Bez toga preglednici zauvijek serviraju staru kopiju i korisnici vide zastarjele molitve i nakon objave. **Ne miči `?v=dev` iz `index.html`** — to je sidro na koje `sed` cilja. Ako netko prijavi da vidi stari tekst, prvo provjeri predmemoriju, ne datoteku.
+
+- **Molitve su u muškom rodu** (i u engleskom: *beloved son of the Father*). Sav tekst koji korisnik izgovara o sebi piše se muškim rodom — `bio`, `sam`, `voljen`, `slobodan`, `Sklopio` — nikad `bio/bila`. Prije je bilo pomiješano. Dvije iznimke ostaju s kosom crtom jer se **ne odnose na molitelja nego na druge ljude**: `sina/kćer kakvim/kakvom ga/ju je Bog stvorio` (molitva bludnosti). Pazi i na slaganje pridjeva pri promjeni — `sin/kći Očeva` mora postati `sin Očev`, ne `sin Očeva`.
 
 - **Ton poticaja u poljima**: topao i pozivajući, nikad zapovjedan. Obrazac je *"Napiši… npr. …"* s trotočjem, a poziv na konkretnost dolazi kao blaga ponuda (*"Ako ti dođe neka konkretna situacija, slobodno je opiši"*), ne kao uputa (*"piši konkretno: kad, s kim"*). Ovo je duhovni dnevnik — korisnik piše o vlastitoj boli.
 
