@@ -36,7 +36,9 @@ window.JEZICI.en = {
     panel: {
       naslov: n => `Tree — ${n}`,
       prazno: "Your tree grows here...",
-      uputa: "Fill in the steps on the left\nto see your tree..."
+      uputa: "Fill in the steps on the left\nto see your tree...",
+      manje: "Smaller tree",
+      vece: "Larger tree"
     },
 
     k1: {

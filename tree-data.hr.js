@@ -50,7 +50,9 @@ window.JEZICI.hr = {
     panel: {
       naslov: n => `Stablo — ${n}`,
       prazno: "Tvoje stablo raste ovdje...",
-      uputa: "Popuni korake s lijeve strane\nda vidiš svoje drvo..."
+      uputa: "Popuni korake s lijeve strane\nda vidiš svoje drvo...",
+      manje: "Smanji stablo",
+      vece: "Povećaj stablo"
     },
 
     k1: {
