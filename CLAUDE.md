@@ -98,7 +98,9 @@ Jedna HTML datoteka: React preko CDN-a (unpkg, s SRI hashevima), Babel transpili
 }
 ```
 
-Zavjeti, osude i slike Boga spremaju se kao **ID, ne tekst** — tekst ovisi o jeziku. Stari zapisi (tekst) prevode se u ID pri učitavanju (`migriraj()` u `load()`, idempotentno). Ono što se ne prepozna ostaje string i prikazuje se kakvo jest. `fruits`/`wounds` i dalje nose `naziv` radi kompatibilnosti, ali se prikaz uvijek čita iz podataka aktivnog jezika (`nazivPloda`, `nazivRane`). Odabrani jezik je u `localStorage` pod `drvo_lang`.
+Zavjeti, osude i slike Boga spremaju se kao **ID, ne tekst** — tekst ovisi o jeziku. Stari zapisi (tekst) prevode se u ID pri učitavanju (`migriraj()` u `load()`, idempotentno). Ono što se ne prepozna ostaje string i prikazuje se kakvo jest.
+
+Prva verzija (v1, prvi commit) imala je i druge ID-eve plodova i grijeha (`gorčina`, `perfectionism_l`, `proždrljivost`…) te zavjete i osude formulirane drukčije nego danas (`"Život je opasan i nepravedan"`). `MIGRACIJA_V1` u `index.html` ih prevodi; jedan stari tekst smije pokriti dvije nove stavke. **Kad preformuliraš `tekst` zavjeta ili osude, stari tekst dodaj u `MIGRACIJA_V1`** — inače stabla koja ga još nose ostaju na hrvatskom i u engleskoj verziji. `fruits`/`wounds` i dalje nose `naziv` radi kompatibilnosti, ali se prikaz uvijek čita iz podataka aktivnog jezika (`nazivPloda`, `nazivRane`). Odabrani jezik je u `localStorage` pod `drvo_lang`.
 
 **Raspored**: lijevo forma (`.left`), desno živa vizualizacija (`.tree-pane`, 400px, skriveno na mobitelu — ondje postaje traka od 260px ispod forme).
 

@@ -350,6 +350,50 @@ const ZADANI = 'hr';
 const SK_JEZIK = 'drvo_lang';
 const SK_VEL_STABLA = 'drvo_vel_stabla'; // 0 malo, 1 srednje (zadano), 2 veliko — samo mobilni prikaz
 
+// ── STARI ZAPISI (v1, prvi commit) ──
+// Prva verzija imala je drukčije ID-eve plodova i grijeha (s dijakritikom) te zavjete
+// i osude kao goli tekst koji se poslije preformulirao. Bez ovog prijevoda takva
+// stabla na engleskom pokazuju hrvatske nazive, a na hrvatskom stare formulacije.
+// Jedan stari tekst može pokriti dvije nove stavke (npr. "opasan i nepravedan").
+const MIGRACIJA_V1 = {
+  grijesi: { "proždrljivost": "prozdrljivost" },
+  plodovi: {
+    "perfectionism_l": "perfekcionizam_l",
+    "gorčina": "gorcina",
+    "gorčina_z": "gorcina_z",
+    "ogorčenost": "ogorcenost",
+    "tračanje": "tracanje",
+    "emocionalna_hladnoća": "emocionalna_hladnoca",
+    "hvalisanje_z": "umanjivanje",
+    "pušenje": "pusenje",
+    "trošenje_ekscesivno": "trosenje_ekscesivno",
+    "nedovršenost": "nedovrsenost",
+    "bijeg_od_tišine": "bijeg_od_tisine"
+  },
+  zavjeti: {
+    "Nikada neću biti kao moja majka/otac/brat/sestra/zlostavljač": ["nikad_kao_roditelj"],
+    "Neću nikome vjerovati niti biti ranjiv/a": ["nikom_ne_vjerujem", "nikad_ranjiv"],
+    "Uvijek ću se sam/sama pobrinuti za sebe": ["sam_za_sebe"],
+    "Uvijek ću biti jak/jaka i neću pokazivati slabost": ["uvijek_jak"],
+    "Nikada neću tražiti pomoć od nikoga": ["ne_trazim_pomoc"],
+    "Moram biti savršen/a da bih bio/bila voljen/a": ["moram_savrsen"],
+    "Neću nikad dopustiti da me netko kontrolira": ["nitko_me_ne_kontrolira"],
+    "Uvijek ću biti dostupan/a drugima (neću imati vlastite granice)": ["uvijek_dostupan"],
+    "Nikad neću biti ranjiv/a u ljubavi": ["nikad_ranjiv"],
+    "Neću nikad pokazati da me nešto boli": ["ne_pokazujem_bol"]
+  },
+  osude: {
+    "Muškarci su sebični/opasni": ["muskarci_opasni"],
+    "Žene se ne može vjerovati": ["zene_nepouzdane"],
+    "Život je opasan i nepravedan": ["svijet_opasan", "zivot_nepravedan"],
+    "Bog me je napustio/kaznio": ["bog_me_napustio", "bog_kaznjava"],
+    "Bog je strog i kažnjavajući": ["bog_kaznjava"],
+    "Ljubav uvijek boli i završava": ["ljubav_boli"],
+    "Nikad ne mogu dobiti ono što trebam": ["nikad_ne_dobijem"],
+    "Autoriteti uvijek zlouporabe moć": ["autoriteti_zlouporabe"]
+  }
+};
+
 // Izvedeni indeksi — grade se jednom po jeziku. Graditelji molitava
 // (DATA.molitvaZavjeta…) dolaze iz jezične datoteke jer im je gramatika jezična.
 function pripremiPodatke(J) {
@@ -377,20 +421,7 @@ function pripremiPodatke(J) {
   D.unutarnjiZavjeti.forEach(z => (z.rane || []).forEach(id => D.zavjetiPoRani[id] && D.zavjetiPoRani[id].push(z)));
   D.gorkeOsude.forEach(o => (o.rane || []).forEach(id => D.osudePoRani[id] && D.osudePoRani[id].push(o)));
 
-  // Migracija starih ID-eva plodova (spremljena stabla iz v1)
-  D.migracijaPlodova = {
-    "perfectionism_l": "perfekcionizam_l",
-    "gorčina": "gorcina",
-    "gorčina_z": "gorcina_z",
-    "ogorčenost": "ogorcenost",
-    "tračanje": "tracanje",
-    "emocionalna_hladnoća": "emocionalna_hladnoca",
-    "hvalisanje_z": "umanjivanje",
-    "pušenje": "pusenje",
-    "trošenje_ekscesivno": "trosenje_ekscesivno",
-    "nedovršenost": "nedovrsenost",
-    "bijeg_od_tišine": "bijeg_od_tisine"
-  };
+  D.migracijaPlodova = MIGRACIJA_V1.plodovi;   // kompatibilnost
 
   Object.assign(D, J.molitve);
 }
@@ -454,20 +485,25 @@ function imeStabla(tree) {
   return tree?.name || '';
 }
 
-// Stari zapisi spremali su tekst zavjeta/osuda/slika Boga; prevedi ih u ID
-// prema tekstu iz bilo kojeg jezika. Idempotentno — ID ostaje ID.
+// Stari zapisi spremali su tekst zavjeta/osuda/slika Boga i stare ID-eve plodova;
+// prevedi ih u današnje ID-eve. Tekst se traži u svim jezicima i u MIGRACIJA_V1.
+// Idempotentno — ID ostaje ID; neprepoznat tekst ostaje string (vlastiti unos).
 function migriraj(s) {
-  const mapa = (lista, polje) => {
-    const m = {};
-    PODRZANI.forEach(k => JEZICI[k].data[lista].forEach(x => { m[x[polje]] = x.id; }));
+  const mapa = (lista, polje, stari) => {
+    const m = { ...stari };
+    PODRZANI.forEach(k => JEZICI[k].data[lista].forEach(x => { m[x[polje]] = [x.id]; }));
     return m;
   };
-  const zv = mapa('unutarnjiZavjeti', 'tekst');
-  const os = mapa('gorkeOsude', 'tekst');
-  const sl = mapa('kriveSlikeBoga', 'naziv');
-  const preslikaj = (arr, m) => [...new Set((arr || []).map(x => m[x] || x))];
+  const zv = mapa('unutarnjiZavjeti', 'tekst', MIGRACIJA_V1.zavjeti);
+  const os = mapa('gorkeOsude', 'tekst', MIGRACIJA_V1.osude);
+  const sl = mapa('kriveSlikeBoga', 'naziv', {});
+  const preslikaj = (arr, m) => [...new Set((arr || []).flatMap(x => m[x] || [x]))];
+  const plod = (id) => MIGRACIJA_V1.plodovi[id] || id;
   return { ...s, trees: (s.trees || []).map(t => ({
     ...t,
+    sinId: MIGRACIJA_V1.grijesi[t.sinId] || t.sinId,
+    fruits: (t.fruits || []).map(f => ({ ...f, id: plod(f.id) })),
+    priorities: Object.fromEntries(Object.entries(t.priorities || {}).map(([k, v]) => [plod(k), v])),
     vows: preslikaj(t.vows, zv),
     judgments: preslikaj(t.judgments, os),
     godImages: preslikaj(t.godImages, sl)
