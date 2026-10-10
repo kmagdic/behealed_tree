@@ -190,7 +190,9 @@ window.JEZICI.en = {
       biram: "I choose",
       tvojeStablo: "Your tree",
       deblo: "The root of every sin",
-      cijeliOprost: "The full forgiveness process →"
+      cijeliOprost: "The full forgiveness process →",
+      pretraga: "Bible",
+      citat: x => `“${x}”`
     },
 
     obavijest: {
@@ -434,8 +436,8 @@ window.JEZICI.en = {
         poslanje: "Representing Christ's faithful love",
         vodiKaGrijesima: ["pohlepa", "ljutnja", "ljenost"],
         lazi: "In the name of Jesus Christ, I renounce the lie that if I trust, I will be hurt, disappointed or die. In the name of Jesus Christ, I renounce all fear, anxiety, doubt and distrust. In the name of Jesus Christ, I renounce the lie that I am not safe and not protected.",
-        istina: "In the name of Jesus Christ, I proclaim the truth that God is my rock, my fortress, my deliverer and my protector (Ps 23, 27, 91). In the name of Jesus Christ, I proclaim the truth that God's perfect love casts out all fear (1 Jn 4:18). In the name of Jesus Christ, I proclaim the truth that I am safe.",
-        molitva: "In the name of Jesus Christ, I renounce the lie that if I trust, I will be hurt, disappointed or die. In the name of Jesus Christ, I renounce all fear, anxiety, doubt and distrust. In the name of Jesus Christ, I renounce the lie that I am not safe and not protected.\n\nIn the name of Jesus Christ, I proclaim the truth that God is my rock, my fortress, my deliverer and my protector (Ps 23, 27, 91). In the name of Jesus Christ, I proclaim the truth that God's perfect love casts out all fear (1 Jn 4:18). In the name of Jesus Christ, I proclaim the truth that I am safe."
+        istina: "In the name of Jesus Christ, I proclaim the truth that God is my rock, my fortress, my deliverer and my protector (Ps 23; 27; 91). In the name of Jesus Christ, I proclaim the truth that God's perfect love casts out all fear (1 Jn 4:18). In the name of Jesus Christ, I proclaim the truth that I am safe.",
+        molitva: "In the name of Jesus Christ, I renounce the lie that if I trust, I will be hurt, disappointed or die. In the name of Jesus Christ, I renounce all fear, anxiety, doubt and distrust. In the name of Jesus Christ, I renounce the lie that I am not safe and not protected.\n\nIn the name of Jesus Christ, I proclaim the truth that God is my rock, my fortress, my deliverer and my protector (Ps 23; 27; 91). In the name of Jesus Christ, I proclaim the truth that God's perfect love casts out all fear (1 Jn 4:18). In the name of Jesus Christ, I proclaim the truth that I am safe."
       },
       {
         id: "bespomoćnost",

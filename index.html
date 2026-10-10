@@ -342,6 +342,8 @@ textarea::placeholder,input::placeholder{color:var(--light);}
 .mol-oznaka:first-child{margin-top:0;}
 .mol-oznaka.istina{color:var(--leaf);}
 .ref{font:400 11px 'Inter',sans-serif;color:var(--light);white-space:nowrap;}
+.ref a{color:inherit;text-decoration:underline dotted;text-underline-offset:2px;}
+.ref a:hover{color:var(--gold);text-decoration-style:solid;}
 .upis{font-style:italic;color:var(--bark);background:rgba(196,154,60,.12);border-radius:3px;padding:0 3px;}
 details.pcard>summary{list-style:none;cursor:pointer;}
 details.pcard>summary::-webkit-details-marker{display:none;}
@@ -407,6 +409,7 @@ details[open]>summary .chev{transform:rotate(90deg);}
   h1,h2,h3{break-after:avoid;page-break-after:avoid;}
   .mol-toc,.mol-tabovi,.umetak,.chev,.mol-poveznica{display:none!important;}
   .mol-tab{display:block!important;}
+  .ref a{text-decoration:none;}
   .mol-sec{margin:18px 0 8px;}
   .mol-sec-glava{break-inside:avoid;break-after:avoid;page-break-after:avoid;}
   .molitva p{font-size:12pt;line-height:1.5;orphans:3;widows:3;}
@@ -1386,10 +1389,32 @@ function PrintTree({ tree }) {
 // je mjesto za vlastiti upis.
 const NOVA_IZJAVA = /\.\s+(?=(U ime|Proglašavam|Objavljujem|Odričem|Priznajem|In the name|In Jesus|I proclaim|I announce|I renounce|I acknowledge|Therefore)\b)/g;
 
+// Svaki biblijski navod je poveznica na Google pretragu ("Fil 4,13 Biblija" / "Phil 4:13 Bible").
+// "(Iv 3,17; Rim 8,1)" daje dvije poveznice, a u "(Ps 23; 27; 91)" broj bez knjige preuzima
+// prethodnu knjigu. Zagrada koja ne izgleda kao navod (knjiga + poglavlje[,|:retci]) ostaje običan tekst.
+const NAVOD = /^((?:\d )?[A-ZČĆŠŽĐ][a-zčćšžđ]{1,4} )?(\d+(?:[,:][\d\-–.]+)?)$/;
+function Navod({ text }) {
+  const dijelovi = text.slice(1, -1).split(/;\s*/);
+  let knjiga = '';
+  const veze = dijelovi.map(d => {
+    const m = d.match(NAVOD);
+    if (!m || (!m[1] && !knjiga)) return null;
+    if (m[1]) knjiga = m[1].trim();
+    return { d, puni: knjiga + ' ' + m[2] };
+  });
+  if (veze.includes(null)) return <span className="ref">{text}</span>;
+  return (
+    <span className="ref">({veze.map((v, i) => (
+      <React.Fragment key={i}>{i > 0 && '; '}<a href={'https://www.google.com/search?q=' + encodeURIComponent(v.puni + ' ' + t('molitvenik.pretraga'))}
+        target="_blank" rel="noopener noreferrer" title={v.puni}>{v.d}</a></React.Fragment>
+    ))})</span>
+  );
+}
+
 function Navodi({ text }) {
   return <>{String(text).split(/(\([^()]*\))/).map((d, i) =>
     !d.startsWith('(') ? d
-    : /\d/.test(d) ? <span key={i} className="ref">{d}</span>
+    : /\d/.test(d) ? <Navod key={i} text={d}/>
     : <span key={i} className="upis">{d}</span>
   )}</>;
 }
@@ -1470,7 +1495,7 @@ function Sazetak({ tree }) {
       <p className="mol-uvod" style={{marginTop:0,marginBottom:14}}>{t('molitvenik.sazetakUvod')}</p>
       <div className="mol-podnaslov">{t('molitvenik.rana')} → {t('molitvenik.laz').toLowerCase()}</div>
       <table className="mol-tablica"><tbody>
-        {DATA.smrtneRane.map(r => <tr key={r.id}><td>{r.naziv}</td><td className="laz">„{r.laz}“</td></tr>)}
+        {DATA.smrtneRane.map(r => <tr key={r.id}><td>{r.naziv}</td><td className="laz">{t('molitvenik.citat', r.laz)}</td></tr>)}
       </tbody></table>
       <div className="mol-podnaslov">{t('molitvenik.grijeh')} → {t('molitvenik.idol').toLowerCase()}</div>
       <table className="mol-tablica"><tbody>
@@ -1503,14 +1528,14 @@ function Sazetak({ tree }) {
       {plodovi.length > 0 && <Red oznaka={t('k5.plodovi')}>{plodovi.join(', ')}</Red>}
       {sinDef && <Red oznaka={t('k5.grijeh')}><strong>{sinDef.naziv}</strong> <span style={{color:'var(--mid)'}}>· {t('molitvenik.idol').toLowerCase()}: {sinDef.idolatrija}</span></Red>}
       <Red oznaka={'🪵 ' + t('molitvenik.deblo')}>{DATA.deblo.naziv}</Red>
-      {zavjeti.length > 0 && <Red oznaka={t('k5.zavjeti')}>{zavjeti.map((z, i) => <div key={i}>„{z}“</div>)}</Red>}
-      {osude.length > 0 && <Red oznaka={t('k5.osude')}>{osude.map((o, i) => <div key={i}>„{o}“</div>)}</Red>}
+      {zavjeti.length > 0 && <Red oznaka={t('k5.zavjeti')}>{zavjeti.map((z, i) => <div key={i}>{t('molitvenik.citat', z)}</div>)}</Red>}
+      {osude.length > 0 && <Red oznaka={t('k5.osude')}>{osude.map((o, i) => <div key={i}>{t('molitvenik.citat', o)}</div>)}</Red>}
       {slike.length > 0 && <Red oznaka={t('ispis.slikaBoga')}>{slike.join(' · ')}</Red>}
       {rane.length > 0 && <Red oznaka={t('k5.rane')}>{rane.map(w => {
         const rd = DATA.ranaById[w.id];
         return (
           <div key={w.id} style={{marginBottom:4}}>
-            <strong>{rd?.naziv || w.naziv}</strong>{rd && <> — <em>„{rd.laz}“</em></>}
+            <strong>{rd?.naziv || w.naziv}</strong>{rd && <> — <em>{t('molitvenik.citat', rd.laz)}</em></>}
             {komentari[w.id] && <div style={{fontSize:12,color:'var(--mid)'}}>{komentari[w.id]}</div>}
           </div>
         );
@@ -1588,7 +1613,7 @@ function Molitvenik({ onBack }) {
 
         <Odjeljak id="mol-lazi" br="1" naslov={t('molitvenik.lazi')} uvod={t('molitvenik.laziUvod')}>
           {DATA.smrtneRane.map(r => (
-            <Molitva key={r.id} naslov={r.naziv} ikona="🌱" podnaslov={'„' + r.laz + '“'}
+            <Molitva key={r.id} naslov={r.naziv} ikona="🌱" podnaslov={t('molitvenik.citat', r.laz)}
               dijelovi={dijeloviRane(r)} sklopljeno={true}/>
           ))}
         </Odjeljak>
@@ -1703,7 +1728,7 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
           <Odjeljak br={++br} naslov={t('molitvenik.lazi')} uvod={t('molitvenik.laziUvod')}>
             {raneDef.map(rd => (
               <Molitva key={rd.id} ikona="🌱" naslov={t('molitve.iscjeljenje', rd.naziv)}
-                podnaslov={'„' + rd.laz + '“'} dijelovi={dijeloviRane(rd)}/>
+                podnaslov={t('molitvenik.citat', rd.laz)} dijelovi={dijeloviRane(rd)}/>
             ))}
           </Odjeljak>
         )}
