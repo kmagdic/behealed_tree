@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stablo života</title>
+<title>Be Healed - Tree of Life</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#F7F3EE">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Stablo života">
+<meta name="apple-mobile-web-app-title" content="Be Healed - Tree">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX9RNFYH86"></script>
@@ -44,8 +44,11 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
   border-bottom:1px solid rgba(139,107,74,0.12);
   backdrop-filter:blur(8px);z-index:200;flex-shrink:0;
 }
-.hdr-brand{display:flex;align-items:center;gap:9px;cursor:pointer;}
-.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);}
+.hdr-brand{display:flex;align-items:center;gap:9px;cursor:pointer;min-width:0;}
+.hdr-brand>div{min-width:0;overflow:hidden;}
+.hdr-brand>svg{flex-shrink:0;}
+/* Naslov je dug ("Be Healed - Tree of Life"): na uskom zaslonu se skrati, a gumbi i jezik ostaju */
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .hdr-sub{font-size:10px;color:var(--light);letter-spacing:.08em;text-transform:uppercase;}
 .hdr-tree{display:flex;align-items:center;gap:6px;min-width:0;}
 .hdr-tree-name{font-size:11px;font-weight:400;color:var(--light);background:transparent;border:none;outline:none;font-family:'Inter',sans-serif;padding:2px 4px;border-radius:4px;min-width:60px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .15s,color .15s;cursor:text;}
@@ -53,8 +56,9 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .hdr-tree-name:focus{background:rgba(139,107,74,.08);color:var(--mid);text-overflow:clip;overflow:visible;}
 .hdr-tree-del{width:18px;height:18px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0;}
 .hdr-tree-del:hover,.hdr-tree-del:active{background:rgba(180,60,60,.15);color:#a03030;}
-@media(max-width:500px){.hdr-tree-name{max-width:100px;}.hdr-sub{display:none;}}
-.hdr-right{display:flex;gap:8px;align-items:center;}
+.hdr-right .btn{white-space:nowrap;}
+@media(max-width:500px){.hdr{padding:10px 14px;}.hdr-tree-name{max-width:100px;}.hdr-sub{display:none;}.hdr .hdr-right{gap:5px;margin-left:8px;}.hdr-mol-txt,.hdr-btn-txt{display:none;}.hdr .hdr-mol,.hdr .hdr-right .btn-s{padding:5px 7px;}.hdr-tree-name{min-width:0;}}
+.hdr-right{display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:10px;}
 .jezik{display:flex;border:1px solid var(--bark-l);border-radius:14px;overflow:hidden;flex-shrink:0;}
 .jezik button{border:none;background:transparent;color:var(--light);font:500 10.5px 'Inter',sans-serif;letter-spacing:.05em;padding:4px 8px;cursor:pointer;transition:all .15s;}
 .jezik button:hover{color:var(--bark-d);}
@@ -172,7 +176,15 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .w-verse{background:rgba(139,107,74,.06);border-left:3px solid var(--bark-l);padding:13px 16px;border-radius:0 8px 8px 0;max-width:360px;margin:20px 0 28px;text-align:left;}
 .w-verse p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--mid);line-height:1.6;margin-bottom:3px;}
 .w-verse cite{font-size:10px;color:var(--light);}
-.w-actions{display:flex;flex-direction:column;gap:9px;width:100%;max-width:270px;}
+.w-actions{display:flex;flex-direction:column;gap:9px;width:100%;max-width:290px;}
+/* Molitve na početnoj: kartica, ne gumb — jasno istaknuta, a stablo ostaje glavna radnja */
+.w-mol{display:flex;align-items:center;gap:12px;width:100%;margin-top:6px;padding:12px 14px;background:linear-gradient(135deg,#FBF5E8,#F5EAD3);border:1.5px solid var(--gold-l);border-radius:10px;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:all .18s ease;}
+.w-mol:hover{border-color:var(--gold);box-shadow:0 3px 14px rgba(196,154,60,.2);transform:translateY(-1px);}
+.w-mol-ico{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.w-mol-t{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--bark-d);line-height:1.15;}
+.w-mol-chev{margin-left:auto;color:var(--gold);font-size:22px;line-height:1;}
+.hdr .hdr-mol{color:var(--gold);font-weight:600;}
+.hdr .hdr-mol:hover{color:#A57F2C;background:rgba(196,154,60,.1);}
 .w-install{margin-top:18px;width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;}
 .w-help{margin-top:10px;background:rgba(139,107,74,.06);border:1px solid rgba(139,107,74,.14);border-radius:8px;padding:14px 16px;text-align:left;font-size:12.5px;color:var(--mid);line-height:1.6;}
 .w-help h4{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);margin-bottom:6px;}
@@ -372,7 +384,6 @@ details[open]>summary .chev{transform:rotate(90deg);}
 .mol-napomena{font-size:12.5px;font-style:italic;color:var(--mid);margin-bottom:12px;line-height:1.5;}
 @media(max-width:500px){
   .prayer-wrap{padding:18px 16px 32px;}
-  .hdr-mol{display:none;}
   .lanac-red{grid-template-columns:1fr;gap:2px;}
   .mol-tablica td:first-child{white-space:normal;}
   .molitva p{font-size:17.5px;}
@@ -592,6 +603,7 @@ const IPlus = () => <I d="M8 3v10M3 8h10"/>;
 const ICheck = () => <I d="M3 8l3.5 3.5L13 5"/>;
 const IPrint = () => <I d="M4 5V2h8v3M4 11H2V7h12v4h-2M4 14h8v-5H4z"/>;
 const IBack = () => <I d="M10 3L5 8l5 5"/>;
+const ICross = ({ s }) => <I s={s} d="M8 1.5v13M3.5 5.5h9"/>;
 const IDownload = () => <I d="M8 2v8M5 7l3 3 3-3M3 11v2h10v-2"/>;
 const ISpark = () => <I d="M8 2v2M8 12v2M2 8h2M12 8h2M4 4l1.4 1.4M10.6 10.6L12 12M4 12l1.4-1.4M10.6 5.4L12 4"/>;
 
@@ -1646,7 +1658,7 @@ function Molitvenik({ onBack }) {
 function PrayerScreen({ tree, onBack, onMolitvenik }) {
   const sinDef = DATA.smrtniGrijesi.find(s=>s.id===tree.sinId);
 
-  // Ime PDF-a: "Stablo života - #3 Srditost 04.09.2026" / "Tree of Life - #3 Anger 04.09.2026"
+  // Ime PDF-a: "Be Healed - Tree of Life - #3 Srditost 04.09.2026" / "Be Healed - Tree of Life - #3 Anger 04.09.2026"
   // Preglednik uzima document.title kao zadano ime datoteke.
   // imeStabla() poštuje ime koje je korisnik upisao u headeru.
   function ispisi() {
@@ -1866,8 +1878,10 @@ function App() {
             {t('pocetna.mojaStablaN', state.trees.length)}
           </button>
         )}
-        <button className="btn btn-s btn-lg" style={{justifyContent:'center'}} onClick={()=>setView('molitvenik')}>
-          {t('molitvenik.gumb')}
+        <button className="w-mol" onClick={()=>setView('molitvenik')}>
+          <span className="w-mol-ico"><ICross s={20}/></span>
+          <span className="w-mol-t">{t('molitvenik.naslov')}</span>
+          <span className="w-mol-chev">›</span>
         </button>
       </div>
       {!instalirano && (
@@ -1934,9 +1948,9 @@ function App() {
           </div>
         </div>
         <div className="hdr-right">
-          {view!=='welcome' && view!=='molitvenik' && <button className="btn btn-g btn-sm hdr-mol" onClick={()=>setView('molitvenik')}>{t('molitvenik.gumb')}</button>}
+          {view!=='molitvenik' && <button className="btn btn-g btn-sm hdr-mol" onClick={()=>setView('molitvenik')} title={t('molitvenik.naslov')} aria-label={t('molitvenik.naslov')}><ICross/><span className="hdr-mol-txt">{t('molitvenik.kratko')}</span></button>}
           {state.trees.length>0 && view!=='trees' && <button className="btn btn-g btn-sm" onClick={()=>setView('trees')}>{t('zaglavlje.svaStabla')}</button>}
-          {(view==='guided'||view==='prayer') && <button className="btn btn-s btn-sm" onClick={newTree}><IPlus/> {t('zaglavlje.novo')}</button>}
+          {(view==='guided'||view==='prayer') && <button className="btn btn-s btn-sm" onClick={newTree} title={t('zaglavlje.novo')} aria-label={t('zaglavlje.novo')}><IPlus/><span className="hdr-btn-txt">{t('zaglavlje.novo')}</span></button>}
           <div className="jezik" role="group" aria-label={t('zaglavlje.jezik')}>
             {PODRZANI.map(kod => (
               <button key={kod} className={kod===lang?'on':''} aria-pressed={kod===lang}

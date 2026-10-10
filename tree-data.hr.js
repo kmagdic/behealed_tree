@@ -22,7 +22,7 @@ window.JEZICI = window.JEZICI || {};
 window.JEZICI.hr = {
   kod: "hr",
   oznaka: "HR",
-  naslov: "Stablo života",
+  naslov: "Be Healed - Tree of Life",
 
   // ── TEKST SUČELJA ───────────────────────────────────────────
   // Funkcije primaju brojeve/nazive za umetanje. **x** = podebljano, _x_ = kurziv,
@@ -143,7 +143,7 @@ window.JEZICI.hr = {
     },
 
     pocetna: {
-      naslov: "Stablo\n_života_",
+      naslov: "Be Healed\n_Tree of Life_",
       opis: "Interaktivni duhovni dnevnik temeljen na knjizi _Be Healed_ dr. Boba Schuchtsa — s vodičem koji pomaže otkriti veze između grijeha i rana.",
       citat: "\"Svako se stablo poznaje po svom rodu. Jer ne beru smokve s trnja, ni grožđa s kupine.\"",
       citatIzvor: "— Luka 6,44",
@@ -167,7 +167,7 @@ window.JEZICI.hr = {
     },
 
     molitvenik: {
-      gumb: "✝ Molitve",
+      kratko: "Molitve",
       naslov: "Molitve iscjeljenja",
       podnaslov: "Prema molitvama John Paul II Healing Centera. Moli polako i naglas — ne žuri, zastani gdje te nešto dotakne.",
       sadrzaj: "Sadržaj",

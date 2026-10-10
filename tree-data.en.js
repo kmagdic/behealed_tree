@@ -10,7 +10,7 @@ window.JEZICI = window.JEZICI || {};
 window.JEZICI.en = {
   kod: "en",
   oznaka: "EN",
-  naslov: "Tree of Life",
+  naslov: "Be Healed - Tree of Life",
 
   // ── TEKST SUČELJA ───────────────────────────────────────────
   ui: {
@@ -129,7 +129,7 @@ window.JEZICI.en = {
     },
 
     pocetna: {
-      naslov: "Tree\n_of Life_",
+      naslov: "Be Healed\n_Tree of Life_",
       opis: "An interactive spiritual journal based on _Be Healed_ by Dr. Bob Schuchts — with a guide that helps you discover the connections between sin and wounds.",
       citat: "\"Every tree is known by its own fruit. For figs are not gathered from thorns, nor are grapes picked from a bramble bush.\"",
       citatIzvor: "— Luke 6:44",
@@ -153,7 +153,7 @@ window.JEZICI.en = {
     },
 
     molitvenik: {
-      gumb: "✝ Prayers",
+      kratko: "Prayers",
       naslov: "Healing prayers",
       podnaslov: "Based on the prayers of the John Paul II Healing Center. Pray slowly and aloud — don't hurry, pause wherever something touches you.",
       sadrzaj: "Contents",

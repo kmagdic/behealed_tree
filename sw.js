@@ -1,4 +1,4 @@
-/* Service worker — Stablo života (PWA: instalacija + offline)
+/* Service worker — Be Healed - Tree of Life (PWA: instalacija + offline)
  *
  * Vlastite datoteke idu NETWORK-FIRST: molitve se često mijenjaju, a cache-first
  * bi korisnicima zauvijek servirao staru kopiju. Predmemorija služi samo offline.

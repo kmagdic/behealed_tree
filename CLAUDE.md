@@ -4,7 +4,7 @@ Upute za Claude Code (claude.ai/code) pri radu na ovom repozitoriju.
 
 ## Što je ovo
 
-Web aplikacija za duhovnu samorefleksiju — **"Stablo života"** — za katoličke korisnike koji prolaze duhovnu obnovu *Be Healed* (dr. Bob Schuchts, HWP Workbook, pogl. 3 "Facing Our Brokenness"). Aplikacija je **dvojezična — hrvatski (zadano) i engleski**, a arhitektura je spremna za treći jezik.
+Web aplikacija za duhovnu samorefleksiju — **"Be Healed - Tree of Life"** — za katoličke korisnike koji prolaze duhovnu obnovu *Be Healed* (dr. Bob Schuchts, HWP Workbook, pogl. 3 "Facing Our Brokenness"). Aplikacija je **dvojezična — hrvatski (zadano) i engleski**, a arhitektura je spremna za treći jezik.
 
 Korisnik gradi svoje stablo: **smrtni grijeh = deblo**, **plodovi = krošnja**, **rane srca = korijenje**, **zavjeti i osude = duboko korijenje**.
 
@@ -104,7 +104,7 @@ Prva verzija (v1, prvi commit) imala je i druge ID-eve plodova i grijeha (`gorč
 
 **Raspored**: lijevo forma (`.left`), desno živa vizualizacija (`.tree-pane`, 400px, skriveno na mobitelu — ondje postaje traka od 260px ispod forme).
 
-**Prikazi** (`view` u `App`): `welcome` → `list` → `guided` → `prayer`, plus `molitvenik` — opći molitvenik bez stabla, dostupan s početne (gumb *✝ Molitve*) i iz headera. `?view=molitve` ga otvara izravno; `App` drži URL usklađenim i šalje GA `molitvenik_otvoren`.
+**Prikazi** (`view` u `App`): `welcome` → `list` → `guided` → `prayer`, plus `molitvenik` — opći molitvenik bez stabla. Ulaz je namjerno istaknut: na početnoj zlatna kartica `.w-mol` (križ `ICross` i naslov) ispod gumba za stablo, a u headeru zlatni križ `.hdr-mol` na svim ekranima osim samog molitvenika (na mobitelu samo ikona). `?view=molitve` ga otvara izravno; `App` drži URL usklađenim i šalje GA `molitvenik_otvoren`.
 
 **Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `Molitvenik`, `App`, `Bogato`, `Redovi` + molitveni dijelovi `Molitva`, `TekstMolitve`, `Navodi`, `Sazetak`, `Odjeljak`, `KoraciOprosta` + pomoćne `t`, `pripremiPodatke`, `migriraj`, `imeStabla`, `getPriority`, `cyclePriority`.
 
@@ -223,7 +223,7 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 - **Višeredna slobodna polja** (`woundEvent`, `woundReflection`): HTML sažima prijelaze retka, pa ih renderiraj kroz `<Redovi text=… />`. Bez toga se svi retci slijepe u jednu liniju.
 
-- **Ime PDF-a**: `ispisi()` u `PrayerScreen` postavi `document.title` prije `window.print()` pa ga vrati. Preglednik uzima naslov kao zadano ime datoteke. Format je `Stablo života - <ime stabla>`, npr. `Stablo života - #3 Srditost 04.09.2026`. Koristi `tree.name` jer ga korisnik može preimenovati u headeru; `imeDatoteke()` miče samo znakove koje datotečni sustavi ne dopuštaju, dijakritika ostaje.
+- **Ime PDF-a**: `ispisi()` u `PrayerScreen` postavi `document.title` prije `window.print()` pa ga vrati. Preglednik uzima naslov kao zadano ime datoteke. Format je `<naslov> - <ime stabla>`, npr. `Be Healed - Tree of Life - #3 Srditost 04.09.2026`. Koristi `tree.name` jer ga korisnik može preimenovati u headeru; `imeDatoteke()` miče samo znakove koje datotečni sustavi ne dopuštaju, dijakritika ostaje.
 
 - **Prelamanje ispisa**: `.pcard` ima `break-inside: avoid`, naslovi `break-after: avoid`. Nakon zahvata u molitveni ekran uvijek pregledaj generirani PDF — kartice se ne smiju lomiti preko stranica.
 
@@ -236,6 +236,8 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 - **Podloga slike stabla**: `tree-bg.jpg` ima podlogu `#F8F8F8`, a `.tree-pane` je topla krem `#F2EDE6`. Bez `mix-blend-mode: multiply` na `.tree-bg` vidi se pravokutni šav ondje gdje slika staje. Ne mijenjaj paletu da se to riješi — multiply stapa bijelo, a crtež ostaje.
 
 - **PWA.** Početna ima gumb *Instaliraj aplikaciju* (skriven kad je app već instalirana, `display-mode: standalone`). Chrome/Edge/Android → native dijalog (`beforeinstallprompt`); Safari/iOS → upute (Podijeli → Dodaj na početni zaslon). `sw.js` je **network-first za vlastite datoteke** — cache-first bi poništio cache-busting gore i korisnici bi vidjeli stare molitve; predmemorija služi samo offline. CDN (unpkg, fontovi) ide cache-first jer je verzioniran. Prvo učitavanje ide mimo SW-a, pa mu stranica nakon registracije pošalje popis dohvaćenih URL-ova (`predmemoriraj`). SW radi samo preko HTTPS-a ili `localhost`. Ako mijenjaš strategiju u `sw.js`, podigni `CACHE` (`stablo-v1` → `v2`). Ikone su generirane iz `ITree` glifa (`rsvg-convert`); manifest je samo hrvatski (ime aplikacije ne prati jezik).
+
+- **Naslov aplikacije je `Be Healed - Tree of Life` u svim jezicima** — `JEZICI[kod].naslov`, `pocetna.naslov`, `<title>` i `name` u manifestu. Ne prevodi se. Ispod ikone na početnom zaslonu stoji skraćeno **`Be Healed - Tree`** (`short_name` u manifestu i `apple-mobile-web-app-title` za iOS). U headeru se na uskom zaslonu skraćuje s „…“ (`.hdr-title`), da gumbi i prekidač jezika ostanu vidljivi.
 
 - **Nema AI integracije.** `window.claude.complete()` je uklonjen jer ne postoji ni na objavljenoj stranici — gumb je vodio u prazno. Ako se ikad vraća, mora ići preko serverske rute i imati vidljivo stanje greške.
 
