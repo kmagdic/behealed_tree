@@ -23,7 +23,7 @@ Korisnik gradi svoje stablo: **smrtni grijeh = deblo**, **plodovi = krošnja**, 
 | `.github/workflows/static.yml` | Deploy na GitHub Pages + cache-busting |
 | `docs/` | Izvori: HWP Workbook, Be Healed, Be Transformed, fotografije hrvatske skripte |
 
-> **`docs/` je u `.gitignore` namjerno** — to su autorske knjige. GitHub Actions workflow objavljuje **cijeli repo** (`path: '.'`), pa bi commit tih datoteka značio njihovo javno objavljivanje. Nikada ih ne dodavati u git.
+> **`docs/` je u `.gitignore` namjerno** (cijeli direktorij, `/docs/`) — to su autorske knjige. GitHub Actions workflow objavljuje **cijeli repo** (`path: '.'`), pa bi commit tih datoteka značio njihovo javno objavljivanje. Nikada ih ne dodavati u git.
 
 ## Objavljivanje
 
@@ -104,9 +104,18 @@ Prva verzija (v1, prvi commit) imala je i druge ID-eve plodova i grijeha (`gorč
 
 **Raspored**: lijevo forma (`.left`), desno živa vizualizacija (`.tree-pane`, 400px, skriveno na mobitelu — ondje postaje traka od 260px ispod forme).
 
-**Prikazi** (`view` u `App`): `welcome` → `list` → `guided` → `prayer`.
+**Prikazi** (`view` u `App`): `welcome` → `list` → `guided` → `prayer`, plus `molitvenik` — opći molitvenik bez stabla, dostupan s početne (gumb *✝ Molitve*) i iz headera. `?view=molitve` ga otvara izravno; `App` drži URL usklađenim i šalje GA `molitvenik_otvoren`.
 
-**Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `App`, `Bogato`, `Redovi` + pomoćne `t`, `pripremiPodatke`, `migriraj`, `imeStabla`, `getPriority`, `cyclePriority`.
+**Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `Molitvenik`, `App`, `Bogato`, `Redovi` + molitveni dijelovi `Molitva`, `TekstMolitve`, `Navodi`, `Sazetak`, `Odjeljak`, `KoraciOprosta` + pomoćne `t`, `pripremiPodatke`, `migriraj`, `imeStabla`, `getPriority`, `cyclePriority`.
+
+### Molitve (`Molitvenik` i `PrayerScreen`)
+
+Oba ekrana slijede redoslijed JPII Healing Centera: **laži i istina → odricanje od grijeha → oprost → (unutarnje iscjeljenje) → pečat i blagoslov**. Molitvenik pokazuje sve; `PrayerScreen` samo ono što je u stablu, a za cijeli proces oprosta vodi u molitvenik (`skokPriOtvaranju`).
+
+- `<Molitva dijelovi=[{oznaka, vrsta, tekst}] | tekst sklopljeno?/>` — jedna kartica. Rane se dijele na *Odričem se* (`lazi`) / *Proglašavam istinu* (`istina`), grijesi na prvi odlomak / ostatak (`dijeloviRane`, `dijeloviGrijeha`). `sklopljeno` → `<details>`; `beforeprint` ih sve otvori.
+- `TekstMolitve` razbija tekst: `\n\n` = odlomak, a svaka nova izjava (`NOVA_IZJAVA`: *U ime…*, *Proglašavam…*, *I renounce…*) ide u novi redak. **Ne uvoditi zagrade bez broja u postojeće molitve** — `Navodi` (zagrada s brojem) prikaže kao biblijski navod, a (zagradu bez broja) kao mjesto za vlastiti upis.
+- `<Sazetak/>` bez stabla: rana → laž, grijeh → idol (`idolatrija`), sedam želja srca. `<Sazetak tree/>`: lanac kao na slici (plodovi → grijeh → deblo → zavjeti/osude → rane) i ujedno zamjenjuje stari sažetak koji je bio samo za ispis.
+- U ispisu se tabovi oprosta prikažu svi, umetnute molitve se sakriju, a `opceMolitve` se ispišu jednom ispod koraka.
 
 ### Jezici
 
@@ -178,6 +187,11 @@ ID-evi su **namjerno ostali stari** radi spremljenih podataka u `localStorage`. 
   - u engleskom oba polja imaju isti oblik ("I forgive / I have judged *my father*"), a `istina` se nastavlja na *"I proclaim the truth that…"*. U `unutarnjiZavjeti` polje `zamjena` počinje s `to …` jer se nastavlja na *"…and choose"*
 - **`kriveSlikeBoga[]`** — laži o Bogu
 - **`raneDjetinjstva[]`** — `tip:"A"` (uskrata ljubavi) / `tip:"B"` (povreda granica), prema Be Healed pogl. 7
+- **`smrtneRane[].istinaKratko`** — istina iz JPII izjave, za *Pečat i blagoslov*. U hrvatskom se nastavlja na *"Priznajem da…"* (`"sam na sigurnom…"`), u engleskom je cijela rečenica (`"I am safe and secure"`)
+- **`zeljeSrca[]`** — sedam želja srca (JPII *Seven Deadly Wounds*). **Izvor ih ne povezuje s ranama** — ne dodavati `rane[]`
+- **`oprost.{osoba,sebe,bog}[]`** — koraci `{tekst, molitva?}`; `molitva` je ključ iz `opceMolitve` ili `'pecat'`. Koraci o duševnim vezama (*soul ties*) namjerno su izostavljeni
+- **`iscjeljenje[]`** — 6 koraka *Praying for Inner Healing*, `{naslov, stavke[]}` — upute, ne molitva
+- **`opceMolitve`** — `lazi`, `osudaOsobe`, `osudaBoga`, `zavjeti` s (mjestima za upis)
 
 ### Krive slike Boga — oprez s atribucijom
 
@@ -197,7 +211,7 @@ ID-evi su **namjerno ostali stari** radi spremljenih podataka u `localStorage`. 
 
 ### Graditelji molitava
 
-`molitvaZavjeta(z)`, `molitvaZavjetaSkupno(list)`, `molitvaOsude(o)`, `molitvaOsudeSkupno(list)`, `molitvaSlikeBoga(k)`.
+`molitvaZavjeta(z)`, `molitvaZavjetaSkupno(list)`, `molitvaOsude(o)`, `molitvaOsudeSkupno(list)`, `molitvaSlikeBoga(k)`, `molitvaPecata(rane)` (bez rana ostaju mjesta za upis).
 
 Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačne ga ponavljaju na svakoj kartici, što u ispisu izgleda loše. Molitveni ekran koristi skupne.
 

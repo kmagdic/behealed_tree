@@ -166,6 +166,47 @@ window.JEZICI.hr = {
       korak: n => `Korak ${n}/5`
     },
 
+    molitvenik: {
+      gumb: "✝ Molitve",
+      naslov: "Molitve iscjeljenja",
+      podnaslov: "Prema molitvama John Paul II Healing Centera. Moli polako i naglas — ne žuri, zastani gdje te nešto dotakne.",
+      sadrzaj: "Sadržaj",
+      ispisi: "Ispiši",
+      sazetak: "Ukratko",
+      sazetakUvod: "Grijeh često raste iz rane — njime pokušavamo pobjeći od boli. Iza grijeha koji se ponavlja obično stoji rana koja treba iscjeljenje.",
+      rana: "Rana",
+      laz: "Laž koju srce vjeruje",
+      grijeh: "Grijeh",
+      idol: "Idol",
+      zelje: "Sedam želja srca",
+      zeljeUvod: "Ono za čim je svako ljudsko srce stvoreno.",
+      lazi: "Laži i istina",
+      laziUvod: "Za svaku ranu: odreci se laži, pa naglas proglasi istinu.",
+      grijesi: "Odricanje od grijeha",
+      grijesiUvod: "Odreci se grijeha i idola koji stoji iza njega, pa izaberi krepost.",
+      oprost: "Oprost",
+      oprostUvod: "Oprost je odluka, ne osjećaj. Prođi korake polako; molitve su umetnute ondje gdje ih trebaš.",
+      oprostOsoba: "Oprostiti drugome",
+      oprostSebi: "Oprostiti sebi",
+      oprostBogu: "Oprostiti Bogu",
+      oprostBoguNapomena: "Ne zato što Bog treba oprost — On je savršen i sav dobar — nego zato što ponekad prema Njemu nosimo ogorčenost koju trebamo otpustiti.",
+      molitvaLazi: "Molitva odricanja od laži",
+      molitvaOsudaOsobe: "Molitva odricanja od osude osobe",
+      molitvaOsudaBoga: "Molitva odricanja od osude Boga",
+      molitvaZavjeti: "Molitva odricanja od unutarnjeg zavjeta",
+      naPecat: "↓ Pečat i blagoslov",
+      iscjeljenje: "Moliti za unutarnje iscjeljenje",
+      iscjeljenjeUvod: "Upute za vrijeme molitve — kad te nešto u sadašnjosti boli, potraži korijen.",
+      pecat: "Pečat i blagoslov",
+      pecatUvod: "Na kraju svake molitve iscjeljenja zamoli Boga da zapečati ono što je učinio.",
+      odricemSe: "Odričem se",
+      proglasavam: "Proglašavam istinu",
+      biram: "Biram",
+      tvojeStablo: "Tvoje stablo",
+      deblo: "Korijen svakog grijeha",
+      cijeliOprost: "Cijeli proces oprosta →"
+    },
+
     obavijest: {
       potvrdiBrisanje: "Obrisati ovo stablo? Ova radnja se ne može poništiti.",
       obrisano: "Stablo obrisano",
@@ -275,11 +316,118 @@ window.JEZICI.hr = {
       { id:"d_prekrsena_obecanja",tip:"B", tekst:"Obećanja su mi se stalno kršila", rane:["beznade","napustenost"] }
     ],
 
+    // ── MOLITVENIK ──────────────────────────────────────────────
+    // Izvori: JPII Healing Center — "Healing Prayers" (oprost, unutarnje iscjeljenje,
+    // pečat i blagoslov, opće molitve) i "Seven Deadly Wounds" (sedam želja srca).
+    // Prikazuje ih stranica Molitve (view 'molitvenik') i molitveni ekran stabla.
+
+    // Sedam želja ljudskoga srca. Izvor ih NE povezuje s ranama, pa ni ovdje
+    // nema polja rane[] — ne izmišljati vezu.
+    zeljeSrca: [
+      { id:"saslusan",  naziv:"Biti saslušan i shvaćen" },
+      { id:"potvrden",  naziv:"Biti potvrđen", opis:"čuti da sam dobar" },
+      { id:"blagoslovljen", naziv:"Biti blagoslovljen", opis:"primiti bezuvjetnu ljubav" },
+      { id:"siguran",   naziv:"Biti siguran", opis:"tjelesno i emocionalno" },
+      { id:"dodirnut",  naziv:"Biti dodirnut", opis:"zdrav znak nečije ljubavi — zagrljaj, blizina" },
+      { id:"izabran",   naziv:"Biti izabran", opis:"osjećati se posebnim" },
+      { id:"ukljucen",  naziv:"Biti uključen", opis:"biti dio nečega, pripadati zajednici" }
+    ],
+
+    // Proces oprosta. `molitva` je ključ molitve koja se moli na tom koraku:
+    //   lazi | osudaOsobe | osudaBoga | zavjeti  → opceMolitve[ključ]
+    //   pecat                                    → odjeljak Pečat i blagoslov
+    // Koraci o duševnim vezama (soul ties) namjerno su izostavljeni.
+    oprost: {
+      osoba: [
+        { tekst:"Zamoli Duha Svetoga da ti pokaže kome trebaš oprostiti — članu obitelji, prijatelju, onome tko te zlostavljao, Bogu ili sebi." },
+        { tekst:"Zamisli tu osobu pred sobom i pazi što osjećaš." },
+        { tekst:"Sastavi račun duga: što ti je uzela, kako te povrijedila? U redu je osjećati ljutnju." },
+        { tekst:"Reci joj naglas što ti je učinila i kako je to utjecalo na tebe. Budi posve iskren." },
+        { tekst:"Zamoli Duha Svetoga da ti objavi što, zbog tog događaja, vjeruješ o sebi — to je laž o identitetu." },
+        { tekst:"Odreci se te laži.", molitva:"lazi" },
+        { tekst:"Zamoli Duha Svetoga da ti objavi osude koje nosiš prema osobi koja te povrijedila." },
+        { tekst:"Odreci se tih osuda.", molitva:"osudaOsobe" },
+        { tekst:"Kratkom molitvom zamoli Isusa da oprosti toj osobi." },
+        { tekst:"Oprosti joj: _„U ime Isusovo opraštam … za …“_ Možda ti pomogne da zamisliš sebe i nju zajedno podno križa." },
+        { tekst:"Moli blagoslov nad njom — zamoli Boga da je blagoslovi upravo suprotno od onoga čime te povrijedila." },
+        { tekst:"Je li iz te povrede nastao neki unutarnji zavjet? Odreci ga se sada.", molitva:"zavjeti" },
+        { tekst:"Zamoli Isusa da zapečati ovaj oprost i iscijeli rane.", molitva:"pecat" },
+        { tekst:"Zahvali Bogu za iscjeljenje." }
+      ],
+      sebe: [
+        { tekst:"Sastavi račun: čime su tvoja djela ili propusti naštetili tebi ili drugima?" },
+        { tekst:"Reci kako je to utjecalo na tebe ili na druge." },
+        { tekst:"Zamoli Duha Svetoga da ti objavi što, zbog tog čina ili propusta, vjeruješ o sebi — to je laž o identitetu." },
+        { tekst:"Odreci se te laži (npr. _„glup sam“, „sebičan sam“, „okrutan sam“_).", molitva:"lazi" },
+        { tekst:"Kratkom molitvom zamoli Isusa da ti oprosti ono što se dogodilo i posljedice koje je to izazvalo." },
+        { tekst:"Oprosti sebi." },
+        { tekst:"Zamoli Boga da blagoslovi tebe i one koje je to povrijedilo te da preokrene posljedice tvojih grijeha ili propusta." },
+        { tekst:"Je li iz toga nastao neki unutarnji zavjet? Odreci ga se sada.", molitva:"zavjeti" },
+        { tekst:"Zamoli Isusa da zapečati ovaj oprost i iscijeli rane.", molitva:"pecat" },
+        { tekst:"Zahvali Bogu za iscjeljenje." }
+      ],
+      bog: [
+        { tekst:"Zamisli Isusa ili Boga Oca pred sobom i pazi što osjećaš." },
+        { tekst:"Sastavi račun onoga za što vjeruješ da ti je Bog učinio ili da je učinio drugima." },
+        { tekst:"Reci kako je to utjecalo na tebe ili na druge." },
+        { tekst:"Zamoli Duha Svetoga da ti objavi što, zbog onoga što je Bog po tvom doživljaju učinio ili propustio, vjeruješ o sebi — to je laž o identitetu." },
+        { tekst:"Odreci se te laži (npr. _„bezvrijedan sam“, „nisam voljen“, „nemoćan sam“_).", molitva:"lazi" },
+        { tekst:"Zamoli Duha Svetoga da ti objavi osude koje nosiš prema Bogu." },
+        { tekst:"Odreci se tih osuda.", molitva:"osudaBoga" },
+        { tekst:"Zamoli Boga da te blagoslovi: da preokrene posljedice tvoje ogorčenosti ili grijeha prema Njemu i objavi ti istinu o svojoj ljubavi i brizi." },
+        { tekst:"Je li iz toga nastao neki unutarnji zavjet prema Bogu? Odreci ga se sada.", molitva:"zavjeti" },
+        { tekst:"Zamoli Isusa da zapečati ovaj oprost i iscijeli rane.", molitva:"pecat" },
+        { tekst:"Zahvali Bogu za iscjeljenje." }
+      ]
+    },
+
+    // Moliti za unutarnje iscjeljenje — upute, ne molitva
+    iscjeljenje: [
+      { naslov:"Prepoznaj ono što te sada muči", stavke:[
+        "Što me sada muči? Što želim?",
+        "Što je to potaknulo i što osjećam u toj situaciji?",
+        "Što u srcu vjerujem o sebi? _(laž o identitetu)_",
+        "Što u srcu vjerujem o drugoj osobi? _(osuda)_" ]},
+      { naslov:"Zamoli Isusa (Oca ili Duha Svetoga) da ti pokaže korijen", stavke:[
+        "Ne pokušavaj moliti ni dokučiti — samo slušaj i primaj.",
+        "Korijen može biti jedno sjećanje, niz sjećanja ili osjećaj.",
+        "Može biti i iskustvo iz majčine utrobe ili nešto naslijeđeno u obitelji." ]},
+      { naslov:"Prepoznaj bolno iskustvo i laž koja mu pripada", stavke:[
+        "Bol i laž trebaju odgovarati onome što te sada muči.",
+        "Ako je sjećanja više, potraži zajedničku nit.",
+        "Ako je korijen iz vremena prije nego što si znao govoriti, sjećanja možda nema — samo osjećaji.",
+        "Ako je korijen obiteljsko nasljeđe, možda nema ni osjećaja." ]},
+      { naslov:"Zamoli Isusa da ti objavi što želi da znaš", stavke:[
+        "Neki vide sliku — npr. Isus se objavljuje djetetu.",
+        "Neki prime istinu — _„Nisam ja kriv.“_",
+        "Neki osjete kako bol odlazi — _„Više se ne osjećam sam.“_",
+        "Neki imaju samo tiho, unutarnje znanje — _„Voljen sam.“_" ]},
+      { naslov:"Ako ne primiš ništa — potraži prepreke", stavke:[
+        "Prepreka može biti kontrola zbog unutarnjeg zavjeta ili osude.",
+        "Može biti odvojenost od osjećaja zbog rane traume.",
+        "Možda doživljavaš da te Bog napustio.",
+        "Može biti zid ljutnje, straha, poricanja ili beznađa.",
+        "Zamoli Gospodina da ti pokaže prepreku i njezin izvor te da ih dotakne." ]},
+      { naslov:"Kad primiš iscjeljenje od Isusa", stavke:[
+        "Pogledaj plod u sjećanju i u onome što te mučilo: zajedništvo, mir, radost.",
+        "Provjeri što sada vjeruješ umjesto izvorne laži i osude.",
+        "Zahvali Gospodinu i zapečati iscjeljenje u Njegovoj Krvi i Duhu." ]}
+    ],
+
+    // Opće molitve s mjestom za vlastiti upis — (zagrade) se prikazuju kao upis
+    opceMolitve: {
+      lazi: "U ime Isusa Krista odričem se laži da (npr. „sam sam“, „ružan sam“, „ništa se nikada neće promijeniti“, „nisam voljen“, „ako vjerujem, umrijet ću“).\n\nU ime Isusa Krista i snagom Duha Svetoga molim Te da mi objaviš istinu o mom identitetu pred Ocem, ondje gdje su se te laži ukorijenile u mom srcu. Amen.",
+      osudaOsobe: "Oče, priznajem da sam osudio (ime). Shvaćam da sam to učinio kako bih se zaštitio od osjećaja ranjivosti i nemoći, da ne bih bio povrijeđen, ili zato što sam se smatrao boljim od njega/nje. Shvaćam također da je ta osuda grijeh i da me drži vezanim. Molim Te sada za oprost i da oslobodiš mene i (ime) od ropstva ove osude i izolacije.\n\nU ime Isusovo odričem se osude da je (ime) (konkretne osude).\n\nZnam da ne mogu sam promijeniti svoje srce, pa Te molim da mi daš svoje srce suosjećanja prema (ime). Amen.",
+      osudaBoga: "Oče, priznajem da sam Te osudio. Shvaćam da sam to učinio kako bih se zaštitio od osjećaja ranjivosti i nemoći, da ne bih bio povrijeđen, ili zato što sam bio ljut. Shvaćam također da je ta osuda grijeh i da me drži vezanim. Molim Te sada za oprost i da me oslobodiš od ropstva ove osude i izolacije.\n\nU ime Isusovo odričem se osude da si Ti (konkretne osude).\n\nZnam da ne mogu sam promijeniti svoje srce, pa Te molim da ukloniš moju ogorčenost i dovedeš me do cjelovitosti. Amen.",
+      zavjeti: "Oče, priznajem da sam pokušavao spasiti sebe umjesto da se oslonim na Tebe za svoje spasenje. Oprosti mi grijeh oholosti i samodostatnosti. Priznajem da me je moj trud da zaštitim samoga sebe ostavio zatvorenog iza zidova koji me sprječavaju da dajem i primam ljubav. Želim biti slobodan od ovog ropstva koje je došlo kao posljedica mojih vlastitih izbora.\n\nU ime Isusovo odričem se unutarnjeg zavjeta da (opis zavjeta, npr. „nikada više nikome neću vjerovati“).\n\nMolim Te da me sada oslobodiš od ropstva ovog zavjeta. Amen."
+    },
+
     smrtneRane: [
       {
         id: "napustenost",
         naziv: "Napuštenost",
         laz: "Sam sam. Nitko me ne razumije. Nitko se ne brine za mene.",
+        istinaKratko: "sam povezan, duboko shvaćen i da se netko brine za mene",
         opis: "Rana nastaje kad onaj tko je trebao biti prisutan nije bio — fizički ili srcem. Ne mora biti odlazak; dovoljna je odsutnost.",
         osjecaj: "praznina, čežnja, osjećaj da si nevidljiv",
         znakIscjeljenja: "Povezanost i razumijevanje zamjenjuje napuštenost",
@@ -295,6 +443,7 @@ window.JEZICI.hr = {
         id: "sramota",
         naziv: "Sram",
         laz: "Loš sam, prljav, ružan, glup, bezvrijedan, izopačen...",
+        istinaKratko: "sam čist i dostojan, ne zbog onoga što sam učinio, nego zbog onoga što je Isus učinio za mene",
         opis: "Krivnja kaže: učinio sam nešto loše. Sramota kaže: ja jesam loš. Rana ne napada djelo nego identitet.",
         osjecaj: "želja da se sakriješ, da te nitko ne vidi iznutra",
         znakIscjeljenja: "Čist i dostojan zamjenjuje sram",
@@ -310,6 +459,7 @@ window.JEZICI.hr = {
         id: "strah",
         naziv: "Strah",
         laz: "Ako se povjerim, progovorim ili se suprotstavim, bit ću povrijeđen ili ću umrijeti.",
+        istinaKratko: "sam na sigurnom i zaštićen",
         opis: "Rana straha zatvara srce. Ono što je nekoć bilo zaštita postaje zid koji više ne znaš spustiti.",
         osjecaj: "napetost, budnost, nemogućnost opuštanja",
         znakIscjeljenja: "Sigurnost i zaštita zamjenjuje strah",
@@ -325,6 +475,7 @@ window.JEZICI.hr = {
         id: "bespomoćnost",
         naziv: "Nemoć",
         laz: "Nemoćan sam, slab, zaglavio i zarobljen... ne znam što da radim.",
+        istinaKratko: "sam u Kristu osnažen i Duhom Svetim oslobođen",
         opis: "Rana nastaje ondje gdje si bio premalen ili preslab da promijeniš ono što ti se događalo. Tijelo to pamti i onda kad si odrastao.",
         osjecaj: "paraliza, preplavljenost, potreba da sve držiš u rukama",
         znakIscjeljenja: "Osnažen i oslobođen zamjenjuje nemoć",
@@ -340,6 +491,7 @@ window.JEZICI.hr = {
         id: "odbacenost",
         naziv: "Odbačenost",
         laz: "Nisam voljen i nisam vrijedan ljubavi... nisam dovoljno dobar.",
+        istinaKratko: "sam ljubljen, željen i dragocjen u Očevim očima",
         opis: "Napuštenost je odsutnost. Odbačenost je poruka: bio si tu, i nisi bio željen. Zato boli drukčije.",
         osjecaj: "potreba da zaslužiš mjesto, strah od isključenja",
         znakIscjeljenja: "Prihvaćen i cijenjen zamjenjuje odbačenost",
@@ -355,6 +507,7 @@ window.JEZICI.hr = {
         id: "beznade",
         naziv: "Beznađe",
         laz: "Ništa se nikada neće promijeniti... nema nade.",
+        istinaKratko: "sam ispunjen nadom u dobre stvari koje dolaze",
         opis: "Rana beznađa dolazi nakon što si se dovoljno puta nadao i razočarao. Srce zaključi da je jeftinije ne nadati se.",
         osjecaj: "umor, ravnodušnost, unaprijed odustajanje",
         znakIscjeljenja: "Nada i ohrabrenje zamjenjuje beznađe",
@@ -370,6 +523,7 @@ window.JEZICI.hr = {
         id: "zbunjenost",
         naziv: "Zbunjenost",
         laz: "Ne znam što se događa sa mnom. Ne razumijem ništa.",
+        istinaKratko: "imam razumijevanje i prosvjetljenje od Gospodina",
         opis: "Rana nastaje ondje gdje ti riječi i djela nisu se poklapali — gdje su ti govorili jedno, a činili drugo. Prestaneš vjerovati vlastitoj percepciji.",
         osjecaj: "magla, nesigurnost u vlastiti osjećaj, stalno preispitivanje",
         znakIscjeljenja: "Razumijevanje i prosvjetljenje zamjenjuje zbunjenost",
@@ -888,6 +1042,26 @@ window.JEZICI.hr = {
   // ── GRADITELJI MOLITAVA ─────────────────────────────────────
   // Gramatika je jezično specifična, pa svaki jezik ima svoje.
   molitve: {
+    // Pečat i blagoslov (JPII — "Prayer for Sealing and Blessing").
+    // rane: objekti iz smrtneRane; bez njih ostaju mjesta za vlastiti upis.
+    molitvaPecata: function(rane){
+      rane = rane || [];
+      var t = "Oče, hvala Ti za ovo iscjeljenje po imenu Isusovu i snagom Duha Svetoga. " +
+              "Slavim Te za Tvoju veliku ljubav, milosrđe i moć, i što si poslao Isusa u snazi Duha " +
+              "da iscijeli naša slomljena srca i oslobodi nas od svakog ropstva.\n\n" +
+              "Molim Te sada da zapečatiš ovo iscjeljenje i zatvoriš sva preostala vrata dragocjenom krvlju Isusovom " +
+              "i blagim djelovanjem svoga Duha Svetoga. Blagoslovi me sada novim izljevom svoga Duha " +
+              "i novim razumijevanjem i autoritetom moga identiteta u Isusu Kristu.\n\n";
+      if (rane.length) {
+        t += "Osobito blagoslovi ono što je u meni ranjeno: " +
+             rane.map(function(r){ return r.naziv.toLowerCase(); }).join(", ") + ".";
+        rane.forEach(function(r){ if (r.istinaKratko) t += " Priznajem da " + r.istinaKratko + "."; });
+      } else {
+        t += "Osobito blagoslovi (ono područje u kojemu sam ranjen). Priznajem da sam (istine koje si mi objavio u molitvi).";
+      }
+      return t + "\n\nZahvaljujem Ti i slavim Te za Tvoju dobrotu prema meni. Amen.";
+    },
+
     // Molitva odricanja od krive slike Boga — slijedi Schuchtsov lanac:
     // rana → tiha osuda roditelja → projekcija na Boga → odricanje → istina
     molitvaSlikeBoga: function(k){

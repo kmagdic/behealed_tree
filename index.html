@@ -310,6 +310,73 @@ textarea::placeholder,input::placeholder{color:var(--light);}
 .fico{width:30px;height:30px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
 .pcard-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--bark-d);}
 .ptext{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;line-height:1.85;color:var(--mid);white-space:pre-wrap;}
+.pcard-sub{font-size:12px;color:var(--mid);font-style:italic;margin-top:2px;line-height:1.4;}
+.print-only{display:none;}
+
+/* MOLITVE — čitljivost: svaka izjava u svom retku, oznake odricanja/istine,
+   biblijski navodi prigušeni, (zagrade bez broja) = mjesto za vlastiti upis */
+.mol-wrap{max-width:680px;margin:0 auto;width:100%;}
+.mol-toc{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:-8px 0 8px;}
+.mol-toc button{font:500 11.5px 'Inter',sans-serif;color:var(--bark);background:white;border:1px solid var(--bark-l);border-radius:20px;padding:5px 12px;cursor:pointer;}
+.mol-toc button:hover{background:var(--cream);}
+.mol-sec{margin:30px 0 12px;scroll-margin-top:12px;}
+.mol-sec h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--bark-d);display:flex;align-items:baseline;gap:10px;}
+.mol-br{font:600 11px 'Inter',sans-serif;color:var(--gold);letter-spacing:.06em;}
+.mol-uvod{font-size:13px;color:var(--mid);font-style:italic;line-height:1.55;margin-top:4px;}
+.molitva p{font-family:'Cormorant Garamond',serif;font-size:18.5px;line-height:1.6;color:var(--txt);margin-bottom:12px;}
+.molitva p:last-child{margin-bottom:0;}
+.molitva .red{display:block;margin-bottom:5px;white-space:pre-line;}
+.mol-oznaka{font:600 9.5px 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--bark);margin:16px 0 5px;}
+.mol-oznaka:first-child{margin-top:0;}
+.mol-oznaka.istina{color:var(--leaf);}
+.ref{font:400 11px 'Inter',sans-serif;color:var(--light);white-space:nowrap;}
+.upis{font-style:italic;color:var(--bark);background:rgba(196,154,60,.12);border-radius:3px;padding:0 3px;}
+details.pcard>summary{list-style:none;cursor:pointer;}
+details.pcard>summary::-webkit-details-marker{display:none;}
+details.pcard>summary .pcard-head{margin-bottom:0;}
+details.pcard[open]>summary .pcard-head{margin-bottom:14px;}
+details.pcard:not([open]){padding:13px 20px;}
+.chev{margin-left:auto;color:var(--bark-l);font-size:18px;transition:transform .2s;}
+details[open]>summary .chev{transform:rotate(90deg);}
+.mol-tablica{width:100%;border-collapse:collapse;font-size:13px;line-height:1.45;}
+.mol-tablica th{font:600 9.5px 'Inter',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--light);text-align:left;padding:0 8px 6px 0;}
+.mol-tablica td{padding:7px 8px 7px 0;border-top:1px solid rgba(139,107,74,.12);vertical-align:top;color:var(--txt);}
+.mol-tablica td:first-child{font-weight:500;white-space:nowrap;padding-right:16px;width:1%;}
+.mol-tablica td.laz{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15.5px;color:var(--mid);}
+.mol-zelje{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px 16px;font-size:13px;}
+.mol-zelje li{padding:4px 0;color:var(--txt);}
+.mol-zelje span{color:var(--mid);font-size:12px;}
+.mol-podnaslov{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);margin:18px 0 8px;}
+.mol-podnaslov:first-child{margin-top:0;}
+.lanac-red{display:grid;grid-template-columns:118px 1fr;gap:10px;padding:8px 0;border-top:1px solid rgba(139,107,74,.1);font-size:13px;line-height:1.5;}
+.lanac-red:first-child{border-top:none;padding-top:0;}
+.lanac-ozn{font-size:11.5px;color:var(--mid);font-weight:500;}
+.lanac-red em{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--mid);}
+.mol-tabovi{display:flex;gap:4px;background:var(--cream);border-radius:10px;padding:4px;margin-bottom:12px;}
+.mol-tabovi button{flex:1;border:none;background:transparent;font:500 12px 'Inter',sans-serif;color:var(--mid);padding:8px 6px;border-radius:7px;cursor:pointer;}
+.mol-tabovi button.on{background:white;color:var(--bark-d);box-shadow:0 1px 4px var(--sh);}
+.mol-tab:not(.on){display:none;}
+.koraci{list-style:none;}
+.koraci>li{display:grid;grid-template-columns:24px 1fr;gap:10px;margin-bottom:12px;font-size:14px;line-height:1.55;color:var(--txt);}
+.korak-br{width:22px;height:22px;border-radius:50%;background:var(--cream);font:600 10.5px 'Inter',sans-serif;color:var(--bark);display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.koraci ul{list-style:none;margin-top:5px;}
+.koraci ul li{font-size:13px;color:var(--mid);padding-left:14px;position:relative;margin-bottom:3px;}
+.koraci ul li::before{content:'·';position:absolute;left:3px;color:var(--gold);font-weight:700;}
+.umetak{margin-top:6px;}
+.umetak>summary{display:inline-block;font-size:12px;font-weight:500;color:var(--bark);cursor:pointer;list-style:none;}
+.umetak>summary::-webkit-details-marker{display:none;}
+.umetak>summary::before{content:'✝ ';color:var(--gold);}
+.umetak .molitva{margin-top:8px;padding:10px 0 4px 14px;border-left:2px solid var(--gold-l);}
+.umetak .molitva p{font-size:16.5px;}
+.mol-poveznica{background:none;border:none;padding:0;font:500 12px 'Inter',sans-serif;color:var(--bark);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.mol-napomena{font-size:12.5px;font-style:italic;color:var(--mid);margin-bottom:12px;line-height:1.5;}
+@media(max-width:500px){
+  .prayer-wrap{padding:18px 16px 32px;}
+  .hdr-mol{display:none;}
+  .lanac-red{grid-template-columns:1fr;gap:2px;}
+  .mol-tablica td:first-child{white-space:normal;}
+  .molitva p{font-size:17.5px;}
+}
 
 /* TOAST */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bark-d);color:white;padding:8px 18px;border-radius:20px;font-size:12px;z-index:999;pointer-events:none;animation:tIn .3s ease,tOut .3s ease 2.5s forwards;}
@@ -327,6 +394,12 @@ textarea::placeholder,input::placeholder{color:var(--light);}
   .ptext{orphans:3;widows:3;font-size:11.5pt;line-height:1.55;}
   .p-banner{break-after:avoid;page-break-after:avoid;}
   h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+  .mol-toc,.mol-tabovi,.umetak,.chev,.mol-poveznica{display:none!important;}
+  .mol-tab{display:block!important;}
+  .mol-sec{margin:18px 0 8px;}
+  .mol-sec-glava{break-inside:avoid;break-after:avoid;page-break-after:avoid;}
+  .molitva p{font-size:12pt;line-height:1.5;orphans:3;widows:3;}
+  .mol-tablica tr,.lanac-red,.koraci>li{break-inside:avoid;}
 }
 </style>
 </head>
@@ -1295,8 +1368,282 @@ function PrintTree({ tree }) {
   );
 }
 
-// ── PRAYER ──
-function PrayerScreen({ tree, onBack }) {
+// ── MOLITVE: zajednički prikaz ──
+// Molitva se čita naglas, pa je razlomljena: svaka nova izjava ("U ime Isusa Krista…",
+// "Proglašavam…") ide u svoj redak, biblijski navod je prigušen, a (zagrada bez broja)
+// je mjesto za vlastiti upis.
+const NOVA_IZJAVA = /\.\s+(?=(U ime|Proglašavam|Objavljujem|Odričem|Priznajem|In the name|In Jesus|I proclaim|I announce|I renounce|I acknowledge|Therefore)\b)/g;
+
+function Navodi({ text }) {
+  return <>{String(text).split(/(\([^()]*\))/).map((d, i) =>
+    !d.startsWith('(') ? d
+    : /\d/.test(d) ? <span key={i} className="ref">{d}</span>
+    : <span key={i} className="upis">{d}</span>
+  )}</>;
+}
+
+function TekstMolitve({ tekst }) {
+  return <>{String(tekst || '').split(/\n\n+/).map((odl, i) => (
+    <p key={i}>{odl.replace(NOVA_IZJAVA, '.\u0001').split('\u0001').map((r, j) =>
+      <span key={j} className="red"><Navodi text={r}/></span>)}</p>
+  ))}</>;
+}
+
+// dijelovi: [{oznaka, vrsta, tekst}] — oznaka je "Odričem se" / "Proglašavam istinu"
+// sklopljeno: undefined = obična kartica, true/false = <details> (u ispisu se otvori)
+function Molitva({ naslov, ikona, boja, podnaslov, dijelovi, tekst, sklopljeno }) {
+  const glava = (
+    <div className="pcard-head">
+      <div className="fico" style={boja ? {background:boja} : null}>{ikona}</div>
+      <div>
+        <div className="pcard-title">{naslov}</div>
+        {podnaslov && <div className="pcard-sub">{podnaslov}</div>}
+      </div>
+      {sklopljeno !== undefined && <span className="chev">›</span>}
+    </div>
+  );
+  const tijelo = (
+    <div className="molitva">
+      {(dijelovi || [{ tekst }]).map((d, i) => (
+        <div key={i}>
+          {d.oznaka && <div className={'mol-oznaka ' + (d.vrsta || '')}>{d.oznaka}</div>}
+          <TekstMolitve tekst={d.tekst}/>
+        </div>
+      ))}
+    </div>
+  );
+  if (sklopljeno === undefined) return <div className="pcard">{glava}{tijelo}</div>;
+  return <details className="pcard" open={!sklopljeno || undefined}><summary>{glava}</summary>{tijelo}</details>;
+}
+
+// Rana: odricanje od laži pa proglašenje istine (skripta ih već drži odvojeno)
+const dijeloviRane = (r) => (r.lazi && r.istina)
+  ? [{ oznaka: t('molitvenik.odricemSe'), tekst: r.lazi },
+     { oznaka: t('molitvenik.proglasavam'), vrsta: 'istina', tekst: r.istina }]
+  : [{ tekst: r.molitva }];
+
+// Grijeh: prvi odlomak je odricanje, drugi molba za oprost i izbor kreposti
+function dijeloviGrijeha(g) {
+  const [odricanje, ...ostalo] = String(g.molitvaOdricanja || '').split(/\n\n+/);
+  return ostalo.length
+    ? [{ oznaka: t('molitvenik.odricemSe'), tekst: odricanje },
+       { oznaka: t('molitvenik.biram'), vrsta: 'istina', tekst: ostalo.join('\n\n') }]
+    : [{ tekst: odricanje }];
+}
+
+function Odjeljak({ id, br, naslov, uvod, children }) {
+  return (
+    <section id={id} className="mol-sec">
+      <div className="mol-sec-glava">
+        <h3>{br && <span className="mol-br">{br}</span>}{naslov}</h3>
+        {uvod && <p className="mol-uvod">{uvod}</p>}
+      </div>
+      <div style={{marginTop:12}}>{children}</div>
+    </section>
+  );
+}
+
+const skoci = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+// Sklopljene kartice (<details>) u ispisu moraju biti otvorene
+window.addEventListener('beforeprint', () => {
+  document.querySelectorAll('details.pcard').forEach(d => { d.open = true; });
+});
+
+// Sažetak: bez stabla — opći pregled (rane/laži, grijesi/idoli, želje srca);
+// sa stablom — lanac odozgo prema dolje kao na slici: plodovi → grijeh → deblo → zavjeti/osude → rane
+function Sazetak({ tree }) {
+  if (!tree) return (
+    <div className="pcard">
+      <p className="mol-uvod" style={{marginTop:0,marginBottom:14}}>{t('molitvenik.sazetakUvod')}</p>
+      <div className="mol-podnaslov">{t('molitvenik.rana')} → {t('molitvenik.laz').toLowerCase()}</div>
+      <table className="mol-tablica"><tbody>
+        {DATA.smrtneRane.map(r => <tr key={r.id}><td>{r.naziv}</td><td className="laz">„{r.laz}“</td></tr>)}
+      </tbody></table>
+      <div className="mol-podnaslov">{t('molitvenik.grijeh')} → {t('molitvenik.idol').toLowerCase()}</div>
+      <table className="mol-tablica"><tbody>
+        {DATA.smrtniGrijesi.map(g => <tr key={g.id}><td>{g.ikona} {g.naziv}</td><td>{g.idolatrija}</td></tr>)}
+      </tbody></table>
+      <div className="mol-podnaslov">{t('molitvenik.zelje')}</div>
+      <p className="mol-uvod" style={{marginTop:0,marginBottom:6}}>{t('molitvenik.zeljeUvod')}</p>
+      <ul className="mol-zelje">
+        {DATA.zeljeSrca.map(z => <li key={z.id}>{z.naziv}{z.opis && <span> — {z.opis}</span>}</li>)}
+      </ul>
+    </div>
+  );
+
+  const sinDef = DATA.grijehById[tree.sinId];
+  const priorities = tree.priorities || {};
+  const poPrioritetu = (a, b) => getPriority(priorities, b.id) - getPriority(priorities, a.id);
+  const plodovi = [
+    ...(tree.fruits || []),
+    ...(tree.customFruitsText || '').split('\n').filter(Boolean).map(n => ({ id: 'c_' + n, naziv: n }))
+  ].sort(poPrioritetu).map(nazivPloda);
+  const rane = (tree.wounds || []).slice().sort(poPrioritetu);
+  const zavjeti = [...(tree.vows || []).map(tekstZavjeta), tree.customVow].filter(Boolean);
+  const osude = [...(tree.judgments || []).map(tekstOsude), tree.customJudgment].filter(Boolean);
+  const slike = CONFIG.showKriveSlikeBoga ? (tree.godImages || []).map(nazivSlike) : [];
+  const komentari = tree.woundComments || {};
+  const Red = ({ oznaka, children }) => <div className="lanac-red"><div className="lanac-ozn">{oznaka}</div><div>{children}</div></div>;
+
+  return (
+    <div className="pcard">
+      {plodovi.length > 0 && <Red oznaka={t('k5.plodovi')}>{plodovi.join(', ')}</Red>}
+      {sinDef && <Red oznaka={t('k5.grijeh')}><strong>{sinDef.naziv}</strong> <span style={{color:'var(--mid)'}}>· {t('molitvenik.idol').toLowerCase()}: {sinDef.idolatrija}</span></Red>}
+      <Red oznaka={'🪵 ' + t('molitvenik.deblo')}>{DATA.deblo.naziv}</Red>
+      {zavjeti.length > 0 && <Red oznaka={t('k5.zavjeti')}>{zavjeti.map((z, i) => <div key={i}>„{z}“</div>)}</Red>}
+      {osude.length > 0 && <Red oznaka={t('k5.osude')}>{osude.map((o, i) => <div key={i}>„{o}“</div>)}</Red>}
+      {slike.length > 0 && <Red oznaka={t('ispis.slikaBoga')}>{slike.join(' · ')}</Red>}
+      {rane.length > 0 && <Red oznaka={t('k5.rane')}>{rane.map(w => {
+        const rd = DATA.ranaById[w.id];
+        return (
+          <div key={w.id} style={{marginBottom:4}}>
+            <strong>{rd?.naziv || w.naziv}</strong>{rd && <> — <em>„{rd.laz}“</em></>}
+            {komentari[w.id] && <div style={{fontSize:12,color:'var(--mid)'}}>{komentari[w.id]}</div>}
+          </div>
+        );
+      })}</Red>}
+      {tree.woundEvent && <Red oznaka={t('k5.djetinjstvo')}><Redovi text={tree.woundEvent}/></Red>}
+    </div>
+  );
+}
+
+// ── MOLITVENIK (opći, bez stabla) ──
+// Redoslijed prati JPII Healing Center: laži/istina → grijesi → oprost → unutarnje iscjeljenje → pečat
+let skokPriOtvaranju = null;   // PrayerScreen → "Cijeli proces oprosta" otvori molitvenik na oprostu
+
+function KoraciOprosta({ koraci }) {
+  const naslovi = { lazi: 'molitvaLazi', osudaOsobe: 'molitvaOsudaOsobe', osudaBoga: 'molitvaOsudaBoga', zavjeti: 'molitvaZavjeti' };
+  return (
+    <ol className="koraci">
+      {koraci.map((k, i) => (
+        <li key={i}>
+          <span className="korak-br">{i + 1}</span>
+          <div>
+            <Bogato text={k.tekst}/>
+            {k.molitva === 'pecat' && <div><button className="mol-poveznica" onClick={() => skoci('mol-pecat')}>{t('molitvenik.naPecat')}</button></div>}
+            {naslovi[k.molitva] && (
+              <details className="umetak">
+                <summary>{t('molitvenik.' + naslovi[k.molitva])}</summary>
+                <div className="molitva"><TekstMolitve tekst={DATA.opceMolitve[k.molitva]}/></div>
+              </details>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function Molitvenik({ onBack }) {
+  const [tab, setTab] = useState('osoba');
+  useEffect(() => {
+    if (skokPriOtvaranju) { const id = skokPriOtvaranju; skokPriOtvaranju = null; setTimeout(() => skoci(id), 50); }
+  }, []);
+
+  function ispisi() {
+    const naslovPrije = document.title;
+    document.title = imeDatoteke(JEZICI[LANG].naslov + ' - ' + t('molitvenik.naslov'));
+    window.print();
+    setTimeout(() => { document.title = naslovPrije; }, 1500);
+  }
+
+  const odjeljci = [
+    ['mol-sazetak', t('molitvenik.sazetak')],
+    ['mol-lazi', t('molitvenik.lazi')],
+    ['mol-grijesi', t('molitvenik.grijesi')],
+    ['mol-oprost', t('molitvenik.oprost')],
+    ['mol-iscjeljenje', t('molitvenik.iscjeljenje')],
+    ['mol-pecat', t('molitvenik.pecat')]
+  ];
+  const tabovi = [['osoba', 'oprostOsoba'], ['sebe', 'oprostSebi'], ['bog', 'oprostBogu']];
+
+  return (
+    <div style={{flex:1,overflowY:'auto'}}>
+      <div className="prayer-wrap mol-wrap">
+        <h1 className="print-only" style={{fontFamily:'serif',fontSize:24,color:'#5C4030',marginBottom:4}}>{t('molitvenik.naslov')}</h1>
+        <div className="p-banner">
+          <h2>{t('molitvenik.naslov')}</h2>
+          <p>{t('molitvenik.podnaslov')}</p>
+        </div>
+        <nav className="mol-toc" aria-label={t('molitvenik.sadrzaj')}>
+          {odjeljci.map(([id, naziv], i) => <button key={id} onClick={() => skoci(id)}>{i ? i + '. ' : ''}{naziv}</button>)}
+        </nav>
+
+        <Odjeljak id="mol-sazetak" naslov={t('molitvenik.sazetak')}>
+          <Sazetak/>
+        </Odjeljak>
+
+        <Odjeljak id="mol-lazi" br="1" naslov={t('molitvenik.lazi')} uvod={t('molitvenik.laziUvod')}>
+          {DATA.smrtneRane.map(r => (
+            <Molitva key={r.id} naslov={r.naziv} ikona="🌱" podnaslov={'„' + r.laz + '“'}
+              dijelovi={dijeloviRane(r)} sklopljeno={true}/>
+          ))}
+        </Odjeljak>
+
+        <Odjeljak id="mol-grijesi" br="2" naslov={t('molitvenik.grijesi')} uvod={t('molitvenik.grijesiUvod')}>
+          {DATA.smrtniGrijesi.map(g => (
+            <Molitva key={g.id} naslov={g.naziv} ikona={g.ikona} boja={`${g.bojaBg}22`}
+              podnaslov={t('molitvenik.idol') + ': ' + g.idolatrija + ' · ' + g.krepost.naziv}
+              dijelovi={dijeloviGrijeha(g)} sklopljeno={true}/>
+          ))}
+        </Odjeljak>
+
+        <Odjeljak id="mol-oprost" br="3" naslov={t('molitvenik.oprost')} uvod={t('molitvenik.oprostUvod')}>
+          <div className="mol-tabovi" role="tablist">
+            {tabovi.map(([k, kljuc]) => (
+              <button key={k} role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>
+                {t('molitvenik.' + kljuc)}
+              </button>
+            ))}
+          </div>
+          {tabovi.map(([k, kljuc]) => (
+            <div key={k} className={'pcard mol-tab' + (tab === k ? ' on' : '')}>
+              <div className="mol-podnaslov print-only">{t('molitvenik.' + kljuc)}</div>
+              {k === 'bog' && <p className="mol-napomena">{t('molitvenik.oprostBoguNapomena')}</p>}
+              <KoraciOprosta koraci={DATA.oprost[k]}/>
+            </div>
+          ))}
+          {/* U ispisu su umetnute molitve skrivene, pa se ovdje ispišu jednom */}
+          <div className="print-only">
+            {['lazi', 'osudaOsobe', 'osudaBoga', 'zavjeti'].map(k => (
+              <Molitva key={k} ikona="✝" naslov={t('molitvenik.molitva' + k[0].toUpperCase() + k.slice(1))} tekst={DATA.opceMolitve[k]}/>
+            ))}
+          </div>
+        </Odjeljak>
+
+        <Odjeljak id="mol-iscjeljenje" br="4" naslov={t('molitvenik.iscjeljenje')} uvod={t('molitvenik.iscjeljenjeUvod')}>
+          <div className="pcard">
+            <ol className="koraci">
+              {DATA.iscjeljenje.map((k, i) => (
+                <li key={i}>
+                  <span className="korak-br">{i + 1}</span>
+                  <div>
+                    <strong style={{fontWeight:600,color:'var(--bark-d)'}}>{k.naslov}</strong>
+                    <ul>{k.stavke.map((s, j) => <li key={j}><Bogato text={s}/></li>)}</ul>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Odjeljak>
+
+        <Odjeljak id="mol-pecat" br="5" naslov={t('molitvenik.pecat')} uvod={t('molitvenik.pecatUvod')}>
+          <Molitva ikona="🕊" naslov={t('molitvenik.pecat')} tekst={DATA.molitvaPecata([])}/>
+        </Odjeljak>
+
+        <div style={{display:'flex',gap:10,justifyContent:'center',marginTop:22}}>
+          <button className="btn btn-s" onClick={onBack}><IBack/> {t('natrag')}</button>
+          <button className="btn btn-p" onClick={ispisi}><IPrint/> {t('molitvenik.ispisi')}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── PRAYER (personalizirano za stablo) ──
+// Isti redoslijed kao molitvenik, ali samo ono što je korisnik odabrao.
+function PrayerScreen({ tree, onBack, onMolitvenik }) {
   const sinDef = DATA.smrtniGrijesi.find(s=>s.id===tree.sinId);
 
   // Ime PDF-a: "Stablo života - #3 Srditost 04.09.2026" / "Tree of Life - #3 Anger 04.09.2026"
@@ -1312,105 +1659,65 @@ function PrayerScreen({ tree, onBack }) {
   }
 
   const priorities = tree.priorities || {};
-  const woundComments = tree.woundComments || {};
   if (!sinDef) return null;
 
   const sortedWounds = (tree.wounds||[]).slice().sort((a,b)=>getPriority(priorities,b.id)-getPriority(priorities,a.id));
-  const allVows = [...(tree.vows||[]).map(tekstZavjeta), tree.customVow].filter(Boolean);
-  const allJudgments = [...(tree.judgments||[]).map(tekstOsude), tree.customJudgment].filter(Boolean);
-  const allFruits = [
-    ...(tree.fruits||[]),
-    ...(tree.customFruitsText||'').split('\n').filter(Boolean).map(n=>({id:'c_'+n,naziv:n}))
-  ].sort((a,b)=>getPriority(priorities,b.id)-getPriority(priorities,a.id));
+  const raneDef = sortedWounds.map(w => DATA.ranaById[w.id]).filter(Boolean);
+  const vs = [...(tree.vows||[]), tree.customVow].filter(Boolean).map(v => DATA.zavjetById[v] || v);
+  const js = [...(tree.judgments||[]), tree.customJudgment].filter(Boolean).map(j => DATA.osudaById[j] || j);
+  const slike = CONFIG.showKriveSlikeBoga ? (tree.godImages||[]) : [];
+  let br = 0;
 
   return (
     <div style={{flex:1,overflowY:'auto'}}>
-      <div className="prayer-wrap">
+      <div className="prayer-wrap mol-wrap">
 
-        {/* ── PRINT ONLY: Summary ── */}
-        <div style={{display:'none'}} className="print-only">
+        <div className="print-only">
           <h1 style={{fontFamily:'serif',fontSize:24,color:'#5C4030',marginBottom:4}}>{JEZICI[LANG].naslov}</h1>
-          <h2 style={{fontFamily:'serif',fontSize:18,fontWeight:400,color:'#8B6B4A',marginBottom:16}}>{t('panel.naslov', sinDef.naziv)} {sinDef.ikona}</h2>
-          {allFruits.length>0 && <><h3 style={{fontSize:13,marginBottom:4}}>{t('k5.plodovi')}</h3><p style={{fontSize:12,marginBottom:12}}>{allFruits.map(nazivPloda).join(', ')}</p></>}
-          <h3 style={{fontSize:13,marginBottom:4}}>{t('ispis.grijeh', sinDef.naziv)}</h3>
-          {sortedWounds.length>0 && <>
-            <h3 style={{fontSize:13,margin:'12px 0 4px'}}>{t('k5.rane')}</h3>
-            {sortedWounds.map(w=>{
-              const rd=DATA.smrtneRane.find(r=>r.id===w.id);
-              const comment=woundComments[w.id];
-              return <div key={w.id} style={{marginBottom:6,fontSize:12}}><strong>{rd?.naziv||w.naziv}</strong>: "{rd?.laz}"  {comment&&<em> — {comment}</em>}</div>;
-            })}
-          </>}
-          {allVows.length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>{t('k5.zavjeti')}</h3><p style={{fontSize:12,marginBottom:8}}>{allVows.join(' • ')}</p></>}
-          {allJudgments.length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>{t('ispis.osude')}</h3><p style={{fontSize:12,marginBottom:8}}>{allJudgments.join(' • ')}</p></>}
-          {CONFIG.showKriveSlikeBoga && (tree.godImages||[]).length>0 && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>{t('ispis.slikaBoga')}</h3><p style={{fontSize:12,marginBottom:8}}>{(tree.godImages||[]).map(nazivSlike).join(' • ')}</p></>}
-          {tree.woundEvent && <><h3 style={{fontSize:13,margin:'12px 0 4px'}}>{t('k5.djetinjstvo')}</h3><div style={{marginBottom:12}}><Redovi text={tree.woundEvent} style={{fontSize:12,marginBottom:3}}/></div></>}
-          <div style={{borderTop:'1px solid #ccc',margin:'16px 0'}}/>
-          <PrintTree tree={tree}/>
-          <div style={{borderTop:'1px solid #ccc',margin:'16px 0'}}/>
-          <h2 style={{fontFamily:'serif',fontSize:20,color:'#5C4030',marginBottom:12}}>{t('ispis.molitve')}</h2>
+          <h2 style={{fontFamily:'serif',fontSize:18,fontWeight:400,color:'#8B6B4A',marginBottom:12}}>{t('panel.naslov', sinDef.naziv)} {sinDef.ikona}</h2>
         </div>
-
-        {/* ── SCREEN: Banner ── */}
 
         <div className="p-banner">
           <h2>{t('molitve.naslov')}</h2>
           <p>{t('molitve.naTemelju', sinDef.naziv)}</p>
         </div>
-        <div className="pcard">
-          <div className="pcard-head">
-            <div className="fico" style={{background:`${sinDef.bojaBg}22`}}>{sinDef.ikona}</div>
-            <div className="pcard-title">{t('molitve.odricanje', sinDef.naziv)}</div>
-          </div>
-          <div className="ptext">{sinDef.molitvaOdricanja}</div>
-        </div>
-        {sortedWounds.map(w => {
-          const rd = DATA.smrtneRane.find(r=>r.id===w.id);
-          return rd ? (
-            <div key={w.id} className="pcard">
-              <div className="pcard-head">
-                <div className="fico">🌿</div>
-                <div className="pcard-title">{t('molitve.iscjeljenje', rd.naziv)}</div>
-              </div>
-              <div className="ptext">{rd.molitva}</div>
-            </div>
-          ) : null;
-        })}
-        {(() => {
-          const vs = [...(tree.vows||[]), tree.customVow].filter(Boolean)
-                      .map(v => DATA.zavjetById[v] || v);
-          return vs.length ? (
-            <div className="pcard">
-              <div className="pcard-head"><div className="fico">⛓️</div><div className="pcard-title">{t('molitve.zavjeti')}</div></div>
-              <div className="ptext">{DATA.molitvaZavjetaSkupno(vs)}</div>
-            </div>
-          ) : null;
-        })()}
-        {(() => {
-          const js = [...(tree.judgments||[]), tree.customJudgment].filter(Boolean)
-                      .map(j => DATA.osudaById[j] || j);
-          return js.length ? (
-            <div className="pcard">
-              <div className="pcard-head"><div className="fico">🪨</div><div className="pcard-title">{t('molitve.osude')}</div></div>
-              <div className="ptext">{DATA.molitvaOsudeSkupno(js)}</div>
-            </div>
-          ) : null;
-        })()}
-        {CONFIG.showKriveSlikeBoga && (tree.godImages||[]).map((g,i) => {
-          const kd = DATA.slikaById[g];
-          return (
-            <div key={'g'+i} className="pcard">
-              <div className="pcard-head"><div className="fico">🕊</div><div className="pcard-title">{t('molitve.slikaBoga')}</div></div>
-              <div className="ptext">{DATA.molitvaSlikeBoga(kd || g)}</div>
-            </div>
-          );
-        })}
-        <div className="pcard" style={{background:'linear-gradient(135deg,#F2EAE0,#E8DDD0)',border:'1px solid var(--bark-l)'}}>
-          <div className="pcard-head"><div className="fico">🌳</div><div className="pcard-title">{t('molitve.znakovi')}</div></div>
-          {sortedWounds.map(w => {
-            const rd = DATA.ranaById[w.id];
-            return rd ? (
-              <div key={w.id} style={{padding:'7px 10px',marginBottom:6,background:'rgba(122,158,126,.12)',borderRadius:6,fontSize:13,color:'#2C5A30'}}>
+
+        <Odjeljak id="mol-stablo" naslov={t('molitvenik.tvojeStablo')}>
+          <Sazetak tree={tree}/>
+          <div className="print-only"><PrintTree tree={tree}/></div>
+        </Odjeljak>
+
+        {raneDef.length > 0 && (
+          <Odjeljak br={++br} naslov={t('molitvenik.lazi')} uvod={t('molitvenik.laziUvod')}>
+            {raneDef.map(rd => (
+              <Molitva key={rd.id} ikona="🌱" naslov={t('molitve.iscjeljenje', rd.naziv)}
+                podnaslov={'„' + rd.laz + '“'} dijelovi={dijeloviRane(rd)}/>
+            ))}
+          </Odjeljak>
+        )}
+
+        <Odjeljak br={++br} naslov={t('molitvenik.grijesi')} uvod={t('molitvenik.grijesiUvod')}>
+          <Molitva ikona={sinDef.ikona} boja={`${sinDef.bojaBg}22`} naslov={t('molitve.odricanje', sinDef.naziv)}
+            podnaslov={t('molitvenik.idol') + ': ' + sinDef.idolatrija} dijelovi={dijeloviGrijeha(sinDef)}/>
+        </Odjeljak>
+
+        <Odjeljak br={++br} naslov={t('molitvenik.oprost')} uvod={t('molitvenik.oprostUvod')}>
+          {js.length > 0 && <Molitva ikona="🪨" naslov={t('molitve.osude')} tekst={DATA.molitvaOsudeSkupno(js)}/>}
+          {vs.length > 0 && <Molitva ikona="⛓️" naslov={t('molitve.zavjeti')} tekst={DATA.molitvaZavjetaSkupno(vs)}/>}
+          {slike.map((g, i) => (
+            <Molitva key={'g'+i} ikona="🕊" naslov={t('molitve.slikaBoga')} tekst={DATA.molitvaSlikeBoga(DATA.slikaById[g] || g)}/>
+          ))}
+          <button className="mol-poveznica" onClick={onMolitvenik}>{t('molitvenik.cijeliOprost')}</button>
+        </Odjeljak>
+
+        <Odjeljak br={++br} naslov={t('molitvenik.pecat')} uvod={t('molitvenik.pecatUvod')}>
+          <Molitva ikona="🕊" naslov={t('molitvenik.pecat')} tekst={DATA.molitvaPecata(raneDef)}/>
+        </Odjeljak>
+
+        <Odjeljak br={++br} naslov={t('molitve.znakovi')}>
+          <div className="pcard" style={{background:'linear-gradient(135deg,#F2EAE0,#E8DDD0)',border:'1px solid var(--bark-l)'}}>
+            {raneDef.map(rd => (
+              <div key={rd.id} style={{padding:'7px 10px',marginBottom:6,background:'rgba(122,158,126,.12)',borderRadius:6,fontSize:13,color:'#2C5A30'}}>
                 <div style={{display:'flex',alignItems:'center',gap:7}}>
                   <span style={{color:'var(--leaf)'}}>✓</span>
                   <strong>{rd.naziv}</strong> → {rd.znakIscjeljenja}
@@ -1421,12 +1728,13 @@ function PrayerScreen({ tree, onBack }) {
                   </div>
                 )}
               </div>
-            ) : null;
-          })}
-          <div style={{marginTop:9,padding:'7px 10px',background:'rgba(196,154,60,.12)',borderRadius:6,fontSize:13,fontStyle:'italic',color:'var(--mid)'}}>
-            {t('molitve.krepost', sinDef.krepost.naziv, sinDef.krepost.opis)}
+            ))}
+            <div style={{marginTop:9,padding:'7px 10px',background:'rgba(196,154,60,.12)',borderRadius:6,fontSize:13,fontStyle:'italic',color:'var(--mid)'}}>
+              {t('molitve.krepost', sinDef.krepost.naziv, sinDef.krepost.opis)}
+            </div>
           </div>
-        </div>
+        </Odjeljak>
+
         <div style={{display:'flex',gap:10,justifyContent:'center',marginTop:22}}>
           <button className="btn btn-s" onClick={onBack}><IBack/> {t('natrag')}</button>
           <button className="btn btn-p" onClick={ispisi}><IPrint/> {t('molitve.ispisi')}</button>
@@ -1439,7 +1747,9 @@ function PrayerScreen({ tree, onBack }) {
 // ── MAIN APP ──
 function App() {
   const [state, setState] = useState(load);
-  const [view, setView] = useState('welcome');
+  // ?view=molitve otvara molitvenik izravno (poveznica koja se može podijeliti)
+  const [view, setView] = useState(() =>
+    new URLSearchParams(location.search).get('view') === 'molitve' ? 'molitvenik' : 'welcome');
   const [activeId, setActiveId] = useState(null);
   const [toast, setToast] = useState(null);
   const [liveTree, setLiveTree] = useState(null);
@@ -1458,6 +1768,15 @@ function App() {
   }
 
   useEffect(()=>{ save(state); }, [state]);
+
+  // URL prati molitvenik da se može podijeliti; GA broji otvaranja
+  useEffect(() => {
+    const url = new URL(location.href);
+    if (view === 'molitvenik') url.searchParams.set('view', 'molitve');
+    else url.searchParams.delete('view');
+    history.replaceState(null, '', url);
+    if (view === 'molitvenik' && typeof gtag !== 'undefined') gtag('event', 'molitvenik_otvoren', {jezik: LANG});
+  }, [view]);
 
   // PWA: Chrome/Edge/Android daju native dijalog (beforeinstallprompt); Safari/iOS
   // ga nema, pa isti gumb ondje otvori upute. Instalirana app gumb ne prikazuje.
@@ -1547,6 +1866,9 @@ function App() {
             {t('pocetna.mojaStablaN', state.trees.length)}
           </button>
         )}
+        <button className="btn btn-s btn-lg" style={{justifyContent:'center'}} onClick={()=>setView('molitvenik')}>
+          {t('molitvenik.gumb')}
+        </button>
       </div>
       {!instalirano && (
         <div className="w-install">
@@ -1612,6 +1934,7 @@ function App() {
           </div>
         </div>
         <div className="hdr-right">
+          {view!=='welcome' && view!=='molitvenik' && <button className="btn btn-g btn-sm hdr-mol" onClick={()=>setView('molitvenik')}>{t('molitvenik.gumb')}</button>}
           {state.trees.length>0 && view!=='trees' && <button className="btn btn-g btn-sm" onClick={()=>setView('trees')}>{t('zaglavlje.svaStabla')}</button>}
           {(view==='guided'||view==='prayer') && <button className="btn btn-s btn-sm" onClick={newTree}><IPlus/> {t('zaglavlje.novo')}</button>}
           <div className="jezik" role="group" aria-label={t('zaglavlje.jezik')}>
@@ -1627,13 +1950,15 @@ function App() {
         <div className="left">
           {view==='welcome' && <Welcome/>}
           {view==='trees' && <TreesList/>}
+          {view==='molitvenik' && <Molitvenik onBack={()=>setView('welcome')}/>}
           {view==='guided' && activeTree && (
             <GuidedFlow tree={activeTree} onUpdate={updateTree} onFinish={finishTree}
               onBack={()=>setView(state.trees.length>1?'trees':'welcome')}/>
           )}
           {view==='prayer' && activeTree && (
             <PrayerScreen tree={activeTree}
-              onBack={()=>{ updateTree({...activeTree,completed:false,step:4}); setView('guided'); }}/>
+              onBack={()=>{ updateTree({...activeTree,completed:false,step:4}); setView('guided'); }}
+              onMolitvenik={()=>{ skokPriOtvaranju = 'mol-oprost'; setView('molitvenik'); }}/>
           )}
         </div>
         <TreePanel tree={displayTree}/>

@@ -152,6 +152,47 @@ window.JEZICI.en = {
       korak: n => `Step ${n}/5`
     },
 
+    molitvenik: {
+      gumb: "✝ Prayers",
+      naslov: "Healing prayers",
+      podnaslov: "Based on the prayers of the John Paul II Healing Center. Pray slowly and aloud — don't hurry, pause wherever something touches you.",
+      sadrzaj: "Contents",
+      ispisi: "Print",
+      sazetak: "At a glance",
+      sazetakUvod: "Sin often grows out of a wound — we sin to escape the suffering it causes. Behind a habitual sin there is usually a wound that needs healing.",
+      rana: "Wound",
+      laz: "The lie the heart believes",
+      grijeh: "Sin",
+      idol: "Idol",
+      zelje: "Seven desires of the heart",
+      zeljeUvod: "What every human heart was made for.",
+      lazi: "Lies and truth",
+      laziUvod: "For each wound: renounce the lie, then proclaim the truth aloud.",
+      grijesi: "Renouncing sin",
+      grijesiUvod: "Renounce the sin and the idol behind it, then choose the virtue.",
+      oprost: "Forgiveness",
+      oprostUvod: "Forgiveness is a decision, not a feeling. Go through the steps slowly; the prayers are placed where you need them.",
+      oprostOsoba: "Forgiving another",
+      oprostSebi: "Forgiving yourself",
+      oprostBogu: "Forgiving God",
+      oprostBoguNapomena: "Not that God needs forgiveness — He is perfect and all good — but sometimes we hold resentment toward Him that we need to let go of.",
+      molitvaLazi: "Prayer for renouncing identity lies",
+      molitvaOsudaOsobe: "Prayer for renouncing judgment of a person",
+      molitvaOsudaBoga: "Prayer for renouncing judgment of God",
+      molitvaZavjeti: "Prayer for renouncing inner vows",
+      naPecat: "↓ Sealing and blessing",
+      iscjeljenje: "Praying for inner healing",
+      iscjeljenjeUvod: "Guidance for a time of prayer — when something hurts in the present, look for the root.",
+      pecat: "Sealing and blessing",
+      pecatUvod: "At the end of every healing prayer, ask God to seal what He has done.",
+      odricemSe: "I renounce",
+      proglasavam: "I proclaim the truth",
+      biram: "I choose",
+      tvojeStablo: "Your tree",
+      deblo: "The root of every sin",
+      cijeliOprost: "The full forgiveness process →"
+    },
+
     obavijest: {
       potvrdiBrisanje: "Delete this tree? This cannot be undone.",
       obrisano: "Tree deleted",
@@ -241,11 +282,118 @@ window.JEZICI.en = {
       { id:"d_prekrsena_obecanja",tip:"B", tekst:"Promises made to me were constantly broken", rane:["beznade","napustenost"] }
     ],
 
+    // ── PRAYER BOOK ─────────────────────────────────────────────
+    // Sources: JPII Healing Center — "Healing Prayers" (forgiveness, inner healing,
+    // sealing and blessing, general prayers) and "Seven Deadly Wounds" (seven desires).
+    // Shown on the Prayers page (view 'molitvenik') and on the tree's prayer screen.
+
+    // Seven desires of the human heart. The source does NOT link them to wounds,
+    // so there is no rane[] here — do not invent the link.
+    zeljeSrca: [
+      { id:"saslusan",  naziv:"To be heard and understood" },
+      { id:"potvrden",  naziv:"To be affirmed", opis:"shown that you are good" },
+      { id:"blagoslovljen", naziv:"To be blessed", opis:"given unconditional love" },
+      { id:"siguran",   naziv:"To be safe", opis:"both physically and emotionally" },
+      { id:"dodirnut",  naziv:"To be touched", opis:"a healthy sign of someone's love — a hug, being held" },
+      { id:"izabran",   naziv:"To be chosen", opis:"to feel special" },
+      { id:"ukljucen",  naziv:"To be included", opis:"to be part of something, to belong" }
+    ],
+
+    // Forgiveness process. `molitva` is the prayer prayed at that step:
+    //   lazi | osudaOsobe | osudaBoga | zavjeti  → opceMolitve[key]
+    //   pecat                                    → Sealing and Blessing section
+    // Soul-tie steps are intentionally left out.
+    oprost: {
+      osoba: [
+        { tekst:"Ask the Holy Spirit to show you who you need to forgive — family, a friend, someone who abused you, God, or yourself." },
+        { tekst:"Picture the person in front of you and pay attention to what you feel." },
+        { tekst:"Make an account of the debt they owe you: what did they take from you, how did they hurt you? It is okay to feel angry." },
+        { tekst:"Speak to them aloud, telling them what they did to hurt you and how it has affected you. Be completely honest." },
+        { tekst:"Ask the Holy Spirit to reveal what you believe about yourself because of that incident — the identity lie." },
+        { tekst:"Renounce the identity lie.", molitva:"lazi" },
+        { tekst:"Ask the Holy Spirit to reveal the judgments you hold toward the person who hurt you." },
+        { tekst:"Renounce those judgments.", molitva:"osudaOsobe" },
+        { tekst:"Pray a short prayer asking Jesus to forgive the person." },
+        { tekst:"Forgive the person: _“In the name of Jesus, I forgive … for …”_ It may help to picture yourself with them at the foot of the Cross." },
+        { tekst:"Pray a blessing over them — ask God to bless them in the opposite way to the way they hurt you." },
+        { tekst:"Did you make any inner vows as a result of this hurt? Renounce them now.", molitva:"zavjeti" },
+        { tekst:"Ask Jesus to seal this forgiveness and heal the wounds.", molitva:"pecat" },
+        { tekst:"Thank God for His healing." }
+      ],
+      sebe: [
+        { tekst:"Make an account of what you have done to damage yourself or harm other people." },
+        { tekst:"Say how that has affected you or the other person." },
+        { tekst:"Ask the Holy Spirit to reveal what you believe about yourself because of your action or inaction — the identity lie." },
+        { tekst:"Renounce the identity lie (e.g. _“I am stupid”, “I am selfish”, “I am cruel”_).", molitva:"lazi" },
+        { tekst:"Pray a short prayer asking Jesus to forgive you for what you did and for the effects it caused." },
+        { tekst:"Forgive yourself." },
+        { tekst:"Ask God to bless you and the people you hurt, by reversing the effects of your sins or failures." },
+        { tekst:"Did you make any inner vows as a result? Renounce them now.", molitva:"zavjeti" },
+        { tekst:"Ask Jesus to seal this forgiveness and heal the wounds.", molitva:"pecat" },
+        { tekst:"Thank God for His healing." }
+      ],
+      bog: [
+        { tekst:"Picture Jesus or God the Father in front of you and pay attention to what you feel." },
+        { tekst:"Make an account of what you believe God has done to harm you or other people." },
+        { tekst:"Say how that has affected you or others." },
+        { tekst:"Ask the Holy Spirit to reveal what you believe about yourself because of God's perceived action or inaction — the identity lie." },
+        { tekst:"Renounce the identity lie (e.g. _“I am worthless”, “I am unloved”, “I am powerless”_).", molitva:"lazi" },
+        { tekst:"Ask the Holy Spirit to reveal the judgments you hold toward God." },
+        { tekst:"Renounce those judgments.", molitva:"osudaBoga" },
+        { tekst:"Ask God to bless you — to reverse the effects of your bitterness or sins toward Him and reveal to you the truth about His love and care." },
+        { tekst:"Have you made any inner vows with regard to God? Renounce them now.", molitva:"zavjeti" },
+        { tekst:"Ask Jesus to seal this forgiveness and heal the wounds.", molitva:"pecat" },
+        { tekst:"Thank God for His healing." }
+      ]
+    },
+
+    // Praying for inner healing — guidance, not a prayer
+    iscjeljenje: [
+      { naslov:"Identify the current distress", stavke:[
+        "What is distressing me right now? What do I desire?",
+        "What triggered it, and what am I feeling in that situation?",
+        "What do I believe in my heart about myself? _(identity lie)_",
+        "What do I believe in my heart about the other person? _(judgment)_" ]},
+      { naslov:"Ask Jesus (the Father or the Holy Spirit) to show you the root", stavke:[
+        "Don't try to pray or figure it out — just listen and receive.",
+        "The root may be one memory, a series of memories, or a feeling.",
+        "It may also be a womb experience or something generational." ]},
+      { naslov:"Identify the painful experience and the lie that belongs to it", stavke:[
+        "The pain and the lie should match the present distress and lie.",
+        "If there is more than one memory, look for the common thread.",
+        "If the root is pre-verbal, there may be no memory — only feelings.",
+        "If the root is generational, there may be no emotion at all." ]},
+      { naslov:"Ask Jesus to reveal what He wants you to know", stavke:[
+        "Some see a picture — e.g. Jesus revealing Himself to the child.",
+        "Some receive a truth — _“I am not to blame.”_",
+        "Some feel the pain released — _“I don't feel alone anymore.”_",
+        "Some have just a sense, an inner knowing — _“I am loved.”_" ]},
+      { naslov:"If you receive nothing — look for barriers", stavke:[
+        "It may be control, because of an inner vow or judgment.",
+        "It may be dissociation, because of early trauma.",
+        "You may be experiencing abandonment by God.",
+        "It may be a wall of anger, fear, denial or hopelessness.",
+        "Ask the Lord to reveal the barrier and its source, and to minister to them." ]},
+      { naslov:"When you receive healing from Jesus", stavke:[
+        "Look for the fruit in the memory and in the original issue: communion, peace, joy.",
+        "Check what you now believe in place of the original lie and judgment.",
+        "Give thanks to the Lord and seal the healing in His Blood and Spirit." ]}
+    ],
+
+    // General prayers with room for your own words — (parentheses) render as a fill-in
+    opceMolitve: {
+      lazi: "In the name of Jesus Christ, I renounce the lie that (e.g. “I am alone”, “I am ugly”, “Nothing will ever change”, “I am not loved”, “If I trust I will die”).\n\nIn Jesus' name, and through the power of the Holy Spirit, I ask You to reveal the truth of my identity before the Father, where these identity lies have taken hold in my heart. Amen.",
+      osudaOsobe: "Father, I acknowledge that I have judged (name). I realize that I did this to protect myself from feelings of vulnerability and powerlessness, in order not to be hurt, or because I considered myself superior to him/her. I also realize that this judgment is sin and keeps me bound. I ask You now for Your forgiveness, and to release me and (name) from the bondage of this condemnation and isolation.\n\nIn the name of Jesus, I renounce the judgment of (name) that he/she is (specific judgments).\n\nI know I cannot change my own heart, so I ask You to give me Your heart of compassion for (name). Amen.",
+      osudaBoga: "Father, I acknowledge that I have judged You. I realize that I did this to protect myself from feelings of vulnerability and powerlessness, in order not to be hurt, or because I was angry. I also realize that this judgment is sin and keeps me bound. I ask You now for Your forgiveness, and to release me from the bondage of this condemnation and isolation.\n\nIn the name of Jesus, I renounce the judgment of You that You are (specific judgments).\n\nI know I cannot change my own heart, so I ask You to remove my resentment and bring me to wholeness. Amen.",
+      zavjeti: "Father, I acknowledge that I have tried to save myself rather than rely on You for my salvation. Please forgive me for my sin of pride and self-sufficiency. I acknowledge that my effort to protect myself has left me imprisoned behind walls that keep me from giving and receiving love. I desire to be free of this bondage that has come as a result of my own choices.\n\nIn the name of Jesus, I renounce the inner vow that (the vow, e.g. “I will never trust anyone again”).\n\nI ask You to release me from the bondage of this vow now. Amen."
+    },
+
     smrtneRane: [
       {
         id: "napustenost",
         naziv: "Abandonment",
         laz: "I am all alone. No one understands me. No one cares for me.",
+        istinaKratko: "I am connected, understood and deeply cared for",
         opis: "This wound forms when the one who should have been present was not — physically or in heart. It doesn't take a departure; absence is enough.",
         osjecaj: "emptiness, longing, feeling invisible",
         znakIscjeljenja: "Connected and understood replaces abandonment",
@@ -261,6 +409,7 @@ window.JEZICI.en = {
         id: "sramota",
         naziv: "Shame",
         laz: "I am bad, dirty, ugly, stupid, worthless, perverted...",
+        istinaKratko: "I am pure and worthy, not because of what I have done, but because of what Jesus has done for me",
         opis: "Guilt says: I did something bad. Shame says: I am bad. The wound attacks not the deed but the identity.",
         osjecaj: "a wish to hide, so that no one can see inside",
         znakIscjeljenja: "Pure and worthy replaces shame",
@@ -276,6 +425,7 @@ window.JEZICI.en = {
         id: "strah",
         naziv: "Fear",
         laz: "If I trust, speak up or stand my ground, I will be hurt or I will die.",
+        istinaKratko: "I am safe and secure",
         opis: "The wound of fear closes the heart. What was once protection becomes a wall you no longer know how to lower.",
         osjecaj: "tension, hypervigilance, inability to relax",
         znakIscjeljenja: "Safe and secure replaces fear",
@@ -291,6 +441,7 @@ window.JEZICI.en = {
         id: "bespomoćnost",
         naziv: "Powerlessness",
         laz: "I am powerless, weak, stuck and trapped... I don't know what to do.",
+        istinaKratko: "I am empowered by Christ and liberated by the Holy Spirit",
         opis: "This wound forms where you were too small or too weak to change what was happening to you. The body remembers it even after you have grown up.",
         osjecaj: "paralysis, being overwhelmed, a need to hold everything in your own hands",
         znakIscjeljenja: "Empowered and liberated replaces powerlessness",
@@ -306,6 +457,7 @@ window.JEZICI.en = {
         id: "odbacenost",
         naziv: "Rejection",
         laz: "I am not loved and not worthy of love... I am not good enough.",
+        istinaKratko: "I am loved and valued, wanted and desired, and precious in the Father's eyes",
         opis: "Abandonment is absence. Rejection is a message: you were there, and you were not wanted. That is why it hurts differently.",
         osjecaj: "a need to earn your place, fear of being left out",
         znakIscjeljenja: "Accepted and valued replaces rejection",
@@ -321,6 +473,7 @@ window.JEZICI.en = {
         id: "beznade",
         naziv: "Hopelessness",
         laz: "Nothing is ever going to change... there is no hope.",
+        istinaKratko: "I am filled with hope in the good things to come",
         opis: "The wound of hopelessness comes after you have hoped and been disappointed enough times. The heart decides it is cheaper not to hope.",
         osjecaj: "weariness, indifference, giving up in advance",
         znakIscjeljenja: "Hopeful and encouraged replaces hopelessness",
@@ -336,6 +489,7 @@ window.JEZICI.en = {
         id: "zbunjenost",
         naziv: "Confusion",
         laz: "I don't know what is happening to me. I don't understand anything.",
+        istinaKratko: "I have understanding and enlightenment from the Lord",
         opis: "This wound forms where words and actions did not match — where you were told one thing and shown another. You stop trusting your own perception.",
         osjecaj: "fog, distrust of your own feelings, constant second-guessing",
         znakIscjeljenja: "Understanding and enlightenment replaces confusion",
@@ -745,6 +899,26 @@ window.JEZICI.en = {
 
   // ── GRADITELJI MOLITAVA ─────────────────────────────────────
   molitve: {
+    // Sealing and Blessing (JPII — "Prayer for Sealing and Blessing").
+    // rane: objects from smrtneRane; without them the fill-in places stay.
+    molitvaPecata: function(rane){
+      rane = rane || [];
+      var t = "Father, I thank You for this healing through the name of Jesus and by the power of Your Holy Spirit. " +
+              "I praise You for Your great love, mercy and power, and for sending Jesus in the power of the Spirit " +
+              "to heal our broken hearts and to free us from all bondage.\n\n" +
+              "I ask You now to seal this healing and to close any remaining doorways, by the precious blood of Jesus " +
+              "and the gentle ministry of Your Holy Spirit. Bless me now with a new infilling of Your Spirit " +
+              "and with a new understanding and authority of my identity in Jesus Christ.\n\n";
+      if (rane.length) {
+        t += "Please especially bless what has been wounded in me: " +
+             rane.map(function(r){ return r.naziv.toLowerCase(); }).join(", ") + ".";
+        rane.forEach(function(r){ if (r.istinaKratko) t += " I acknowledge that " + r.istinaKratko + "."; });
+      } else {
+        t += "Please especially bless (any area of wounding). I acknowledge that I am (the truths revealed in prayer).";
+      }
+      return t + "\n\nI thank You and praise You for Your graciousness to me. Amen.";
+    },
+
     // Molitva odricanja od krive slike Boga — rana → tiha osuda roditelja →
     // projekcija na Boga → odricanje → istina
     molitvaSlikeBoga: function(k){
