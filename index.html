@@ -394,7 +394,7 @@ details.mol-korak>summary::-webkit-details-marker{display:none;}
 details.mol-korak>summary::after{content:'›';margin-left:6px;color:var(--gold);display:inline-block;transition:transform .2s;}
 details.mol-korak[open]>summary::after{transform:rotate(90deg);}
 details.isus blockquote{margin:6px 0 0;padding-left:10px;border-left:2px solid var(--gold-l);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16.5px;line-height:1.5;color:var(--txt);}
-details.znak>summary,details.znak details.isus>summary{color:var(--light);font-size:10.5px;font-weight:400;opacity:.85;transition:color .15s,opacity .15s;}
+details.znak>summary,details.znak details.isus>summary{color:var(--light);font-size:10px;font-weight:400;opacity:.6;transition:color .15s,opacity .15s;}
 details.znak>summary:hover,details.znak details.isus>summary:hover{color:var(--leaf);opacity:1;}
 details.znak[open]>summary{color:var(--leaf);opacity:1;}
 details.znak details.isus[open]>summary{color:var(--bark);opacity:1;}
@@ -1515,10 +1515,12 @@ function Navod({ text }) {
   );
 }
 
-function Navodi({ text }) {
+// bezUpisa: u opisnom tekstu zagrada bez broja je obična zagrada, ne mjesto za upis
+function Navodi({ text, bezUpisa }) {
   return <>{String(text).split(/(\([^()]*\))/).map((d, i) =>
     !d.startsWith('(') ? d
     : /\d/.test(d) ? <Navod key={i} text={d}/>
+    : bezUpisa ? d
     : <span key={i} className="upis">{d}</span>
   )}</>;
 }
@@ -1625,14 +1627,14 @@ function Vrline({ g, evandjelje }) {
   );
 }
 
-// Što je ovaj grijeh — kratko pojašnjenje (Be Healed pogl. 6: idol i što grijeh skriva), sitno i
-// sklopljeno na vrhu kartice, prije same molitve
-function OpisGrijeha({ g }) {
-  if (!g.pojasnjenje) return null;
+// "Što je …?" — kratko pojašnjenje grijeha (Be Healed pogl. 6) ili rane (pogl. 7–8), sitno i
+// sklopljeno na vrhu kartice, prije same molitve. x: grijeh ili rana s poljem pojasnjenje.
+function Pojasnjenje({ x }) {
+  if (!x.pojasnjenje) return null;
   return (
     <details className="isus znak opis-grijeha" onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
-      <summary>ⓘ {t('molitvenik.oGrijehu', g.naziv)}</summary>
-      <div className="opis-tekst">{g.pojasnjenje.split(/\n\n+/).map((p, i) => <p key={i}><Navodi text={p}/></p>)}</div>
+      <summary>ⓘ {t('molitvenik.staJe', x.naziv)}</summary>
+      <div className="opis-tekst">{x.pojasnjenje.split(/\n\n+/).map((p, i) => <p key={i}><Navodi text={p} bezUpisa/></p>)}</div>
     </details>
   );
 }
@@ -1951,7 +1953,7 @@ function Molitvenik({ onBack }) {
             <Molitva key={g.id} id={'mol-g-' + g.id} naslov={g.naziv} ikona={g.ikona} boja={`${g.bojaBg}22`}
               podnaslov={t('molitvenik.idol') + ': ' + g.idolatrija}
               dijelovi={dijeloviGrijeha(g)} sklopljeno={true} zvjezdica={'g:' + g.id}
-              uvod={<OpisGrijeha g={g}/>} dodatak={<KrepostGrijeha g={g}/>} natrag="mol-sazetak"/>
+              uvod={<Pojasnjenje x={g}/>} dodatak={<KrepostGrijeha g={g}/>} natrag="mol-sazetak"/>
           ))}
           {otkriveno === 1 && dalje}
         </Odjeljak>
@@ -1960,7 +1962,7 @@ function Molitvenik({ onBack }) {
           {DATA.smrtneRane.map(r => (
             <Molitva key={r.id} id={'mol-r-' + r.id} naslov={r.naziv} ikona="🌱" podnaslov={t('molitvenik.citat', r.laz)}
               dijelovi={dijeloviRane(r)} sklopljeno={true} zvjezdica={'r:' + r.id}
-              dodatak={<ZnakRane r={r}/>} natrag="mol-sazetak"/>
+              uvod={<Pojasnjenje x={r}/>} dodatak={<ZnakRane r={r}/>} natrag="mol-sazetak"/>
           ))}
           {otkriveno === 2 && dalje}
         </Odjeljak>}
@@ -2092,14 +2094,14 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
         {korak('st-grijeh', t('molitvenik.grijesiUvod'), <>
           <Molitva id={'st-g-' + sinDef.id} ikona={sinDef.ikona} boja={`${sinDef.bojaBg}22`} naslov={t('molitve.odricanje', sinDef.naziv)}
             podnaslov={t('molitvenik.idol') + ': ' + sinDef.idolatrija} dijelovi={dijeloviGrijeha(sinDef)} zvjezdica={'g:' + sinDef.id}
-            uvod={<OpisGrijeha g={sinDef}/>} dodatak={<KrepostGrijeha g={sinDef}/>} natrag="mol-stablo" sklopljeno={true}/>
+            uvod={<Pojasnjenje x={sinDef}/>} dodatak={<KrepostGrijeha g={sinDef}/>} natrag="mol-stablo" sklopljeno={true}/>
         </>)}
 
         {korak('st-lazi', t('molitvenik.laziUvod'), <>
           {raneDef.map(rd => (
             <Molitva key={rd.id} id={'st-r-' + rd.id} ikona="🌱" naslov={t('molitve.iscjeljenje', rd.naziv)}
               podnaslov={t('molitvenik.citat', rd.laz)} dijelovi={dijeloviRane(rd)} zvjezdica={'r:' + rd.id}
-              dodatak={<ZnakRane r={rd}/>} natrag="mol-stablo" sklopljeno={true}/>
+              uvod={<Pojasnjenje x={rd}/>} dodatak={<ZnakRane r={rd}/>} natrag="mol-stablo" sklopljeno={true}/>
           ))}
         </>)}
 
