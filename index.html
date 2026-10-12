@@ -245,6 +245,11 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .anim{animation:slideIn .3s ease both;}
 @keyframes slideIn{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.ime-stabla{display:block;width:100%;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;line-height:1.2;color:var(--bark-d);background:transparent;border:none;border-bottom:1.5px dashed transparent;border-radius:0;outline:none;padding:2px 0 4px;margin-bottom:9px;cursor:text;transition:border-color .15s;text-overflow:ellipsis;}
+.ime-stabla:hover{border-bottom-color:var(--bark-l);}
+.ime-stabla:focus{border-bottom-color:var(--gold);text-overflow:clip;}
+.ime-stabla::placeholder{color:var(--bark-l);}
+@media(max-width:500px){.ime-stabla{font-size:26px;}}
 .eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bark-l);margin-bottom:5px;}
 .stitle{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;color:var(--bark-d);margin-bottom:9px;line-height:1.25;}
 .sbody{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px;}
@@ -962,6 +967,12 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
 
   const sinDef = DATA.smrtniGrijesi.find(s => s.id === data.sinId);
 
+  // ime se mijenja i u headeru — bez ovoga bi ga sljedeći patch() pregazio
+  useEffect(() => {
+    setData(d => d.name === tree.name && d._autoName === tree._autoName ? d
+      : { ...d, name: tree.name, _autoName: tree._autoName });
+  }, [tree.name, tree._autoName]);
+
   function patch(u) {
     const next = { ...data, ...u };
     setData(next);
@@ -1391,7 +1402,12 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
         <StepBar cur={4} onGo={idiNa} moze={!!sinDef}/>
         <div className="scontent"><div className="anim">
           <div className="eyebrow">{t('k5.oznaka')}</div>
-          <h2 className="stitle">{t('k5.naslov', sinDef.naziv)}</h2>
+          <input className="ime-stabla" value={imeStabla(data)}
+            placeholder={t('zaglavlje.imeStabla')} title={t('zaglavlje.promijeniIme')}
+            aria-label={t('zaglavlje.imeStabla')}
+            onChange={e => patch({name: e.target.value, _autoName: false})}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') e.target.blur(); }}
+            onBlur={e => { if (!e.target.value.trim()) patch({name: imeStabla({...data, _autoName: true}), _autoName: true}); }}/>
           <p className="sbody" style={{marginBottom:18}}>{t('k5.tijelo')}</p>
 
           {allFruits.length > 0 && (

@@ -97,7 +97,6 @@ window.JEZICI.en = {
 
     k5: {
       oznaka: "Step 5 — Review",
-      naslov: n => `Tree of ${n}`,
       tijelo: "Everything you entered — sorted by priority.",
       plodovi: "🌿 Fruit",
       grijeh: "🌳 Sin",

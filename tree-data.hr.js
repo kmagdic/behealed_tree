@@ -111,7 +111,6 @@ window.JEZICI.hr = {
 
     k5: {
       oznaka: "Korak 5 — Pregled",
-      naslov: n => `Stablo ${n}`,
       tijelo: "Sve što si unio/unijela — sortirano po prioritetu.",
       plodovi: "🌿 Plodovi",
       grijeh: "🌳 Grijeh",
