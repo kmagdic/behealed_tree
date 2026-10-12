@@ -402,6 +402,10 @@ details.znak>summary::after,details.znak details.isus>summary::after{color:var(-
 details.isus .znak-tekst{margin-top:4px;font:400 12px/1.45 'Inter',sans-serif;font-style:normal;color:#2C5A30;}
 details.isus .znak-sak{margin-top:3px;font:400 12px/1.45 'Inter',sans-serif;font-style:normal;color:var(--bark);}
 .znak-sak strong{font-weight:600;}
+details.opis-grijeha{margin:-4px 0 12px;}
+details.opis-grijeha[open]{padding:8px 12px;background:rgba(196,154,60,.07);border-radius:8px;}
+details.opis-grijeha[open]>summary{color:var(--bark);}
+details.isus .opis-tekst p{margin-top:7px;font:400 13.5px/1.6 'Inter',sans-serif;font-style:normal;color:var(--txt);}
 .mol-tablica details.znak{margin-top:2px;}
 .print-only{display:none;}
 
@@ -1545,7 +1549,7 @@ function Zvjezdica({ k }) {
 // sklopljeno: undefined = obična kartica, true/false = <details> (u ispisu se otvori)
 // zvjezdica: ključ za označavanje · dodatak: okvir ispod molitve (krjepost, znak iscjeljenja)
 // natrag: id sažetka na koji vodi "↑ Ukratko"
-function Molitva({ id, naslov, ikona, boja, podnaslov, dijelovi, tekst, sklopljeno, zvjezdica, dodatak, natrag }) {
+function Molitva({ id, naslov, ikona, boja, podnaslov, dijelovi, tekst, sklopljeno, zvjezdica, uvod, dodatak, natrag }) {
   const { zvjezdice } = useContext(ZvjezdiceCtx);
   const oznacena = zvjezdica && zvjezdice.includes(zvjezdica);
   const glava = (
@@ -1563,6 +1567,7 @@ function Molitva({ id, naslov, ikona, boja, podnaslov, dijelovi, tekst, skloplje
   );
   const tijelo = (
     <>
+      {uvod}
       <div className="molitva">
         {(dijelovi || [{ tekst }]).map((d, i) => (
           <div key={i}>
@@ -1616,6 +1621,18 @@ function Vrline({ g, evandjelje }) {
       <summary>✓ {t('molitvenik.krepost')}</summary>
       <p className="znak-tekst"><strong>{g.krepost.par || g.krepost.naziv}</strong></p>
       {evandjelje && <Evandjelje g={g}/>}
+    </details>
+  );
+}
+
+// Što je ovaj grijeh — kratko pojašnjenje (Be Healed pogl. 6: idol i što grijeh skriva), sitno i
+// sklopljeno na vrhu kartice, prije same molitve
+function OpisGrijeha({ g }) {
+  if (!g.pojasnjenje) return null;
+  return (
+    <details className="isus znak opis-grijeha" onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
+      <summary>ⓘ {t('molitvenik.oGrijehu', g.naziv)}</summary>
+      <div className="opis-tekst">{g.pojasnjenje.split(/\n\n+/).map((p, i) => <p key={i}><Navodi text={p}/></p>)}</div>
     </details>
   );
 }
@@ -1934,7 +1951,7 @@ function Molitvenik({ onBack }) {
             <Molitva key={g.id} id={'mol-g-' + g.id} naslov={g.naziv} ikona={g.ikona} boja={`${g.bojaBg}22`}
               podnaslov={t('molitvenik.idol') + ': ' + g.idolatrija}
               dijelovi={dijeloviGrijeha(g)} sklopljeno={true} zvjezdica={'g:' + g.id}
-              dodatak={<KrepostGrijeha g={g}/>} natrag="mol-sazetak"/>
+              uvod={<OpisGrijeha g={g}/>} dodatak={<KrepostGrijeha g={g}/>} natrag="mol-sazetak"/>
           ))}
           {otkriveno === 1 && dalje}
         </Odjeljak>
@@ -2075,7 +2092,7 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
         {korak('st-grijeh', t('molitvenik.grijesiUvod'), <>
           <Molitva id={'st-g-' + sinDef.id} ikona={sinDef.ikona} boja={`${sinDef.bojaBg}22`} naslov={t('molitve.odricanje', sinDef.naziv)}
             podnaslov={t('molitvenik.idol') + ': ' + sinDef.idolatrija} dijelovi={dijeloviGrijeha(sinDef)} zvjezdica={'g:' + sinDef.id}
-            dodatak={<KrepostGrijeha g={sinDef}/>} natrag="mol-stablo" sklopljeno={true}/>
+            uvod={<OpisGrijeha g={sinDef}/>} dodatak={<KrepostGrijeha g={sinDef}/>} natrag="mol-stablo" sklopljeno={true}/>
         </>)}
 
         {korak('st-lazi', t('molitvenik.laziUvod'), <>
