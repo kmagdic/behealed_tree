@@ -15,6 +15,7 @@ window.JEZICI.en = {
   // ── TEKST SUČELJA ───────────────────────────────────────────
   ui: {
     koraci: ["Sin", "Fruit", "Wounds", "Vows", "Review"],
+    idiNaKorak: n => `Go to step: ${n}`,
     natrag: "Back",
     dalje: "Next →",
     uredi: "Edit",
