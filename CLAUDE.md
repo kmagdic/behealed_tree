@@ -153,6 +153,10 @@ Workflow i prekidač ne treba dirati. Prije objave provjeri da se strukture pokl
 4. **Zavjeti i osude** — zavjeti, gorke osude, *(sklopljeno)* krive slike Boga, rana iz djetinjstva
 5. **Pregled** — sve uneseno, sortirano po prioritetu
 
+**Traka koraka** (`StepBar`): klik na korak vodi na njega (`idiNa`) — naprijed kao `next()` (sprema `step`, GA), natrag kao `prev()`. Bez odabranog grijeha klikabilan je samo korak 1.
+
+**Ime stabla** uređuje se na tri mjesta: u headeru (`.hdr-tree-name`), krupno na vrhu Pregleda i na vrhu molitvenog ekrana (`.ime-stabla`, skriveno u ispisu). Prazno ime se pri izlasku vraća na automatsko. `GuidedFlow` drži vlastitu kopiju stabla, pa `useEffect` u nju prepisuje `name`/`_autoName` iz propa — bez toga bi sljedeći `patch()` pregazio ime promijenjeno u headeru.
+
 **Živi panel**: labeli (`.lbl`) apsolutno pozicionirani nad `tree-bg.jpg` — plodovi u krošnji (11–26%), grijeh u deblu (~57%), rane u korijenju (73–89%), zavjeti/osude duboko (91–94%). Tri veličine po prioritetu; klik na skraćeni tekst otvara tooltip.
 
 **Prioriteti**: chip se ciklički mijenja p1→p2→p3→p1; utječe na veličinu labela i redoslijed u pregledu.

@@ -526,7 +526,7 @@ details[open]>summary .chev{transform:rotate(90deg);}
 
 @media print{
   @page{margin:14mm 15mm;}
-  .hdr,.step-bar,.sfooter,.hdr-right,.tree-pane,.btn,.p-banner{display:none!important;}
+  .hdr,.step-bar,.sfooter,.hdr-right,.tree-pane,.btn,.p-banner,.ime-stabla{display:none!important;}
   .split{display:block;}
   .left{overflow:visible!important;height:auto!important;padding:0!important;}
   html,body{background:#fff!important;}
@@ -2232,7 +2232,7 @@ function Molitvenik({ onBack }) {
 // ── PRAYER (personalizirano za stablo) ──
 // Isti redoslijed kao molitvenik, ali samo ono što je korisnik odabrao. Kartice imaju prefiks 'st-'
 // da se ne sudaraju s molitvenikom; zvjezdice su iste jer je riječ o istoj molitvi.
-function PrayerScreen({ tree, onBack, onMolitvenik }) {
+function PrayerScreen({ tree, onBack, onMolitvenik, onUpdate }) {
   const sinDef = DATA.smrtniGrijesi.find(s=>s.id===tree.sinId);
   const priorities = tree.priorities || {};
   const sortedWounds = (tree.wounds||[]).slice().sort((a,b)=>getPriority(priorities,b.id)-getPriority(priorities,a.id));
@@ -2289,6 +2289,12 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
           <h2 style={{fontFamily:'serif',fontSize:18,fontWeight:400,color:'#8B6B4A',marginBottom:12}}>{t('panel.naslov', sinDef.naziv)} {sinDef.ikona}</h2>
         </div>
 
+        <input className="ime-stabla" value={imeStabla(tree)}
+          placeholder={t('zaglavlje.imeStabla')} title={t('zaglavlje.promijeniIme')}
+          aria-label={t('zaglavlje.imeStabla')}
+          onChange={e => onUpdate({...tree, name: e.target.value, _autoName: false})}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') e.target.blur(); }}
+          onBlur={e => { if (!e.target.value.trim()) onUpdate({...tree, name: imeStabla({...tree, _autoName: true}), _autoName: true}); }}/>
         <div className="p-banner">
           <h2>{t('molitve.naslov')}</h2>
           <p>{t('molitve.naTemelju', sinDef.naziv)}</p>
@@ -2575,7 +2581,7 @@ function App() {
               onBack={()=>setView(state.trees.length>1?'trees':'welcome')}/>
           )}
           {view==='prayer' && activeTree && (
-            <PrayerScreen tree={activeTree}
+            <PrayerScreen tree={activeTree} onUpdate={updateTree}
               onBack={()=>{ updateTree({...activeTree,completed:false,step:4}); setView('guided'); }}
               onMolitvenik={(id)=>{ skokPriOtvaranju = id || 'mol-oprost'; setView('molitvenik'); }}/>
           )}
