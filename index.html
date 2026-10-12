@@ -6,8 +6,6 @@
 <title>Be Healed - Tree of Life</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#F7F3EE">
-<!-- Uvijek svijetlo: preglednici koji na mobitelu forsiraju tamnu temu (Chrome auto-dark, Samsung Internet…) ne smiju invertirati stablo -->
-<meta name="color-scheme" content="only light">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Be Healed - Tree">
@@ -24,7 +22,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  color-scheme:only light;
   --cream:#F7F3EE;--warm:#FDFAF6;--bark:#8B6B4A;--bark-l:#C4A882;--bark-d:#5C4030;
   --leaf:#7A9E7E;--leaf-l:#B5CEB8;--root:#B0A090;--txt:#2C1F14;--mid:#6B5040;
   --light:#9E8B7A;--gold:#C49A3C;--gold-l:#E8C97A;
@@ -100,7 +97,8 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .left{overflow-y:auto;display:flex;flex-direction:column;background:var(--warm);border-right:1px solid rgba(139,107,74,0.1);}
 
 /* TREE PANE */
-.tree-pane{position:relative;overflow:hidden;background:#F2EDE6;display:flex;flex-direction:column;}
+/* only light: preglednik koji forsira tamnu temu ne smije zatamniti stablo (ostatak stranice smije) */
+.tree-pane{position:relative;overflow:hidden;background:#F2EDE6;display:flex;flex-direction:column;color-scheme:only light;}
 .tree-bg{
   position:absolute;inset:0;
   background-image:url('tree-bg.jpg');
