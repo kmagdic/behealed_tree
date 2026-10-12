@@ -29,6 +29,7 @@ window.JEZICI.hr = {
   // \n = novi red (vidi <Bogato/> u index.html).
   ui: {
     koraci: ["Grijeh", "Plodovi", "Rane", "Zavjeti", "Pregled"],
+    idiNaKorak: n => `Idi na korak: ${n}`,
     natrag: "Natrag",
     dalje: "Dalje →",
     uredi: "Uredi",
