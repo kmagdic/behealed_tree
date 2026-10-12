@@ -163,7 +163,11 @@ window.JEZICI.hr = {
       opis: "Jedno stablo za svaki smrtni grijeh koji prepoznaješ.",
       novo: "Novo stablo",
       dovrseno: "✓ Dovršeno",
-      korak: n => `Korak ${n}/5`
+      korak: n => `Korak ${n}/5`,
+      savjet: "Zvjezdicom označi stabla kojima se vraćaš, a stabla slobodno povuci i posloži kako ti odgovara.",
+      oznaci: "Označi stablo zvjezdicom",
+      makniOznaku: "Makni zvjezdicu",
+      premjesti: "Povuci za premještanje (ili strelicama)"
     },
 
     molitvenik: {

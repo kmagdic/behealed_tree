@@ -94,7 +94,8 @@ Jedna HTML datoteka: React preko CDN-a (unpkg, s SRI hashevima), Babel transpili
   godImages: [id],                  // ID-evi iz kriveSlikeBoga
   woundEvent,                       // rana iz djetinjstva, može biti višeredna
   priorities: {[id]: 1|2|3},
-  step: 0-4, completed
+  step: 0-4, completed,
+  zvjezdica                         // true = označeno na popisu stabala (stoji na vrhu)
 }
 ```
 
@@ -106,7 +107,7 @@ Prva verzija (v1, prvi commit) imala je i druge ID-eve plodova i grijeha (`gorč
 
 **Prikazi** (`view` u `App`): `welcome` → `list` → `guided` → `prayer`, plus `molitvenik` — opći molitvenik bez stabla. Ulaz je namjerno istaknut: na početnoj zlatna kartica `.w-mol` (križ `ICross` i naslov) ispod gumba za stablo, a u headeru zlatni križ `.hdr-mol` na svim ekranima osim samog molitvenika (na mobitelu samo ikona). `?view=molitve` ga otvara izravno; `App` drži URL usklađenim i šalje GA `molitvenik_otvoren`.
 
-**Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `Molitvenik`, `App`, `Bogato`, `Redovi` + molitveni dijelovi `Molitva`, `TekstMolitve`, `Navodi`, `Sazetak`, `Odjeljak`, `KoraciOprosta` + pomoćne `t`, `pripremiPodatke`, `migriraj`, `imeStabla`, `getPriority`, `cyclePriority`.
+**Komponente**: `TreeLabel`, `TreePanel`, `StepBar`, `PChip`, `GuidedFlow`, `PrintTree`, `PrayerScreen`, `Molitvenik`, `PopisStabala`, `App`, `Bogato`, `Redovi` + molitveni dijelovi `Molitva`, `TekstMolitve`, `Navodi`, `Sazetak`, `Odjeljak`, `KoraciOprosta` + pomoćne `t`, `pripremiPodatke`, `migriraj`, `imeStabla`, `getPriority`, `cyclePriority`.
 
 ### Molitve (`Molitvenik` i `PrayerScreen`)
 
@@ -157,6 +158,8 @@ Workflow i prekidač ne treba dirati. Prije objave provjeri da se strukture pokl
 **Prioriteti**: chip se ciklički mijenja p1→p2→p3→p1; utječe na veličinu labela i redoslijed u pregledu.
 
 **Brisanje stabla**: × na kartici → `deleteTree(id)` → `window.confirm` → toast.
+
+**Popis stabala** (`PopisStabala`, izvan `App`-a da se ne remounta): zvjezdica (☆/★) označi stablo i podigne ga na vrh. Redoslijed je redoslijed niza `trees` — `prebaciZvjezdicuStabla` i `poredajStabla` ga drže u redoslijedu prikaza (označena pa ostala). Premještanje je na **pointer eventima, ne HTML5 drag & drop** (ne radi na dodir): mišem se vuče cijela kartica (prag 6px, klik nakon povlačenja ne otvara stablo), prstom hvataljka ⠿ (`touch-action:none`), tipkovnicom strelice na hvataljci. Povlačenjem se ne prelazi između označenih i neoznačenih. Uz rub okvira koji skrola lista se sama pomiče. Na računalu se hvataljka i prazna zvjezdica pokažu tek na hover (`@media(hover:hover)`).
 
 ## Podaci (`tree-data.<jezik>.js`)
 

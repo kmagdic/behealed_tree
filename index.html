@@ -208,8 +208,22 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .tcard-add{background:rgba(139,107,74,.04);border:2px dashed var(--bark-l);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:100px;color:var(--bark);cursor:pointer;}
 .tcard-add:hover{background:rgba(139,107,74,.08);border-color:var(--bark);}
 .tcard-add span{font-size:11px;font-weight:500;}
-.tcard-del{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.tcard-akcije{position:absolute;top:7px;right:7px;display:flex;align-items:center;gap:2px;}
+.tcard-del,.tcard-zvj,.tcard-hvat{width:22px;height:22px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tcard-del:hover,.tcard-del:active{background:rgba(180,60,60,.15);color:#a03030;}
+.tcard-zvj,.tcard-hvat{border-radius:6px;border:none;background:none;color:var(--bark-l);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:color .15s,opacity .15s,transform .15s;}
+.tcard-zvj:hover{color:var(--gold);transform:scale(1.12);}
+.tcard-zvj.on{color:var(--gold);}
+.tcard-hvat{cursor:grab;touch-action:none;font-size:15px;letter-spacing:-1px;}
+.tcard-hvat:hover{color:var(--bark);}
+/* Na računalu se prazna zvjezdica i hvataljka pojave tek na hover — kartica ostaje mirna. */
+@media(hover:hover){.tcard-hvat,.tcard-zvj:not(.on){opacity:0;}.tcard:hover .tcard-hvat,.tcard:hover .tcard-zvj,.tcard-akcije :focus-visible{opacity:1;}}
+.tcard{user-select:none;-webkit-user-select:none;}
+.tcard.oznaceno{border-color:rgba(196,154,60,.35);}
+.tgrid.vuce-se,.tgrid.vuce-se *{cursor:grabbing!important;}
+.tgrid.vuce-se .tcard:hover{transform:none;}
+.tcard.vuce{transform:scale(1.03)!important;box-shadow:0 10px 28px var(--shd);border-color:var(--gold);opacity:.92;z-index:2;}
+.s-head .stabla-savjet{font-size:11.5px;color:var(--light);margin-top:4px;}
 
 /* GUIDED */
 .guided{flex:1;display:flex;flex-direction:column;}
@@ -1550,6 +1564,130 @@ function TekstMolitve({ tekst }) {
   ))}</>;
 }
 
+// ── POPIS STABALA ──
+// Označena stabla (★, polje `zvjezdica`) stoje na vrhu; unutar svake skupine vrijedi
+// redoslijed iz `trees`. Premještanje ide pointer eventima, ne HTML5 drag & drop (taj na
+// dodir ne radi): mišem se vuče cijela kartica, prstom hvataljka ⠿ (touch-action:none, inače
+// preglednik skrola), a tipkovnicom strelice na hvataljci. Stablo ne prelazi iz označenih u
+// neoznačena povlačenjem — za to je zvjezdica.
+// Mora biti komponenta izvan App-a: unutar njega bi se remountala i izgubila povlačenje i fokus.
+function skrolnik(el) {
+  for (let p = el?.parentElement; p; p = p.parentElement) {
+    const o = getComputedStyle(p).overflowY;
+    if ((o === 'auto' || o === 'scroll') && p.scrollHeight > p.clientHeight) return p;
+  }
+  return document.scrollingElement;
+}
+
+function PopisStabala({ trees, onOpen, onDelete, onNew, onStar, onReorder }) {
+  const poredano = [...trees.filter(s => s.zvjezdica), ...trees.filter(s => !s.zvjezdica)];
+  const [vuce, setVuce] = useState(null);   // { id, red: [id] } dok traje povlačenje
+  const povuceno = useRef(false);            // klik koji završava povlačenje ne otvara stablo
+  const mreza = useRef(null);
+  const oznaceno = id => !!trees.find(s => s.id === id)?.zvjezdica;
+
+  // Premjesti `id` na mjesto `naId` (samo unutar iste skupine).
+  function pomakni(red, id, naId) {
+    if (id === naId || oznaceno(id) !== oznaceno(naId)) return red;
+    const bez = red.filter(x => x !== id);
+    bez.splice(red.indexOf(naId), 0, id);
+    return bez;
+  }
+
+  function zapocni(e, id, odmah) {
+    if (e.button !== 0 || trees.length < 2) return;
+    const x0 = e.clientX, y0 = e.clientY;
+    let aktivno = false, red = poredano.map(s => s.id), zadnji = { x: x0, y: y0 }, raf;
+    const pogodi = () => {
+      const cilj = document.elementFromPoint(zadnji.x, zadnji.y)?.closest('[data-stablo]')?.dataset.stablo;
+      if (!cilj) return;
+      const novi = pomakni(red, id, cilj);
+      if (novi !== red) { red = novi; setVuce({ id, red }); }
+    };
+    // Uz rub okvira koji skrola lista se sama pomiče, da se stablo može odnijeti i izvan pogleda.
+    const sk = skrolnik(mreza.current);
+    const petlja = () => {
+      const r = sk === document.scrollingElement ? { top: 0, bottom: innerHeight } : sk.getBoundingClientRect();
+      const rub = 48;
+      const dy = zadnji.y < r.top + rub ? -10 : zadnji.y > r.bottom - rub ? 10 : 0;
+      if (dy) { sk.scrollTop += dy; pogodi(); }
+      raf = requestAnimationFrame(petlja);
+    };
+    const kreni = () => { aktivno = true; povuceno.current = true; setVuce({ id, red }); raf = requestAnimationFrame(petlja); };
+    const pomak = ev => {
+      zadnji = { x: ev.clientX, y: ev.clientY };
+      if (!aktivno) { if (Math.hypot(ev.clientX - x0, ev.clientY - y0) < 6) return; kreni(); }
+      ev.preventDefault();
+      pogodi();
+    };
+    const kraj = ev => {
+      window.removeEventListener('pointermove', pomak);
+      window.removeEventListener('pointerup', kraj);
+      window.removeEventListener('pointercancel', kraj);
+      cancelAnimationFrame(raf);
+      if (!aktivno) return;
+      setVuce(null);
+      if (ev.type === 'pointerup') onReorder(red);
+      setTimeout(() => { povuceno.current = false; }, 0);
+    };
+    window.addEventListener('pointermove', pomak, { passive: false });
+    window.addEventListener('pointerup', kraj);
+    window.addEventListener('pointercancel', kraj);
+    if (odmah) kreni();
+  }
+
+  function strelica(e, id) {
+    const d = { ArrowUp: -1, ArrowLeft: -1, ArrowDown: 1, ArrowRight: 1 }[e.key];
+    if (!d) return;
+    e.preventDefault();
+    const ids = poredano.map(s => s.id), j = ids.indexOf(id) + d;
+    if (j >= 0 && j < ids.length) { const novi = pomakni(ids, id, ids[j]); if (novi !== ids) onReorder(novi); }
+  }
+
+  const prikaz = vuce ? vuce.red.map(id => trees.find(s => s.id === id)) : poredano;
+  return (
+    <div className="trees-wrap">
+      <div className="s-head">
+        <h2>{t('stabla.naslov')}</h2><p>{t('stabla.opis')}</p>
+        {trees.length > 1 && <p className="stabla-savjet">{t('stabla.savjet')}</p>}
+      </div>
+      <div className={'tgrid' + (vuce ? ' vuce-se' : '')} ref={mreza}>
+        {prikaz.map(st => {
+          const sd = DATA.smrtniGrijesi.find(s=>s.id===st.sinId);
+          const prog = st.completed?100:Math.round((st.step||0)/5*100);
+          const zvNaziv = t(st.zvjezdica ? 'stabla.makniOznaku' : 'stabla.oznaci');
+          return (
+            <div key={st.id} data-stablo={st.id}
+              className={'tcard' + (st.zvjezdica ? ' oznaceno' : '') + (vuce?.id === st.id ? ' vuce' : '')}
+              style={{'--cc':sd?.bojaBg||'var(--bark)'}}
+              onPointerDown={e => { if (e.pointerType === 'mouse' && !e.target.closest('button')) zapocni(e, st.id, false); }}
+              onClick={() => { if (!povuceno.current) onOpen(st.id); }}>
+              <div className="tcard-akcije">
+                {trees.length > 1 && (
+                  <button type="button" className="tcard-hvat" title={t('stabla.premjesti')} aria-label={t('stabla.premjesti')}
+                    onPointerDown={e => { e.stopPropagation(); zapocni(e, st.id, true); }}
+                    onClick={e => e.stopPropagation()}
+                    onKeyDown={e => strelica(e, st.id)}>⠿</button>
+                )}
+                <button type="button" className={'tcard-zvj' + (st.zvjezdica ? ' on' : '')} aria-pressed={!!st.zvjezdica}
+                  title={zvNaziv} aria-label={zvNaziv}
+                  onClick={e => { e.stopPropagation(); onStar(st.id); }}>{st.zvjezdica ? '★' : '☆'}</button>
+                <button type="button" className="tcard-del" onClick={e=>{e.stopPropagation();onDelete(st.id);}} title={t('zaglavlje.obrisiStablo')}>×</button>
+              </div>
+              <div className="tcard-icon">{sd?.ikona||'🌳'}</div>
+              <div className="tcard-name">{sd?.naziv||t('stabla.novo')}</div>
+              <div className="tcard-status">{st.completed?t('stabla.dovrseno'):t('stabla.korak', (st.step||0)+1)}</div>
+              {st.createdAt && <div style={{fontSize:10,color:'var(--light)',marginBottom:6}}>{st.createdAt}</div>}
+              <div className="tcard-prog"><div className="tcard-fill" style={{width:`${prog}%`,background:sd?.bojaBg||'var(--bark)'}}/></div>
+            </div>
+          );
+        })}
+        <div className="tcard tcard-add" onClick={onNew}><IPlus/><span>{t('stabla.novo')}</span></div>
+      </div>
+    </div>
+  );
+}
+
 // ── ZVJEZDICE ──
 // Molitve koje je korisnik označio. Spremaju se u drvo_v3.zvjezdice kao ključevi:
 // 'r:<rana>', 'g:<grijeh>', 'o:<opća molitva>', 'pecat'. App daje stanje kroz kontekst.
@@ -2292,6 +2430,24 @@ function App() {
     showToast(t('obavijest.obrisano'));
   }
 
+  // Zvjezdica stabla: označeno ide na kraj označenih, odznačeno na vrh ostalih —
+  // tako `trees` uvijek ostaje u redoslijedu prikaza.
+  function prebaciZvjezdicuStabla(id){
+    setState(s=>{
+      const st = s.trees.find(x=>x.id===id); if(!st) return s;
+      const novo = {...st, zvjezdica: !st.zvjezdica};
+      const ostala = s.trees.filter(x=>x.id!==id);
+      return {...s, trees:[...ostala.filter(x=>x.zvjezdica), novo, ...ostala.filter(x=>!x.zvjezdica)]};
+    });
+  }
+
+  function poredajStabla(ids){
+    setState(s=>{
+      const po = Object.fromEntries(s.trees.map(x=>[x.id,x]));
+      return {...s, trees:[...ids.map(id=>po[id]).filter(Boolean), ...s.trees.filter(x=>!ids.includes(x.id))]};
+    });
+  }
+
   function finishTree(td){
     const done={...td,completed:true};
     updateTree(done); setView('prayer'); showToast(t('obavijest.dovrseno'));
@@ -2338,30 +2494,6 @@ function App() {
     </div>
   );
 
-  // TREES LIST
-  const TreesList = () => (
-    <div className="trees-wrap">
-      <div className="s-head"><h2>{t('stabla.naslov')}</h2><p>{t('stabla.opis')}</p></div>
-      <div className="tgrid">
-        {state.trees.map(st => {
-          const sd = DATA.smrtniGrijesi.find(s=>s.id===st.sinId);
-          const prog = st.completed?100:Math.round((st.step||0)/5*100);
-          return (
-            <div key={st.id} className="tcard" style={{'--cc':sd?.bojaBg||'var(--bark)'}} onClick={()=>openTree(st.id)}>
-              <button className="tcard-del" onClick={e=>{e.stopPropagation();deleteTree(st.id);}} title={t('zaglavlje.obrisiStablo')}>×</button>
-              <div className="tcard-icon">{sd?.ikona||'🌳'}</div>
-              <div className="tcard-name">{sd?.naziv||t('stabla.novo')}</div>
-              <div className="tcard-status">{st.completed?t('stabla.dovrseno'):t('stabla.korak', (st.step||0)+1)}</div>
-              {st.createdAt && <div style={{fontSize:10,color:'var(--light)',marginBottom:6}}>{st.createdAt}</div>}
-              <div className="tcard-prog"><div className="tcard-fill" style={{width:`${prog}%`,background:sd?.bojaBg||'var(--bark)'}}/></div>
-            </div>
-          );
-        })}
-        <div className="tcard tcard-add" onClick={newTree}><IPlus/><span>{t('stabla.novo')}</span></div>
-      </div>
-    </div>
-  );
-
   return (
     <ZvjezdiceCtx.Provider value={zvjezdiceCtx}>
     <div className="shell">
@@ -2403,7 +2535,8 @@ function App() {
       <div className="split">
         <div className="left">
           {view==='welcome' && <Welcome/>}
-          {view==='trees' && <TreesList/>}
+          {view==='trees' && <PopisStabala trees={state.trees} onOpen={openTree} onDelete={deleteTree} onNew={newTree}
+            onStar={prebaciZvjezdicuStabla} onReorder={poredajStabla}/>}
           {view==='molitvenik' && <Molitvenik onBack={()=>setView('welcome')}/>}
           {view==='guided' && activeTree && (
             <GuidedFlow tree={activeTree} onUpdate={updateTree} onFinish={finishTree}

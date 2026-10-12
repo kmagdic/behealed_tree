@@ -149,7 +149,11 @@ window.JEZICI.en = {
       opis: "One tree for each deadly sin you recognize.",
       novo: "New tree",
       dovrseno: "✓ Completed",
-      korak: n => `Step ${n}/5`
+      korak: n => `Step ${n}/5`,
+      savjet: "Star the trees you return to, and feel free to drag them into whatever order suits you.",
+      oznaci: "Star this tree",
+      makniOznaku: "Remove star",
+      premjesti: "Drag to reorder (or use the arrow keys)"
     },
 
     molitvenik: {
