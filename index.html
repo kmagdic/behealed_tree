@@ -1772,7 +1772,9 @@ function Molitva({ id, naslov, ikona, boja, podnaslov, dijelovi, tekst, skloplje
   );
   const klasa = 'pcard' + (oznacena ? ' oznacena' : '');
   if (sklopljeno === undefined) return <div id={id} className={klasa}>{glava}{tijelo}</div>;
-  return <details id={id} className={klasa} open={!sklopljeno || undefined}><summary>{glava}</summary>{tijelo}</details>;
+  // Klik na glavu (ne na zvjezdicu, ona radi preventDefault): details se tek treba prebaciti
+  const uUrl = (e) => { if (!e.defaultPrevented) molitvaUUrl(id, !e.currentTarget.parentElement.open); };
+  return <details id={id} className={klasa} open={!sklopljeno || undefined}><summary onClick={uUrl}>{glava}</summary>{tijelo}</details>;
 }
 
 // Rana: odricanje od laži pa proglašenje istine (skripta ih već drži odvojeno)
@@ -1885,9 +1887,44 @@ function otvoriMolitvu(id) {
     const el = document.getElementById(id);
     if (!el) return;
     if (el.tagName === 'DETAILS') el.open = true;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Kartica otvorena poveznicom u pozadinskoj kartici preglednika: glatko skrolanje se ondje ne odvrti
+    el.scrollIntoView({ behavior: document.hidden ? 'auto' : 'smooth', block: 'start' });
     el.classList.remove('istaknuto'); void el.offsetWidth; el.classList.add('istaknuto');
+    molitvaUUrl(id, true);
   }, 60);
+}
+
+// Poveznica na molitvu grijeha ili rane: ?grijeh=srditost, ?rana=sram (en: ?sin=anger, ?wound=shame)
+// otvori molitvenik na toj kartici. U URL se piše naziv u aktivnom jeziku bez dijakritika, a čita se
+// ID ili naziv na bilo kojem jeziku — podijeljena poveznica radi i kad primatelj ima drugi jezik.
+const PARAM_MOLITVE = { g: ['grijeh', 'sin'], r: ['rana', 'wound'] };   // [hrvatski, ostali jezici]
+const slug = (s) => String(s).toLowerCase().replace(/đ/g, 'd').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+function molitvaIzUrla() {
+  const p = new URLSearchParams(location.search);
+  for (const [v, kljucevi] of Object.entries(PARAM_MOLITVE)) {
+    const trazi = kljucevi.map(k => p.get(k)).find(Boolean);
+    if (!trazi) continue;
+    for (const kod of PODRZANI) {
+      const d = JEZICI[kod].data;
+      const x = (v === 'g' ? d.smrtniGrijesi : d.smrtneRane).find(o => slug(o.id) === slug(trazi) || slug(o.naziv) === slug(trazi));
+      if (x) return 'mol-' + v + '-' + x.id;
+    }
+  }
+  return null;
+}
+
+// Otvorena kartica grijeha/rane u molitveniku upiše se u URL (da se poveznica može kopirati);
+// zatvaranje je briše samo ako URL još pokazuje na nju.
+function molitvaUUrl(id, otvorena) {
+  const m = /^mol-([gr])-(.+)$/.exec(id || '');
+  if (!m || (!otvorena && molitvaIzUrla() !== id)) return;
+  const x = m[1] === 'g' ? DATA.grijehById[m[2]] : DATA.ranaById[m[2]];
+  const url = new URL(location.href);
+  Object.values(PARAM_MOLITVE).flat().forEach(k => url.searchParams.delete(k));
+  if (otvorena && x) url.searchParams.set(PARAM_MOLITVE[m[1]][LANG === 'hr' ? 0 : 1], slug(x.naziv));
+  history.replaceState(null, '', url);
 }
 
 // Sve sklopljeno u ispisu mora biti otvoreno
@@ -2367,9 +2404,13 @@ function PrayerScreen({ tree, onBack, onMolitvenik, onUpdate }) {
 // ── MAIN APP ──
 function App() {
   const [state, setState] = useState(load);
-  // ?view=molitve otvara molitvenik izravno (poveznica koja se može podijeliti)
-  const [view, setView] = useState(() =>
-    new URLSearchParams(location.search).get('view') === 'molitve' ? 'molitvenik' : 'welcome');
+  // ?view=molitve otvara molitvenik izravno (poveznica koja se može podijeliti);
+  // ?grijeh=… / ?rana=… ga otvara na toj molitvi (molitvaIzUrla)
+  const [view, setView] = useState(() => {
+    const cilj = molitvaIzUrla();
+    if (cilj) skokPriOtvaranju = cilj;
+    return cilj || new URLSearchParams(location.search).get('view') === 'molitve' ? 'molitvenik' : 'welcome';
+  });
   const [activeId, setActiveId] = useState(null);
   const [toast, setToast] = useState(null);
   const [liveTree, setLiveTree] = useState(null);
@@ -2400,7 +2441,7 @@ function App() {
   useEffect(() => {
     const url = new URL(location.href);
     if (view === 'molitvenik') url.searchParams.set('view', 'molitve');
-    else url.searchParams.delete('view');
+    else { url.searchParams.delete('view'); Object.values(PARAM_MOLITVE).flat().forEach(k => url.searchParams.delete(k)); }
     history.replaceState(null, '', url);
     if (view === 'molitvenik' && typeof gtag !== 'undefined') gtag('event', 'molitvenik_otvoren', {jezik: LANG});
   }, [view]);
