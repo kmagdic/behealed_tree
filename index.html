@@ -333,21 +333,37 @@ textarea::placeholder,input::placeholder{color:var(--light);}
 .zvj.on{color:var(--gold);}
 .umetak .zvj{font-size:15px;vertical-align:-1px;}
 /* Krjepost / znak iscjeljenja ispod molitve */
-.mol-dodatak{margin-top:14px;padding:9px 12px;background:rgba(122,158,126,.1);border-radius:8px;font-size:13px;color:var(--txt);line-height:1.5;}
+/* Dodatak ispod molitve: zatvoren je samo sitan, prigušen natpis; okvir se pojavi kad se otvori */
+.mol-dodatak{margin-top:12px;font-size:13px;color:var(--txt);line-height:1.5;}
+.mol-dodatak>details.znak[open]{padding:8px 12px;background:rgba(122,158,126,.1);border-radius:8px;}
 .mol-dod-ozn{font:600 9.5px 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);margin-right:4px;}
 .mol-dod-sak{color:var(--mid);font-size:12px;}
 details.isus{margin-top:6px;}
 details.isus>summary{display:inline-block;cursor:pointer;list-style:none;font-size:12px;font-weight:500;color:var(--bark);}
 details.isus>summary::-webkit-details-marker{display:none;}
-details.isus>summary::after{content:' ›';color:var(--gold);display:inline-block;transition:transform .2s;}
+/* Razmak prije › mora biti margin — razmak u content se u inline-blocku briše */
+details.isus>summary::after{content:'›';margin-left:5px;color:var(--gold);display:inline-block;transition:transform .2s;}
 details.isus[open]>summary::after{transform:rotate(90deg);}
 details.isus p{margin-top:6px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.55;color:var(--mid);}
 .mol-natrag{text-align:right;margin-top:8px;}
-.mol-natrag .mol-poveznica{font-size:11px;color:var(--light);}
+/* Povratak na sažetak: samo mala strelica u krugu, gotovo nevidljiva dok se ne dotakne */
+.mol-natrag button{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;padding:0;border:1px solid var(--bark-l);border-radius:50%;background:none;font-size:10px;line-height:1;color:var(--bark-l);opacity:.45;cursor:pointer;transition:all .15s;}
+.mol-natrag button:hover,.mol-natrag button:focus-visible{opacity:1;color:var(--gold);border-color:var(--gold);outline:none;}
 /* Red sažetka koji vodi na molitvu */
 .mol-vodi{cursor:pointer;border-radius:6px;transition:background .15s;}
+.mol-otvara{cursor:pointer;}
 .mol-vodi:hover,.mol-vodi:focus-visible{background:rgba(196,154,60,.1);outline:none;}
 span.mol-vodi{padding:0 3px;margin:0 -3px;text-decoration:underline dotted var(--bark-l);text-underline-offset:3px;}
+/* Strelica ↓ jasno kaže da klik vodi dolje na molitvu */
+/* Strelica u malom krugu — tiha dok se red ne dotakne */
+span.mol-vodi::after{content:'↓';display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;margin-left:5px;border:1px solid var(--bark-l);border-radius:50%;font-size:9px;font-weight:400;color:var(--bark-l);vertical-align:1px;opacity:.75;transition:all .15s;}
+span.mol-vodi:hover::after{color:var(--gold);border-color:var(--gold);opacity:1;}
+.mol-tablica td.mol-ide{width:1%;padding:7px 6px 7px 8px;text-align:right;vertical-align:middle;}
+.mol-tablica td.mol-ide span{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid var(--bark-l);border-radius:50%;font-size:10px;line-height:1;color:var(--bark-l);opacity:.7;transition:all .15s;}
+.mol-vodi:hover td.mol-ide span,.mol-vodi:focus-visible td.mol-ide span{color:var(--gold);border-color:var(--gold);opacity:1;transform:translateY(1px);}
+/* Ikona i naziv grijeha ostaju u istom redu i na uskom zaslonu */
+.ikona-naziv{display:flex;gap:6px;align-items:baseline;}
+.ikona-naziv>span:first-child{flex-shrink:0;}
 /* Postupno otkrivanje */
 .mol-sec{animation:pojava .35s ease;}
 @keyframes pojava{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
@@ -370,15 +386,19 @@ details.mol-dio{border-top:1px solid rgba(139,107,74,.1);}
 details.mol-dio:first-of-type{border-top:none;}
 details.mol-dio>summary{cursor:pointer;list-style:none;padding:8px 0;margin:0;}
 details.mol-dio>summary::-webkit-details-marker{display:none;}
-details.mol-dio>summary::after{content:' ›';color:var(--gold);display:inline-block;transition:transform .2s;}
+details.mol-dio>summary::after{content:'›';margin-left:6px;color:var(--gold);display:inline-block;transition:transform .2s;}
 details.mol-dio[open]>summary::after{transform:rotate(90deg);}
 details.mol-dio[open]{padding-bottom:10px;}
 details.mol-korak>summary{cursor:pointer;list-style:none;font-weight:600;color:var(--bark-d);}
 details.mol-korak>summary::-webkit-details-marker{display:none;}
-details.mol-korak>summary::after{content:' ›';color:var(--gold);display:inline-block;transition:transform .2s;}
+details.mol-korak>summary::after{content:'›';margin-left:6px;color:var(--gold);display:inline-block;transition:transform .2s;}
 details.mol-korak[open]>summary::after{transform:rotate(90deg);}
 details.isus blockquote{margin:6px 0 0;padding-left:10px;border-left:2px solid var(--gold-l);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16.5px;line-height:1.5;color:var(--txt);}
-details.znak>summary{color:var(--leaf);font-size:10.5px;font-weight:500;}
+details.znak>summary,details.znak details.isus>summary{color:var(--light);font-size:10.5px;font-weight:400;opacity:.85;transition:color .15s,opacity .15s;}
+details.znak>summary:hover,details.znak details.isus>summary:hover{color:var(--leaf);opacity:1;}
+details.znak[open]>summary{color:var(--leaf);opacity:1;}
+details.znak details.isus[open]>summary{color:var(--bark);opacity:1;}
+details.znak>summary::after,details.znak details.isus>summary::after{color:var(--bark-l);}
 details.isus .znak-tekst{margin-top:4px;font:400 12px/1.45 'Inter',sans-serif;font-style:normal;color:#2C5A30;}
 details.isus .znak-sak{margin-top:3px;font:400 12px/1.45 'Inter',sans-serif;font-style:normal;color:var(--bark);}
 .znak-sak strong{font-weight:600;}
@@ -388,10 +408,27 @@ details.isus .znak-sak{margin-top:3px;font:400 12px/1.45 'Inter',sans-serif;font
 /* MOLITVE — čitljivost: svaka izjava u svom retku, oznake odricanja/istine,
    biblijski navodi prigušeni, (zagrade bez broja) = mjesto za vlastiti upis */
 .mol-wrap{max-width:680px;margin:0 auto;width:100%;}
-.mol-toc{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:-8px 0 8px;}
-.mol-toc button{font:500 11.5px 'Inter',sans-serif;color:var(--bark);background:white;border:1px solid var(--bark-l);border-radius:20px;padding:5px 12px;cursor:pointer;}
+/* Izbornik je zalijepljen na vrhu: tanak, proziran, jedan red. Centriran kad stane (auto margine
+   na krajevima), vodoravno pomičan kad ne stane (mobitel). Aktivni odjeljak je tiho istaknut. */
+.mol-toc{position:sticky;top:0;z-index:20;display:flex;flex-wrap:nowrap;gap:4px;overflow-x:auto;scrollbar-width:none;
+  margin:-8px -6px 8px;padding:7px 6px;background:rgba(253,250,246,.9);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(139,107,74,.07);}
+.mol-toc::-webkit-scrollbar{display:none;}
+.mol-toc button:first-child{margin-left:auto;}
+.mol-toc button:last-child{margin-right:auto;}
+.mol-toc button{flex-shrink:0;white-space:nowrap;font:500 11px 'Inter',sans-serif;color:var(--mid);background:transparent;border:1px solid rgba(196,168,130,.55);border-radius:20px;padding:4px 8px;cursor:pointer;transition:all .15s;}
+.mol-toc button:hover{color:var(--bark-d);border-color:var(--bark-l);}
+.mol-toc button.on{color:var(--bark-d);border-color:var(--gold);background:#FBF5E8;}
+.mol-sec,.mol-wrap .pcard,details.umetak{scroll-margin-top:52px;}
+/* Na mobitelu skrola cijela stranica; svaki roditelj s overflow≠visible (omotač, .left, .split, body)
+   "uhvatio" bi zalijepljeni izbornik, pa ih na molitvenim ekranima otpuštamo */
+@media(max-width:860px){
+  .mol-skrol{overflow:visible!important;}
+  .left:has(.mol-skrol),.split:has(.mol-skrol){overflow:visible;}
+  body:has(.mol-skrol){overflow:visible;}
+}
 .mol-toc button:hover{background:var(--cream);}
-.mol-sec{margin:30px 0 12px;scroll-margin-top:12px;}
+.mol-sec{margin:30px 0 12px;}
 .mol-sec h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--bark-d);display:flex;align-items:baseline;gap:10px;}
 .mol-br{font:600 11px 'Inter',sans-serif;color:var(--gold);letter-spacing:.06em;}
 .mol-uvod{font-size:13px;color:var(--mid);font-style:italic;line-height:1.55;margin-top:4px;}
@@ -1535,7 +1572,7 @@ function Molitva({ id, naslov, ikona, boja, podnaslov, dijelovi, tekst, skloplje
         ))}
       </div>
       {dodatak}
-      {natrag && <div className="mol-natrag"><button className="mol-poveznica" onClick={() => skoci(natrag)}>{t('molitvenik.naSazetak')}</button></div>}
+      {natrag && <div className="mol-natrag"><button onClick={() => skoci(natrag)} title={t('molitvenik.naSazetak')} aria-label={t('molitvenik.naSazetak')}>↑</button></div>}
     </>
   );
   const klasa = 'pcard' + (oznacena ? ' oznacena' : '');
@@ -1558,8 +1595,8 @@ function dijeloviGrijeha(g) {
     : [{ tekst: odricanje }];
 }
 
-// Žive vrline grijeha (Be Healed, tabl. 8.1 — službeni hrvatski izrazi). Ispod je, sklopljeno,
-// kako je Isus te vrline živio — doslovni tekst evanđelja s poveznicom na navod.
+// Suprotne vrline grijeha (Be Healed, tabl. 8.1 „Sedam živih vrlina“ — službeni hrvatski izrazi), na klik. Unutar njih,
+// opet na klik, "Iz evanđelja": doslovni retci o tome kako je Isus te vrline živio, s navodom.
 function Evandjelje({ g }) {
   const ev = g.krepost?.evandjelje || [];
   if (!ev.length) return null;
@@ -1571,14 +1608,20 @@ function Evandjelje({ g }) {
   );
 }
 
-function KrepostGrijeha({ g }) {
-  const k = g.krepost || {};
+// evandjelje: prikaži i "Iz evanđelja" unutar vrlina (kartica molitve, lanac stabla).
+// Klik ne smije pokrenuti red sažetka u kojem stoji (on vodi na molitvu).
+function Vrline({ g, evandjelje }) {
   return (
-    <div className="mol-dodatak">
-      <span className="mol-dod-ozn">{t('molitvenik.krepost')}</span> <strong>{k.par || k.naziv}</strong>
-      <Evandjelje g={g}/>
-    </div>
+    <details className="isus znak" onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
+      <summary>✓ {t('molitvenik.krepost')}</summary>
+      <p className="znak-tekst"><strong>{g.krepost.par || g.krepost.naziv}</strong></p>
+      {evandjelje && <Evandjelje g={g}/>}
+    </details>
   );
+}
+
+function KrepostGrijeha({ g }) {
+  return <div className="mol-dodatak"><Vrline g={g} evandjelje/></div>;
 }
 
 // Rana nema vrlinu u izvoru — na klik se pokaže znak ozdravljenja (Be Healed tabl. 10.1) i sakrament
@@ -1591,16 +1634,6 @@ function ZnakRane({ r, okvir = true }) {
     </details>
   );
   return okvir ? <div className="mol-dodatak">{sadrzaj}</div> : sadrzaj;
-}
-
-// Žive vrline u sažetku — na klik; klik ne vodi na molitvu
-function VrlineSazetak({ g }) {
-  return (
-    <details className="isus znak" onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
-      <summary>✓ {t('molitvenik.krepost')}</summary>
-      <p className="znak-tekst">{g.krepost.par || g.krepost.naziv}</p>
-    </details>
-  );
 }
 
 function Odjeljak({ id, br, naslov, uvod, children, klasa }) {
@@ -1654,6 +1687,43 @@ function useOtkrivanje(odjeljci) {
   return [otkriveno, setOtkriveno, prikaziSve];
 }
 
+// Izbornik odjeljaka: zalijepljen na vrhu dok se skrola i tiho ističe odjeljak koji se upravo čita.
+// Neotkriveni odjeljci su prigušeni; klik ih otkrije i skoči na njih. stavke: [{ id, naziv, skriven }]
+function Izbornik({ stavke }) {
+  const [aktivan, setAktivan] = useState(stavke[0]?.id);
+  const ref = useRef(null);
+  const kljuc = stavke.map(x => x.id + (x.skriven ? '-' : '+')).join();
+  useEffect(() => {
+    // Skrola unutarnji okvir (desktop) ili cijela stranica (mobitel) — 'scroll' u fazi hvatanja čuje oba
+    const provjeri = () => {
+      // Aktivan je zadnji odjeljak čiji je naslov u gornjoj trećini vidljivog dijela
+      const vrh = ref.current?.getBoundingClientRect().bottom || 0;
+      const dno = vrh + (window.innerHeight - vrh) * 0.33;
+      let tren = stavke[0]?.id;
+      stavke.forEach(x => { const el = document.getElementById(x.id); if (el && el.getBoundingClientRect().top <= dno) tren = x.id; });
+      setAktivan(tren);
+    };
+    provjeri();
+    document.addEventListener('scroll', provjeri, true);
+    window.addEventListener('resize', provjeri);
+    return () => { document.removeEventListener('scroll', provjeri, true); window.removeEventListener('resize', provjeri); };
+  }, [kljuc]);
+  // Kad izbornik ne stane u red (mobitel), pomakni ga da se aktivni gumb vidi
+  useEffect(() => {
+    const nav = ref.current, b = nav?.querySelector('button.on');
+    if (!nav || !b || nav.scrollWidth <= nav.clientWidth) return;
+    nav.scrollTo({ left: b.offsetLeft - nav.clientWidth / 2 + b.offsetWidth / 2, behavior: 'smooth' });
+  }, [aktivan]);
+  return (
+    <nav ref={ref} className="mol-toc" aria-label={t('molitvenik.sadrzaj')}>
+      {stavke.map(x => (
+        <button key={x.id} className={(x.skriven ? 'skriveno' : '') + (x.id === aktivan ? ' on' : '')}
+          aria-current={x.id === aktivan ? 'true' : undefined} onClick={() => otvoriMolitvu(x.id)}>{x.naziv}</button>
+      ))}
+    </nav>
+  );
+}
+
 // Gumb "Dalje: 2. Odricanje od grijeha ↓" na dnu zadnjeg otkrivenog odjeljka
 function Dalje({ otkriveno, odjeljci, setOtkriveno, prikaziSve }) {
   if (otkriveno >= odjeljci.length) return null;
@@ -1685,12 +1755,18 @@ function Sazetak({ tree }) {
     <div className="pcard">
       <p className="mol-uvod" style={{marginTop:0,marginBottom:10}}>{t('molitvenik.sazetakUvod')}</p>
       <details className="mol-dio" open>
-        <summary className="mol-podnaslov">{t('molitvenik.grijeh')} → {t('molitvenik.idol').toLowerCase()} · {t('molitvenik.krepost').toLowerCase()}</summary>
-        <table className="mol-tablica"><tbody>
+        <summary className="mol-podnaslov">{t('molitvenik.grijeh')} → {t('molitvenik.idol').toLowerCase()}</summary>
+        <table className="mol-tablica">
+          <thead><tr><th>{t('molitvenik.grijeh')}</th><th>{t('molitvenik.idol')}</th><th></th></tr></thead>
+          <tbody>
           {DATA.smrtniGrijesi.map(g => (
             <tr key={g.id} {...naKlik('mol-g-' + g.id)}>
-              <td>{g.ikona} {g.naziv}</td>
-              <td>{g.idolatrija}<VrlineSazetak g={g}/></td>
+              <td><div className="ikona-naziv"><span>{g.ikona}</span><span>{g.naziv}</span></div></td>
+              {/* Klik na idolopoklonstvo otvara suprotne vrline (ne vodi na molitvu) */}
+              <td className="mol-otvara" onClick={e => { e.stopPropagation(); const d = e.currentTarget.querySelector('details'); if (d) d.open = !d.open; }}>
+                {g.idolatrija}<Vrline g={g}/>
+              </td>
+              <td className="mol-ide" aria-hidden="true"><span>↓</span></td>
             </tr>
           ))}
         </tbody></table>
@@ -1702,6 +1778,7 @@ function Sazetak({ tree }) {
             <tr key={r.id} {...naKlik('mol-r-' + r.id)}>
               <td>{r.naziv}</td>
               <td><div className="laz">{t('molitvenik.citat', r.laz)}</div><ZnakRane r={r} okvir={false}/></td>
+              <td className="mol-ide" aria-hidden="true"><span>↓</span></td>
             </tr>
           ))}
         </tbody></table>
@@ -1737,8 +1814,7 @@ function Sazetak({ tree }) {
       {sinDef && red(t('k5.grijeh'), <>
         <span {...naKlik('st-g-' + sinDef.id)}><strong>{sinDef.naziv}</strong></span>{' '}
         <span style={{color:'var(--mid)'}}>· {t('molitvenik.idol').toLowerCase()}: {sinDef.idolatrija}</span>
-        <VrlineSazetak g={sinDef}/>
-        <Evandjelje g={sinDef}/>
+        <Vrline g={sinDef} evandjelje/>
       </>)}
       {red('🪵 ' + t('molitvenik.deblo'), <>{DATA.deblo.naziv}</>)}
       {zavjeti.length > 0 && red(t('k5.zavjeti'), <>{zavjeti.map((z, i) => <div key={i}>{t('molitvenik.citat', z)}</div>)}</>)}
@@ -1810,7 +1886,7 @@ function Molitvenik({ onBack }) {
     { id: 'mol-grijesi', naslov: t('molitvenik.grijesi'), prefiksi: ['mol-g-'] },
     { id: 'mol-lazi', naslov: t('molitvenik.lazi'), prefiksi: ['mol-r-'] },
     { id: 'mol-oprost', naslov: t('molitvenik.oprost'), prefiksi: ['mol-o-'] },
-    { id: 'mol-iscjeljenje', naslov: t('molitvenik.iscjeljenje') },
+    { id: 'mol-iscjeljenje', naslov: t('molitvenik.iscjeljenje'), kratko: t('molitvenik.iscjeljenjeKratko') },
     { id: 'mol-pecat', naslov: t('molitvenik.pecat'), prefiksi: ['mol-pecat-'] }
   ];
   const [otkriveno, setOtkriveno, prikaziSve] = useOtkrivanje(odjeljci);
@@ -1831,19 +1907,15 @@ function Molitvenik({ onBack }) {
   const dalje = <Dalje otkriveno={otkriveno} odjeljci={odjeljci} setOtkriveno={setOtkriveno} prikaziSve={prikaziSve}/>;
 
   return (
-    <div style={{flex:1,overflowY:'auto'}}>
+    <div className="mol-skrol" style={{flex:1,overflowY:'auto'}}>
       <div className="prayer-wrap mol-wrap">
         <h1 className="print-only" style={{fontFamily:'serif',fontSize:24,color:'#5C4030',marginBottom:4}}>{t('molitvenik.naslov')}</h1>
         <div className="p-banner">
           <h2>{t('molitvenik.naslov')}</h2>
           <p>{t('molitvenik.podnaslov')}</p>
         </div>
-        <nav className="mol-toc" aria-label={t('molitvenik.sadrzaj')}>
-          <button onClick={() => skoci('mol-sazetak')}>{t('molitvenik.sazetak')}</button>
-          {odjeljci.map((o, i) => (
-            <button key={o.id} className={i < otkriveno ? '' : 'skriveno'} onClick={() => otvoriMolitvu(o.id)}>{i + 1}. {o.naslov}</button>
-          ))}
-        </nav>
+        <Izbornik stavke={[{ id: 'mol-sazetak', naziv: t('molitvenik.sazetak') },
+          ...odjeljci.map((o, i) => ({ id: o.id, naziv: (i + 1) + '. ' + (o.kratko || o.naslov), skriven: i >= otkriveno }))]}/>
         <div className="mol-moje">
           <span className="mol-moje-ozn">★ {t('molitvenik.mojeMolitve')}</span>
           {zvjezdice.length === 0 && <span className="mol-moje-prazno">{t('molitvenik.mojeMolitvePrazno')}</span>}
@@ -1860,7 +1932,7 @@ function Molitvenik({ onBack }) {
         <Odjeljak id="mol-grijesi" br="1" naslov={t('molitvenik.grijesi')} uvod={t('molitvenik.grijesiUvod')}>
           {DATA.smrtniGrijesi.map(g => (
             <Molitva key={g.id} id={'mol-g-' + g.id} naslov={g.naziv} ikona={g.ikona} boja={`${g.bojaBg}22`}
-              podnaslov={t('molitvenik.idol') + ': ' + g.idolatrija + ' · ' + (g.krepost.par || g.krepost.naziv)}
+              podnaslov={t('molitvenik.idol') + ': ' + g.idolatrija}
               dijelovi={dijeloviGrijeha(g)} sklopljeno={true} zvjezdica={'g:' + g.id}
               dodatak={<KrepostGrijeha g={g}/>} natrag="mol-sazetak"/>
           ))}
@@ -1980,7 +2052,7 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
   };
 
   return (
-    <div style={{flex:1,overflowY:'auto'}}>
+    <div className="mol-skrol" style={{flex:1,overflowY:'auto'}}>
       <div className="prayer-wrap mol-wrap">
 
         <div className="print-only">
@@ -1992,6 +2064,8 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
           <h2>{t('molitve.naslov')}</h2>
           <p>{t('molitve.naTemelju', sinDef.naziv)}</p>
         </div>
+        <Izbornik stavke={[{ id: 'mol-stablo', naziv: t('molitvenik.tvojeStablo') },
+          ...odjeljci.map((o, i) => ({ id: o.id, naziv: (i + 1) + '. ' + o.naslov, skriven: i >= otkriveno }))]}/>
 
         <Odjeljak id="mol-stablo" naslov={t('molitvenik.tvojeStablo')}>
           <Sazetak tree={tree}/>
