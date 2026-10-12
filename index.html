@@ -405,6 +405,10 @@ details.isus .znak-sak{margin-top:3px;font:400 12px/1.45 'Inter',sans-serif;font
 details.opis-grijeha{margin:-4px 0 12px;}
 details.opis-grijeha[open]{padding:8px 12px;background:rgba(196,154,60,.07);border-radius:8px;}
 details.opis-grijeha[open]>summary{color:var(--bark);}
+/* Poveznice grijeh ↔ rana: običan sitan tekst, bez gumba i strelica */
+details.isus .opis-veze{margin-top:9px;font:400 10.5px/1.6 'Inter',sans-serif;color:var(--light);}
+.opis-veza{background:none;border:none;padding:0;font:inherit;color:var(--mid);text-decoration:underline dotted var(--bark-l);text-underline-offset:2px;cursor:pointer;transition:color .15s;}
+.opis-veza:hover,.opis-veza:focus-visible{color:var(--gold);outline:none;}
 details.isus .opis-tekst p{margin-top:7px;font:400 13.5px/1.6 'Inter',sans-serif;font-style:normal;color:var(--txt);}
 .mol-tablica details.znak{margin-top:2px;}
 .print-only{display:none;}
@@ -601,6 +605,20 @@ function pripremiPodatke(J) {
   D.smrtniGrijesi.forEach(g => {
     g.rane = (g.rane || []).map(x => typeof x === 'string' ? D.ranaById[x] : x).filter(Boolean);
   });
+
+  // Grijeh ↔ rana je veza "više na više" i ide u oba smjera (HWP str. 30: grijeh raste iz rana).
+  // g.rane i r.vodiKaGrijesima se u podacima ne poklapaju posve, pa se poveznice čitaju iz unije
+  // (redom: vlastito polje, pa dodano). g.rane ostaje netaknut — on daje 3 prijedloga u koraku 3.
+  D.raneZaGrijeh = {};
+  D.grijesiZaRanu = {};
+  D.smrtniGrijesi.forEach(g => { D.raneZaGrijeh[g.id] = [...g.rane]; });
+  D.smrtneRane.forEach(r => { D.grijesiZaRanu[r.id] = (r.vodiKaGrijesima || []).map(id => D.grijehById[id]).filter(Boolean); });
+  D.smrtneRane.forEach(r => D.grijesiZaRanu[r.id].forEach(g => {
+    if (!D.raneZaGrijeh[g.id].includes(r)) D.raneZaGrijeh[g.id].push(r);
+  }));
+  D.smrtniGrijesi.forEach(g => g.rane.forEach(r => {
+    if (!D.grijesiZaRanu[r.id].includes(g)) D.grijesiZaRanu[r.id].push(g);
+  }));
 
   // Kompatibilnost: stari naziv polja znakovi[]
   D.znakovi = D.smrtneRane.map(r => ({ rana: r.id, znak: r.znakIscjeljenja }));
@@ -1629,12 +1647,32 @@ function Vrline({ g, evandjelje }) {
 
 // "Što je …?" — kratko pojašnjenje grijeha (Be Healed pogl. 6) ili rane (pogl. 7–8), sitno i
 // sklopljeno na vrhu kartice, prije same molitve. x: grijeh ili rana s poljem pojasnjenje.
-function Pojasnjenje({ x }) {
+// Na dnu je tihi redak poveznica: grijeh "raste iz rana", rana "vodi u grijehe" (D.raneZaGrijeh /
+// D.grijesiZaRanu). prefiks: 'mol' (molitvenik) ili 'st' (stablo); u stablu se na ono čega u stablu
+// nema (imaLokalno) ide u molitvenik preko naVan.
+function Pojasnjenje({ x, prefiks = 'mol', imaLokalno, naVan }) {
   if (!x.pojasnjenje) return null;
+  const jeRana = !!x.vodiKaGrijesima;
+  const v = jeRana ? 'g' : 'r';
+  const veze = (jeRana ? DATA.grijesiZaRanu[x.id] : DATA.raneZaGrijeh[x.id]) || [];
+  const idi = (id) => {
+    if (prefiks === 'st' && imaLokalno && !imaLokalno(v, id)) return naVan && naVan('mol-' + v + '-' + id);
+    otvoriMolitvu(prefiks + '-' + v + '-' + id);
+  };
   return (
     <details className="isus znak opis-grijeha" onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
       <summary>ⓘ {t('molitvenik.staJe', x.naziv)}</summary>
       <div className="opis-tekst">{x.pojasnjenje.split(/\n\n+/).map((p, i) => <p key={i}><Navodi text={p} bezUpisa/></p>)}</div>
+      {veze.length > 0 && (
+        <div className="opis-veze">
+          {t(jeRana ? 'molitvenik.vodiUGrijehe' : 'molitvenik.rasteIzRana')}:{' '}
+          {veze.map((o, i) => (
+            <React.Fragment key={o.id}>{i > 0 && ' · '}
+              <button type="button" className="opis-veza" title={t('molitvenik.otvoriMolitvu')} onClick={() => idi(o.id)}>{o.naziv.toLowerCase()}</button>
+            </React.Fragment>
+          ))}
+        </div>
+      )}
     </details>
   );
 }
@@ -2032,6 +2070,8 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
   const vs = [...(tree.vows||[]), tree.customVow].filter(Boolean).map(v => DATA.zavjetById[v] || v);
   const js = [...(tree.judgments||[]), tree.customJudgment].filter(Boolean).map(j => DATA.osudaById[j] || j);
   const slike = CONFIG.showKriveSlikeBoga ? (tree.godImages||[]) : [];
+  // Je li grijeh/rana u ovom stablu — ako nije, poveznica iz opisa otvara molitvenik
+  const imaLokalno = (v, id) => v === 'g' ? id === sinDef?.id : raneDef.some(r => r.id === id);
 
   const odjeljci = [
     { id: 'st-grijeh', naslov: t('molitvenik.grijesi'), prefiksi: ['st-g-'] },
@@ -2094,14 +2134,14 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
         {korak('st-grijeh', t('molitvenik.grijesiUvod'), <>
           <Molitva id={'st-g-' + sinDef.id} ikona={sinDef.ikona} boja={`${sinDef.bojaBg}22`} naslov={t('molitve.odricanje', sinDef.naziv)}
             podnaslov={t('molitvenik.idol') + ': ' + sinDef.idolatrija} dijelovi={dijeloviGrijeha(sinDef)} zvjezdica={'g:' + sinDef.id}
-            uvod={<Pojasnjenje x={sinDef}/>} dodatak={<KrepostGrijeha g={sinDef}/>} natrag="mol-stablo" sklopljeno={true}/>
+            uvod={<Pojasnjenje x={sinDef} prefiks="st" imaLokalno={imaLokalno} naVan={onMolitvenik}/>} dodatak={<KrepostGrijeha g={sinDef}/>} natrag="mol-stablo" sklopljeno={true}/>
         </>)}
 
         {korak('st-lazi', t('molitvenik.laziUvod'), <>
           {raneDef.map(rd => (
             <Molitva key={rd.id} id={'st-r-' + rd.id} ikona="🌱" naslov={t('molitve.iscjeljenje', rd.naziv)}
               podnaslov={t('molitvenik.citat', rd.laz)} dijelovi={dijeloviRane(rd)} zvjezdica={'r:' + rd.id}
-              uvod={<Pojasnjenje x={rd}/>} dodatak={<ZnakRane r={rd}/>} natrag="mol-stablo" sklopljeno={true}/>
+              uvod={<Pojasnjenje x={rd} prefiks="st" imaLokalno={imaLokalno} naVan={onMolitvenik}/>} dodatak={<ZnakRane r={rd}/>} natrag="mol-stablo" sklopljeno={true}/>
           ))}
         </>)}
 
@@ -2111,7 +2151,7 @@ function PrayerScreen({ tree, onBack, onMolitvenik }) {
           {slike.map((g, i) => (
             <Molitva key={'g'+i} ikona="🕊" naslov={t('molitve.slikaBoga')} tekst={DATA.molitvaSlikeBoga(DATA.slikaById[g] || g)} sklopljeno={true}/>
           ))}
-          <button className="mol-poveznica" onClick={onMolitvenik}>{t('molitvenik.cijeliOprost')}</button>
+          <button className="mol-poveznica" onClick={() => onMolitvenik('mol-oprost')}>{t('molitvenik.cijeliOprost')}</button>
         </>)}
 
         {korak('st-pecat', t('molitvenik.pecatUvod'), <>
@@ -2372,7 +2412,7 @@ function App() {
           {view==='prayer' && activeTree && (
             <PrayerScreen tree={activeTree}
               onBack={()=>{ updateTree({...activeTree,completed:false,step:4}); setView('guided'); }}
-              onMolitvenik={()=>{ skokPriOtvaranju = 'mol-oprost'; setView('molitvenik'); }}/>
+              onMolitvenik={(id)=>{ skokPriOtvaranju = id || 'mol-oprost'; setView('molitvenik'); }}/>
           )}
         </div>
         <TreePanel tree={displayTree}/>
