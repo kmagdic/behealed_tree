@@ -192,7 +192,18 @@ window.JEZICI.en = {
       deblo: "The root of every sin",
       cijeliOprost: "The full forgiveness process →",
       pretraga: "Bible",
-      citat: x => `“${x}”`
+      citat: x => `“${x}”`,
+      krepost: "Lively virtues",
+      isusZivio: "How Jesus lived it — from the Gospel",
+      znak: "Sign of healing and sacrament",
+      sakrament: "Sacrament",
+      naSazetak: "↑ At a glance",
+      mojeMolitve: "My prayers",
+      mojeMolitvePrazno: "Mark with a star ☆ the prayers you want to keep at hand — they will appear here.",
+      oznaci: "Mark with a star",
+      makniOznaku: "Remove star",
+      dalje: n => `Next: ${n} ↓`,
+      prikaziSve: "Show all"
     },
 
     obavijest: {
@@ -701,7 +712,11 @@ window.JEZICI.en = {
           { id: "tvrdoglavost", naziv: "Stubbornness/Self-will", izRana: ["bespomoćnost", "strah"] },
           { id: "distanciranost", naziv: "Emotional detachment", izRana: ["strah", "napustenost"] }
         ],
-        krepost: { naziv: "Humility", opis: "Humility overcomes pride" },
+        krepost: { naziv: "Humility", opis: "Humility overcomes pride",
+          par: "Humility and meekness",
+          evandjelje: [
+            { tekst: "Take my yoke upon you, and learn from me; for I am gentle and lowly in heart, and you will find rest for your souls.", navod: "Mt 11:29" }
+          ] },
         molitvaOdricanja: "In the name of Jesus Christ, I renounce the sin of pride and any idolatry of myself or of others. In the name of Jesus Christ, I renounce self-righteousness, self-deception and self-promotion.\n\nI ask for Your forgiveness, Lord, and I choose instead to humble myself before You.",
         znakIscjeljenja: "Humility and freedom from needing to prove my worth"
       },
@@ -733,7 +748,12 @@ window.JEZICI.en = {
           { id: "kompetitivnost", naziv: "Unhealthy competitiveness", izRana: ["odbacenost"] },
           { id: "financijska_usporedba", naziv: "Comparing finances/possessions", izRana: ["odbacenost", "strah"] }
         ],
-        krepost: { naziv: "Kindness", opis: "Contentment and kindness overcome envy" },
+        krepost: { naziv: "Kindness", opis: "Contentment and kindness overcome envy",
+          par: "Kindness and gratitude",
+          evandjelje: [
+            { tekst: "Woman, behold, your son! … Behold, your mother!", navod: "Jn 19:26-27" },
+            { tekst: "Truly, I say to you, today you will be with me in Paradise.", navod: "Lk 23:43" }
+          ] },
         molitvaOdricanja: "In the name of Jesus Christ, I renounce the sin of envy and any idolatry of position or status. I renounce coveting what anyone else has, and tearing them down because of it.\n\nI ask for Your forgiveness, Lord, and I choose instead contentment and kindness toward my neighbors.",
         znakIscjeljenja: "Joy in others' success, gratitude for my own gifts"
       },
@@ -768,7 +788,12 @@ window.JEZICI.en = {
           { id: "nestrpljivost", naziv: "Chronic impatience", izRana: ["bespomoćnost"] },
           { id: "eksplozivnost", naziv: "Explosive outbursts of rage", izRana: ["bespomoćnost", "strah"] }
         ],
-        krepost: { naziv: "Patience and long-suffering", opis: "Patience and long-suffering overcome anger" },
+        krepost: { naziv: "Patience and long-suffering", opis: "Patience and long-suffering overcome anger",
+          par: "Longsuffering and surrender",
+          evandjelje: [
+            { tekst: "Father, forgive them; for they know not what they do.", navod: "Lk 23:34" },
+            { tekst: "Father, into your hands I commit my spirit!", navod: "Lk 23:46" }
+          ] },
         molitvaOdricanja: "In the name of Jesus Christ, I renounce the sin of anger and any idolatry of power, control or justice. In the name of Jesus Christ, I renounce all bitterness, judgment and retaliation.\n\nI ask for Your forgiveness, Lord, and I choose instead the virtue of patience and long-suffering, to bless those who have hurt me.",
         znakIscjeljenja: "Peace and freedom from the need for control, the ability to forgive"
       },
@@ -800,7 +825,12 @@ window.JEZICI.en = {
           { id: "seks_kao_bijeg", naziv: "Sex as an escape from pain", izRana: ["sramota", "napustenost"] },
           { id: "idolizacija_partnera", naziv: "Idolizing a partner", izRana: ["napustenost", "odbacenost"] }
         ],
-        krepost: { naziv: "Chastity", opis: "Chastity overcomes lust" },
+        krepost: { naziv: "Chastity", opis: "Chastity overcomes lust",
+          par: "Chastity and self-control",
+          evandjelje: [
+            { tekst: "Blessed are the pure in heart, for they shall see God.", navod: "Mt 5:8" },
+            { tekst: "Behold, the Lamb of God, who takes away the sin of the world!", navod: "Jn 1:29" }
+          ] },
         molitvaOdricanja: "In the name of Jesus Christ, I renounce the sin of lust and any idolatry of sex or relationships. In the name of Jesus Christ, I renounce all immorality, fornication, adultery, pornography...\n\nI ask for Your forgiveness, Lord, and I choose instead the virtue of chastity, and to see everyone in purity, as the son or daughter God created them to be.",
         znakIscjeljenja: "Purity of heart, healthy relationships grounded in love"
       },
@@ -831,7 +861,12 @@ window.JEZICI.en = {
           { id: "ekrani", naziv: "Screen/internet addiction", izRana: ["napustenost", "beznade"] },
           { id: "kupovanje", naziv: "Compulsive shopping", izRana: ["napustenost", "odbacenost"] }
         ],
-        krepost: { naziv: "Temperance and fasting", opis: "Temperance and fasting overcome gluttony" },
+        krepost: { naziv: "Temperance and fasting", opis: "Temperance and fasting overcome gluttony",
+          par: "Fasting and moderation",
+          evandjelje: [
+            { tekst: "Man shall not live by bread alone, but by every word that proceeds from the mouth of God.", navod: "Mt 4:4" },
+            { tekst: "And they offered him wine mingled with myrrh; but he did not take it.", navod: "Mk 15:23" }
+          ] },
         molitvaOdricanja: "In the name of Jesus Christ, I renounce the sin of gluttony and any idolatry of food, drink or drugs. In the name of Jesus Christ, I renounce all self-indulgence and false comfort through what I take into my body.\n\nI ask for Your forgiveness, Lord, and I choose instead temperance and fasting to fight against self-indulgence.",
         znakIscjeljenja: "Freedom from compulsive eating/drinking, finding comfort in God"
       },
@@ -861,7 +896,12 @@ window.JEZICI.en = {
           { id: "trosenje_ekscesivno", naziv: "Excessive spending", izRana: ["napustenost", "beznade"] },
           { id: "statusni_simboli", naziv: "Obsession with status symbols", izRana: ["odbacenost", "sramota"] }
         ],
-        krepost: { naziv: "Generosity", opis: "Generosity overcomes greed" },
+        krepost: { naziv: "Generosity", opis: "Generosity overcomes greed",
+          par: "Generosity and stewardship",
+          evandjelje: [
+            { tekst: "This is my body which is given for you. Do this in remembrance of me.", navod: "Lk 22:19" },
+            { tekst: "But seek first his kingdom and his righteousness, and all these things shall be yours as well.", navod: "Mt 6:33" }
+          ] },
         molitvaOdricanja: "In the name of Jesus Christ, I renounce the sin of greed and any idolatry of security, wealth or money. In the name of Jesus Christ, I renounce all sins of hoarding, stealing or using people to get ahead.\n\nI ask for Your forgiveness, Lord, and I choose instead generosity and trust in Your provision for my life.",
         znakIscjeljenja: "Freedom from the fear of lack, joy in giving"
       },
@@ -892,7 +932,12 @@ window.JEZICI.en = {
           { id: "minimalan_napor", naziv: "Minimal effort in everything", izRana: ["beznade"] },
           { id: "bijeg_od_tisine", naziv: "Running from silence and reflection", izRana: ["strah", "zbunjenost"] }
         ],
-        krepost: { naziv: "Diligence and perseverance", opis: "Diligence and perseverance overcome sloth" },
+        krepost: { naziv: "Diligence and perseverance", opis: "Diligence and perseverance overcome sloth",
+          par: "Diligence and faithfulness",
+          evandjelje: [
+            { tekst: "I glorified you on earth, having accomplished the work which you gave me to do.", navod: "Jn 17:4" },
+            { tekst: "It is finished.", navod: "Jn 19:30" }
+          ] },
         molitvaOdricanja: "In the name of Jesus Christ, I renounce the sin of sloth and my idolatry of ease and false comfort. In the name of Jesus Christ, I renounce laziness and giving up when things get difficult.\n\nI ask for Your forgiveness, Lord, and I choose diligence and perseverance.",
         znakIscjeljenja: "Energy and joy in serving, freedom from passivity"
       }

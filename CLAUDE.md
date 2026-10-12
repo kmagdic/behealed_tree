@@ -77,7 +77,7 @@ Za korak 4 i molitveni ekran treba stablo u `localStorage` (ključ `drvo_v3`). Z
 
 Jedna HTML datoteka: React preko CDN-a (unpkg, s SRI hashevima), Babel transpilira u pregledniku. Google Analytics `G-WX9RNFYH86`.
 
-**Stanje**: jedan objekt u `localStorage` pod ključem `drvo_v3`, oblika `{ trees: [TreeObject] }` — jedno stablo po grijehu.
+**Stanje**: jedan objekt u `localStorage` pod ključem `drvo_v3`, oblika `{ trees: [TreeObject], zvjezdice: [ključ] }` — jedno stablo po grijehu, a `zvjezdice` su molitve koje je korisnik označio (`'r:<rana>'`, `'g:<grijeh>'`, `'o:<opća molitva>'`, `'pecat'`). `migriraj()` starom zapisu doda `zvjezdice: []`. Svaki `setState` mora čuvati ostala polja (`{...s, …}`).
 
 ```js
 {
@@ -110,12 +110,18 @@ Prva verzija (v1, prvi commit) imala je i druge ID-eve plodova i grijeha (`gorč
 
 ### Molitve (`Molitvenik` i `PrayerScreen`)
 
-Oba ekrana slijede redoslijed JPII Healing Centera: **laži i istina → odricanje od grijeha → oprost → (unutarnje iscjeljenje) → pečat i blagoslov**. Molitvenik pokazuje sve; `PrayerScreen` samo ono što je u stablu, a za cijeli proces oprosta vodi u molitvenik (`skokPriOtvaranju`).
+Oba ekrana idu redom: **odricanje od grijeha → laži i istina → oprost → (unutarnje iscjeljenje) → pečat i blagoslov**. Molitvenik pokazuje sve; `PrayerScreen` samo ono što je u stablu, a za cijeli proces oprosta vodi u molitvenik (`skokPriOtvaranju`).
 
 - `<Molitva dijelovi=[{oznaka, vrsta, tekst}] | tekst sklopljeno?/>` — jedna kartica. Rane se dijele na *Odričem se* (`lazi`) / *Proglašavam istinu* (`istina`), grijesi na prvi odlomak / ostatak (`dijeloviRane`, `dijeloviGrijeha`). `sklopljeno` → `<details>`; `beforeprint` ih sve otvori.
 - `TekstMolitve` razbija tekst: `\n\n` = odlomak, a svaka nova izjava (`NOVA_IZJAVA`: *U ime…*, *Proglašavam…*, *I renounce…*) ide u novi redak. **Ne uvoditi zagrade bez broja u postojeće molitve** — `Navodi` (zagrada s brojem) prikaže kao biblijski navod, a (zagradu bez broja) kao mjesto za vlastiti upis.
 - `<Sazetak/>` bez stabla: rana → laž, grijeh → idol (`idolatrija`), sedam želja srca. `<Sazetak tree/>`: lanac kao na slici (plodovi → grijeh → deblo → zavjeti/osude → rane) i ujedno zamjenjuje stari sažetak koji je bio samo za ispis.
 - U ispisu se tabovi oprosta prikažu svi, umetnute molitve se sakriju, a `opceMolitve` se ispišu jednom ispod koraka.
+- **Postupno otkrivanje** (`useOtkrivanje`): na početku se vide sažetak te prva dva numerirana odjeljka (odricanje od grijeha, laži i istina); gumb `<Dalje/>` otkriva sljedeći, uz *Prikaži sve*. Odjeljak se otkriva i kad se otvori molitva u njemu (događaj `otkrij-za`, prefiksi id-eva), te prije ispisa (`beforeprint`, `ispisi()` — tu je `flushSync`).
+- **Poveznice na molitvu**: redovi sažetka (`naKlik(id)`) zovu `otvoriMolitvu(id)` — otkrije odjeljak, otvori `<details>`, skroluje i nakratko istakne karticu. Id-evi: `mol-r-<rana>`, `mol-g-<grijeh>` u molitveniku, `st-r-…`/`st-g-…` u stablu. Na kartici je *↑ Ukratko* za povratak.
+- **Zvjezdice**: `ZvjezdiceCtx` (iz `App`), `<Zvjezdica k/>` u glavi kartice i u umetnutim općim molitvama. Označene molitve **nemaju svoj odjeljak** — na vrhu molitvenika su samo poveznice (`.mol-moje`, `ciljZvjezdice(k)`) koje otvore karticu; opća molitva iz oprosta prvo prebaci tab (`mol-o-<tab>-<molitva>`). U ispisu se ne pokazuju.
+- **Sve se otvara postupno**: odjeljci (`useOtkrivanje`), kartice molitava (i u stablu), dijelovi sažetka (`details.mol-dio` — otvoreni su samo grijesi), koraci unutarnjeg iscjeljenja (`details.mol-korak`), Isusov primjer, a u sažetku i žive vrline (`<VrlineSazetak/>`) i znak ozdravljenja. Natpisi za otvaranje (`details.znak>summary`) su sitni (10.5px); znak ozdravljenja i sakrament iste su veličine (12px), a **sakrament je druge boje** (`.znak-sak`, smeđa). `otvoriSveDetalje()` sve otvori za ispis.
+- **Redoslijed**: **grijesi prije rana** i u sažetku i u molitvama — tako ide nauk (Be Healed pogl. 6 → 7, HWP C → E) i stablo odozgo prema dolje. JPII list i HWP Dodatak imaju obrnuto (prvo laži rana), ali korisnik je izričito odabrao grijeh prvi jer mu je logičnije.
+- **Ne definirati komponente unutar komponenti** (`const Red = () => …` u renderu): remountaju djecu pri svakom renderu i zatvaraju otvorene `<details>` (npr. klik na zvjezdicu). Koristi pomoćne funkcije (`red()`, `korak()`).
 
 ### Jezici
 
@@ -180,6 +186,11 @@ ID-evi su **namjerno ostali stari** radi spremljenih podataka u `localStorage`. 
 - **`deblo`** — "Bezbožno oslanjanje na sebe", zajednički korijen svih sedam grijeha
 - **`smrtneRane[]`** — 7 rana. Uz `laz` (kratka, za labele) i `molitva` još i `lazi` + `istina` razdvojeno kako je u skripti, te `sakrament`, `identitet`, `poslanje` (HWP str. 71) i `vodiKaGrijesima[]`
 - **`smrtniGrijesi[]`** — `rane[]` (ID-evi, razriješe se u objekte pri učitavanju), `plodovi[]` gdje svaki plod ima `izRana[]`, `krepost`, `molitvaOdricanja`, `korijen`
+  - `krepost.naziv`/`opis` — jedna krjepost iz JPII molitve (korak 1, znakovi iscjeljenja)
+  - `krepost.par` — **žive vrline** doslovno iz službenog hrvatskog izdanja *Be Healed*, tablica 8.1 „Sedam živih vrlina“ (npr. *Strpljivost i predanost*, *Čednost i samokontrola*, *Velikodušnost i upravljanje*). Knjiga kaže **vrline**, ne „krjeposti“ — u sučelju je oznaka *Žive vrline*
+  - `krepost.evandjelje: [{tekst, navod}]` — kako je Isus tu vrlinu živio: **doslovni tekst evanđelja** (hr: Zagrebačka Biblija, en: RSV-CE) i navod koji `Navod` pretvara u poveznicu. Prizori prate Be Healed str. 102–103; same retke smo odabrali mi. U sučelju je sklopljeno (`<Evandjelje/>`)
+  - **Rane nemaju vrlinu** — Schuchts je ne daje ni u jednoj knjizi. Uz ranu se, na klik, prikazuje `znakIscjeljenja` i `sakrament` (`<ZnakRane/>`). Ne izmišljati vrlinu po rani
+- **`smrtneRane[].znakIscjeljenja`** (hr) — doslovno „Sedam znakova ozdravljenja“ iz hrvatskog izdanja (npr. *Čistoća i vrijednost zamjenjuju sram*). Oznaka u sučelju: *Znak ozdravljenja*. Fotografije službenih izraza su u `docs/poveznice/`
 - **`unutarnjiZavjeti[]`** — `{id, tekst, rane[], grijesi[], zastita, zamjena}`
 - **`gorkeOsude[]`** — `{id, tekst, rane[], oprastam, osudio, premaBogu, istina}`
   - `oprastam` je **dativ** ("opraštam ocu"), `osudio` je **akuzativ** ("osudio sam oca") — hrvatski traži oba padeža

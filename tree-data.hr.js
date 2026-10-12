@@ -136,7 +136,7 @@ window.JEZICI.hr = {
       zavjeti: "Odricanje od zavjeta",
       osude: "Odricanje od gorkih osuda",
       slikaBoga: "Odricanje od krive slike Boga",
-      znakovi: "Znakovi iscjeljenja",
+      znakovi: "Znakovi ozdravljenja",
       sakrament: (s, i, p) => `Sakrament: **${s}** · Identitet: ${i} · Poslanje: ${p}`,
       krepost: (n, o) => `Krepost: ${n} — ${o}`,
       ispisi: "Ispiši"
@@ -195,7 +195,7 @@ window.JEZICI.hr = {
       molitvaOsudaBoga: "Molitva odricanja od osude Boga",
       molitvaZavjeti: "Molitva odricanja od unutarnjeg zavjeta",
       naPecat: "↓ Pečat i blagoslov",
-      iscjeljenje: "Moliti za unutarnje iscjeljenje",
+      iscjeljenje: "Molitva za unutarnje iscjeljenje",
       iscjeljenjeUvod: "Upute za vrijeme molitve — kad te nešto u sadašnjosti boli, potraži korijen.",
       pecat: "Pečat i blagoslov",
       pecatUvod: "Na kraju svake molitve iscjeljenja zamoli Boga da zapečati ono što je učinio.",
@@ -206,7 +206,18 @@ window.JEZICI.hr = {
       deblo: "Korijen svakog grijeha",
       cijeliOprost: "Cijeli proces oprosta →",
       pretraga: "Biblija",
-      citat: x => `„${x}“`
+      citat: x => `„${x}“`,
+      krepost: "Žive vrline",
+      isusZivio: "Kako je Isus to živio — iz evanđelja",
+      znak: "Znak ozdravljenja i sakrament",
+      sakrament: "Sakrament",
+      naSazetak: "↑ Ukratko",
+      mojeMolitve: "Moje molitve",
+      mojeMolitvePrazno: "Označi zvjezdicom ☆ molitve koje želiš imati pri ruci — pojavit će se ovdje.",
+      oznaci: "Označi zvjezdicom",
+      makniOznaku: "Makni zvjezdicu",
+      dalje: n => `Dalje: ${n} ↓`,
+      prikaziSve: "Prikaži sve"
     },
 
     obavijest: {
@@ -383,7 +394,7 @@ window.JEZICI.hr = {
       ]
     },
 
-    // Moliti za unutarnje iscjeljenje — upute, ne molitva
+    // Molitva za unutarnje iscjeljenje — upute, ne molitva
     iscjeljenje: [
       { naslov:"Prepoznaj ono što te sada muči", stavke:[
         "Što me sada muči? Što želim?",
@@ -432,7 +443,7 @@ window.JEZICI.hr = {
         istinaKratko: "sam povezan, duboko shvaćen i da se netko brine za mene",
         opis: "Rana nastaje kad onaj tko je trebao biti prisutan nije bio — fizički ili srcem. Ne mora biti odlazak; dovoljna je odsutnost.",
         osjecaj: "praznina, čežnja, osjećaj da si nevidljiv",
-        znakIscjeljenja: "Povezanost i razumijevanje zamjenjuje napuštenost",
+        znakIscjeljenja: "Povezanost i razumijevanje zamjenjuju napuštenost",
         sakrament: "Pričest",
         identitet: "Trajna prisutnost",
         poslanje: "Utjeloviti Kristovu prisutnost",
@@ -448,7 +459,7 @@ window.JEZICI.hr = {
         istinaKratko: "sam čist i dostojan, ne zbog onoga što sam učinio, nego zbog onoga što je Isus učinio za mene",
         opis: "Krivnja kaže: učinio sam nešto loše. Sramota kaže: ja jesam loš. Rana ne napada djelo nego identitet.",
         osjecaj: "želja da se sakriješ, da te nitko ne vidi iznutra",
-        znakIscjeljenja: "Čist i dostojan zamjenjuje sram",
+        znakIscjeljenja: "Čistoća i vrijednost zamjenjuju sram",
         sakrament: "Ispovijed",
         identitet: "Čist i neokaljan",
         poslanje: "Prenositi Očevo milosrđe",
@@ -464,7 +475,7 @@ window.JEZICI.hr = {
         istinaKratko: "sam na sigurnom i zaštićen",
         opis: "Rana straha zatvara srce. Ono što je nekoć bilo zaštita postaje zid koji više ne znaš spustiti.",
         osjecaj: "napetost, budnost, nemogućnost opuštanja",
-        znakIscjeljenja: "Sigurnost i zaštita zamjenjuje strah",
+        znakIscjeljenja: "Sigurnost i zaštita zamjenjuju strah",
         sakrament: "Ženidba",
         identitet: "Vjerna Božja ljubav",
         poslanje: "Predstavljati Kristovu vjernu ljubav",
@@ -480,7 +491,7 @@ window.JEZICI.hr = {
         istinaKratko: "sam u Kristu osnažen i Duhom Svetim oslobođen",
         opis: "Rana nastaje ondje gdje si bio premalen ili preslab da promijeniš ono što ti se događalo. Tijelo to pamti i onda kad si odrastao.",
         osjecaj: "paraliza, preplavljenost, potreba da sve držiš u rukama",
-        znakIscjeljenja: "Osnažen i oslobođen zamjenjuje nemoć",
+        znakIscjeljenja: "Osnaženost i oslobođenost zamjenjuju nemoć",
         sakrament: "Potvrda",
         identitet: "Pomazan snagom",
         poslanje: "Služiti u snazi Duha",
@@ -496,7 +507,7 @@ window.JEZICI.hr = {
         istinaKratko: "sam ljubljen, željen i dragocjen u Očevim očima",
         opis: "Napuštenost je odsutnost. Odbačenost je poruka: bio si tu, i nisi bio željen. Zato boli drukčije.",
         osjecaj: "potreba da zaslužiš mjesto, strah od isključenja",
-        znakIscjeljenja: "Prihvaćen i cijenjen zamjenjuje odbačenost",
+        znakIscjeljenja: "Prihvaćenost i cijenjenost zamjenjuju odbačenost",
         sakrament: "Krštenje",
         identitet: "Očev ljubljeni",
         poslanje: "Nasljedovati Očevu ljubav",
@@ -512,7 +523,7 @@ window.JEZICI.hr = {
         istinaKratko: "sam ispunjen nadom u dobre stvari koje dolaze",
         opis: "Rana beznađa dolazi nakon što si se dovoljno puta nadao i razočarao. Srce zaključi da je jeftinije ne nadati se.",
         osjecaj: "umor, ravnodušnost, unaprijed odustajanje",
-        znakIscjeljenja: "Nada i ohrabrenje zamjenjuje beznađe",
+        znakIscjeljenja: "Ispunjenost nadom i ohrabrenost zamjenjuju beznađe",
         sakrament: "Bolesničko pomazanje",
         identitet: "Uskrišen na život",
         poslanje: "Širiti Kristovu nadu i ozdravljenje",
@@ -528,7 +539,7 @@ window.JEZICI.hr = {
         istinaKratko: "imam razumijevanje i prosvjetljenje od Gospodina",
         opis: "Rana nastaje ondje gdje ti riječi i djela nisu se poklapali — gdje su ti govorili jedno, a činili drugo. Prestaneš vjerovati vlastitoj percepciji.",
         osjecaj: "magla, nesigurnost u vlastiti osjećaj, stalno preispitivanje",
-        znakIscjeljenja: "Razumijevanje i prosvjetljenje zamjenjuje zbunjenost",
+        znakIscjeljenja: "Razumijevanje i prosvjetljenje zamjenjuju zbunjenost",
         sakrament: "Sveti red",
         identitet: "Očev autoritet",
         poslanje: "Obnavljati sveti autoritet",
@@ -843,7 +854,11 @@ window.JEZICI.hr = {
           { id: "tvrdoglavost", naziv: "Tvrdoglavost/Samovolja", izRana: ["bespomoćnost", "strah"] },
           { id: "distanciranost", naziv: "Emocionalna distanciranost", izRana: ["strah", "napustenost"] }
         ],
-        krepost: { naziv: "Poniznost", opis: "Poniznost pobjeđuje oholost" },
+        krepost: { naziv: "Poniznost", opis: "Poniznost pobjeđuje oholost",
+          par: "Poniznost i krotkost",
+          evandjelje: [
+            { tekst: "Uzmite jaram moj na sebe, učite se od mene jer sam krotka i ponizna srca i naći ćete spokoj dušama svojim.", navod: "Mt 11,29" }
+          ] },
         molitvaOdricanja: "U ime Isusa Krista odričem se grijeha oholosti i bilo kakvog idolopoklonstva sebe ili drugih. U ime Isusa Krista odričem se samopravednosti, samozavaravanja i samopromocije.\n\nMolim te za oprost, Gospodine, i umjesto toga odlučujem se poniziti pred tobom.",
         znakIscjeljenja: "Poniznost i sloboda od potrebe da dokazujem svoju vrijednost"
       },
@@ -875,7 +890,12 @@ window.JEZICI.hr = {
           { id: "kompetitivnost", naziv: "Nezdrava kompetitivnost", izRana: ["odbacenost"] },
           { id: "financijska_usporedba", naziv: "Uspoređivanje financija/imovine", izRana: ["odbacenost", "strah"] }
         ],
-        krepost: { naziv: "Ljubaznost", opis: "Zadovoljstvo i ljubaznost pobjeđuju zavist" },
+        krepost: { naziv: "Ljubaznost", opis: "Zadovoljstvo i ljubaznost pobjeđuju zavist",
+          par: "Ljubaznost i zahvalnost",
+          evandjelje: [
+            { tekst: "Ženo! Evo ti sina! … Evo ti majke!", navod: "Iv 19,26-27" },
+            { tekst: "Zaista, kažem ti, danas ćeš biti sa mnom u raju.", navod: "Lk 23,43" }
+          ] },
         molitvaOdricanja: "U ime Isusa Krista odričem se grijeha zavisti i svakog idolopoklonstva položaja ili statusa. Odričem se žudnje za onim što ima bilo tko drugi i ponižavanja zbog toga.\n\nMolim za tvoj oprost, Gospodine, i umjesto toga biram: zadovoljstvo i ljubaznost prema svojim bližnjima.",
         znakIscjeljenja: "Radost zbog tuđeg uspjeha, zahvalnost za vlastite darove"
       },
@@ -910,7 +930,12 @@ window.JEZICI.hr = {
           { id: "nestrpljivost", naziv: "Kronična nestrpljivost", izRana: ["bespomoćnost"] },
           { id: "eksplozivnost", naziv: "Eksplozivni ispadi bijesa", izRana: ["bespomoćnost", "strah"] }
         ],
-        krepost: { naziv: "Strpljivost i dugotrpnost", opis: "Strpljivost i dugotrpnost pobjeđuju srditost" },
+        krepost: { naziv: "Strpljivost i dugotrpnost", opis: "Strpljivost i dugotrpnost pobjeđuju srditost",
+          par: "Strpljivost i predanost",
+          evandjelje: [
+            { tekst: "Oče, oprosti im jer ne znaju što čine.", navod: "Lk 23,34" },
+            { tekst: "Oče, u ruke tvoje predajem duh svoj!", navod: "Lk 23,46" }
+          ] },
         molitvaOdricanja: "U ime Isusa Krista odričem se grijeha gnjeva i svakog idolopoklonstva moći, kontrole ili pravde. U ime Isusa Krista odričem se svake gorčine, osude i osvete.\n\nMolim za tvoj oprost, Gospodine, i umjesto toga biram krepost strpljivosti i dugotrpnosti, da blagoslovim one koji su me povrijedili.",
         znakIscjeljenja: "Mir i sloboda od potrebe za kontrolom, sposobnost opraštanja"
       },
@@ -942,7 +967,12 @@ window.JEZICI.hr = {
           { id: "seks_kao_bijeg", naziv: "Seks kao bijeg od boli", izRana: ["sramota", "napustenost"] },
           { id: "idolizacija_partnera", naziv: "Idolizacija partnera", izRana: ["napustenost", "odbacenost"] }
         ],
-        krepost: { naziv: "Čistoća", opis: "Čistoća pobjeđuje bludnost" },
+        krepost: { naziv: "Čistoća", opis: "Čistoća pobjeđuje bludnost",
+          par: "Čednost i samokontrola",
+          evandjelje: [
+            { tekst: "Blago čistima srcem: oni će Boga gledati!", navod: "Mt 5,8" },
+            { tekst: "Evo Jaganjca Božjeg koji odnosi grijeh svijeta!", navod: "Iv 1,29" }
+          ] },
         molitvaOdricanja: "U ime Isusa Krista odričem se grijeha požude i svakog idolopoklonstva seksa ili odnosa. U ime Isusa Krista, odričem se svakog nemorala, bluda, preljuba, pornografije...\n\nMolim za tvoj oprost, Gospodine, i umjesto toga biram krepost čistoće i da vidim svakoga u čistoći i kao sina/kćer kakvim/kakvom ga/ju je Bog stvorio.",
         znakIscjeljenja: "Čistoća srca, zdravi odnosi utemeljeni na ljubavi"
       },
@@ -973,7 +1003,12 @@ window.JEZICI.hr = {
           { id: "ekrani", naziv: "Ovisnost o ekranima/internetu", izRana: ["napustenost", "beznade"] },
           { id: "kupovanje", naziv: "Kompulzivno kupovanje", izRana: ["napustenost", "odbacenost"] }
         ],
-        krepost: { naziv: "Umjerenost i post", opis: "Umjerenost i post pobjeđuju neumjerenost" },
+        krepost: { naziv: "Umjerenost i post", opis: "Umjerenost i post pobjeđuju neumjerenost",
+          par: "Post i umjerenost",
+          evandjelje: [
+            { tekst: "Ne živi čovjek samo o kruhu, nego o svakoj riječi koja izlazi iz usta Božjih.", navod: "Mt 4,4" },
+            { tekst: "I davahu mu vino pomiješano sa smirnom, ali on ne uze.", navod: "Mk 15,23" }
+          ] },
         molitvaOdricanja: "U ime Isusa Krista odričem se grijeha proždrljivosti i svakog idolopoklonstva hrane, pića ili droge. U ime Isusa Krista, odričem se svakog samozadovoljavanja i lažne utjehe kroz ono što uzimam u svoje tijelo.\n\nMolim tvoj oprost, Gospodine, i umjesto toga biram umjerenost i post kako bih se borio protiv samozadovoljavanja.",
         znakIscjeljenja: "Sloboda od kompulzivnog jedenja/pijenja, tješenje u Bogu"
       },
@@ -1003,7 +1038,12 @@ window.JEZICI.hr = {
           { id: "trosenje_ekscesivno", naziv: "Ekscesivno trošenje", izRana: ["napustenost", "beznade"] },
           { id: "statusni_simboli", naziv: "Opsesija statusnim simbolima", izRana: ["odbacenost", "sramota"] }
         ],
-        krepost: { naziv: "Velikodušnost", opis: "Velikodušnost pobjeđuje škrtost" },
+        krepost: { naziv: "Velikodušnost", opis: "Velikodušnost pobjeđuje škrtost",
+          par: "Velikodušnost i upravljanje",
+          evandjelje: [
+            { tekst: "Ovo je tijelo moje koje se za vas predaje. Ovo činite meni na spomen!", navod: "Lk 22,19" },
+            { tekst: "Tražite stoga najprije kraljevstvo Božje i pravednost njegovu, a sve će vam se ostalo dodati.", navod: "Mt 6,33" }
+          ] },
         molitvaOdricanja: "U ime Isusa Krista odričem se grijeha pohlepe i svakog idolopoklonstva sigurnosti, bogatstva ili novca. U ime Isusa Krista, odričem se svih grijeha gomilanja, krađe ili iskorištavanja ljudi kako bih napredovao.\n\nMolim tvoj oprost, Gospodine, i umjesto toga biram velikodušnost i povjerenje u tvoju skrb za moj život.",
         znakIscjeljenja: "Sloboda od straha od nedostatka, radost u davanju"
       },
@@ -1034,7 +1074,12 @@ window.JEZICI.hr = {
           { id: "minimalan_napor", naziv: "Minimalan napor u svemu", izRana: ["beznade"] },
           { id: "bijeg_od_tisine", naziv: "Bijeg od tišine i refleksije", izRana: ["strah", "zbunjenost"] }
         ],
-        krepost: { naziv: "Marljivost i ustrajnost", opis: "Marljivost i ustrajnost pobjeđuju lijenost" },
+        krepost: { naziv: "Marljivost i ustrajnost", opis: "Marljivost i ustrajnost pobjeđuju lijenost",
+          par: "Marljivost i vjernost",
+          evandjelje: [
+            { tekst: "Ja sam tebe proslavio na zemlji dovršivši djelo koje si mi dao izvršiti.", navod: "Iv 17,4" },
+            { tekst: "Dovršeno je!", navod: "Iv 19,30" }
+          ] },
         molitvaOdricanja: "U ime Isusa Krista odričem se grijeha lijenosti i svog idolopoklonstva lagodnosti i lažne utjehe. U ime Isusa Krista, odričem se lijenosti ili odustajanja kada stvari postanu teške.\n\nMolim te za oprost, Gospodine, i biram marljivost i ustrajnost.",
         znakIscjeljenja: "Energija i radost u služenju, sloboda od pasivnosti"
       }
