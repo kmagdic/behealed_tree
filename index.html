@@ -30,6 +30,8 @@
   --sh:rgba(92,64,48,0.12);--shd:rgba(44,31,20,0.20);
 }
 html,body{height:100%;background:var(--cream);overflow:hidden;}
+/* Chrome Auto Dark: donju traku (Android 15+) boji pozadina stranice prije tamnjenja — vidi skriptu ispod </style> */
+html.auto-tamno,html.auto-tamno body{background:#1F1E1A;}
 /* ── CONFIG FLAG (uredi ovdje) ── */
 body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 #root{height:100vh;display:flex;flex-direction:column;}
@@ -570,6 +572,25 @@ details[open]>summary .chev{transform:rotate(90deg);}
   .mol-tablica tr,.lanac-red,.koraci>li{break-inside:avoid;}
 }
 </style>
+<script>
+// Chrome na Androidu s tamnom temom sam potamni stranicu (Auto Dark). Donja traka sustava
+// uzme boju pozadine stranice prije tamnjenja (krem), pa joj tada damo tamnu.
+// Detekcija prema developer.chrome.com/blog/auto-dark-theme: 'canvas' u svijetloj shemi nije bijel.
+(function(){
+  var html=document.documentElement;
+  function provjeri(){
+    var d=document.createElement('div');
+    d.style.cssText='display:none;background-color:canvas;color-scheme:light';
+    html.appendChild(d);
+    var tamno=getComputedStyle(d).backgroundColor!=='rgb(255, 255, 255)';
+    html.removeChild(d);
+    html.classList.toggle('auto-tamno',tamno);
+  }
+  provjeri();
+  var mq=matchMedia('(prefers-color-scheme: dark)');
+  if(mq.addEventListener)mq.addEventListener('change',provjeri);
+})();
+</script>
 </head>
 <body>
 <div id="root"></div>
