@@ -749,7 +749,7 @@ window.JEZICI.en = {
         naziv: "Envy",
         ikona: "👁️",
         idolatrija: "Position or status",
-        pojasnjenje: "Others' gifts and successes are good: they can inspire me and gladden me, and a healthy desire for the good spurs me to grow. Envy experiences another's good — their position, possessions, gifts or success — as my own loss: I grieve over it and wish they did not have it. Its idol is position, status and what others have.\n\nBeneath envy usually lies a deep insecurity about my own worth, and shame. Rather than face that in my heart, I tear down those who have what I lack, as Cain did with Abel (Gen 4). From it grow comparison, gossip, gloating over others' failures and discontent with my own life.\n\nThe remedy is gratitude for what I have received and joy in another's good.",
+        pojasnjenje: "Others' gifts and successes are God's gifts: when I admire them, I see in another the goodness of God, the same goodness that has gifted me. Envy experiences another's good — their position, possessions, gifts or success — as my own loss: I grieve over it and wish they did not have it. Its idol is position, status and what others have.\n\nBeneath envy usually lies a deep insecurity about my own worth, and shame. Rather than face that in my heart, I tear down those who have what I lack, as Cain did with Abel (Gen 4). From it grow comparison, gossip, gloating over others' failures and discontent with my own life.\n\nThe remedy is gratitude for what I have received and joy in another's good.",
         opis: "Idolatry of status, position or what others have",
         bojaBg: "#4A6B5A",
         bojaLight: "#82A892",

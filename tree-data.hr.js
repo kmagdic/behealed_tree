@@ -891,7 +891,7 @@ window.JEZICI.hr = {
         naziv: "Zavist",
         ikona: "👁️",
         idolatrija: "Položaj ili status",
-        pojasnjenje: "Tuđi darovi i uspjesi su dobri: mogu me nadahnuti i razveseliti, a zdrava želja za dobrim potiče me da rastem. Zavist tuđe dobro — položaj, imetak, darove ili uspjeh drugoga — doživljava kao svoj gubitak: žalostim se zbog njega i želim da ga drugi nema. Idol su joj položaj, status i ono što drugi imaju.\n\nIspod zavisti obično leži duboka nesigurnost u vlastitu vrijednost i sram. Umjesto da se s tim suočim u svom srcu, spuštam one koji imaju ono što meni nedostaje, kao Kajin Abela (Post 4). Iz nje rastu uspoređivanje, ogovaranje, likovanje nad tuđim neuspjehom i nezadovoljstvo vlastitim životom.\n\nLijek je zahvalnost za ono što sam primio i radost zbog dobra drugoga.",
+        pojasnjenje: "Tuđi darovi i uspjesi su Božji darovi: kad im se divim, u drugome vidim Božju dobrotu, onu istu koja je obdarila i mene. Zavist tuđe dobro — položaj, imetak, darove ili uspjeh drugoga — doživljava kao svoj gubitak: žalostim se zbog njega i želim da ga drugi nema. Idol su joj položaj, status i ono što drugi imaju.\n\nIspod zavisti obično leži duboka nesigurnost u vlastitu vrijednost i sram. Umjesto da se s tim suočim u svom srcu, spuštam one koji imaju ono što meni nedostaje, kao Kajin Abela (Post 4). Iz nje rastu uspoređivanje, ogovaranje, likovanje nad tuđim neuspjehom i nezadovoljstvo vlastitim životom.\n\nLijek je zahvalnost za ono što sam primio i radost zbog dobra drugoga.",
         opis: "Idolatrija statusa, položaja ili onoga što drugi imaju",
         bojaBg: "#4A6B5A",
         bojaLight: "#82A892",
