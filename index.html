@@ -1038,15 +1038,12 @@ function Popup({ ikona, naslov, podnaslov, gumb, onZatvori, children }) {
 
 const odlomci = tekst => tekst.split(/\n\n+/).map((p, i) => <p key={i}><Navodi text={p} bezUpisa/></p>);
 
+// Rane i plodovi grijeha namjerno se ne prikazuju — otkrivaju se u koracima 2 i 3.
 function OpisGrijeha({ sin, odabran, onOdaberi, onZatvori }) {
-  const rane = DATA.raneZaGrijeh[sin.id] || [];
-  const plodovi = (sin.plodovi || []).slice(0, 6);
   return (
     <Popup ikona={sin.ikona} naslov={sin.naziv} podnaslov={`${t('k1.idol')}: ${sin.idolatrija}`} onZatvori={onZatvori}
       gumb={<button type="button" className="btn btn-p" onClick={() => onOdaberi(sin)}>{odabran ? t('k1.odabrano') : t('k1.odaberi')}</button>}>
       <div className="pop-tekst">{odlomci(sin.pojasnjenje)}</div>
-      {rane.length > 0 && <div className="pop-red"><b>{t('k1.rasteIz')}:</b> {rane.map(r => r.naziv).join(' · ')}</div>}
-      {plodovi.length > 0 && <div className="pop-red"><b>{t('k1.plodovi')}:</b> {plodovi.map(p => p.naziv).join(' · ')}…</div>}
     </Popup>
   );
 }

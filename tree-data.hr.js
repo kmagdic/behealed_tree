@@ -63,8 +63,6 @@ window.JEZICI.hr = {
       citat: "\"Svako se stablo poznaje po svom rodu.\"",
       citatIzvor: "— Luka 6,44",
       idol: "Idol",
-      rasteIz: "Raste iz rana",
-      plodovi: "Neki plodovi",
       odaberi: "Odaberi ovaj grijeh",
       odabrano: "Odabrano ✓",
       zatvori: "Zatvori",

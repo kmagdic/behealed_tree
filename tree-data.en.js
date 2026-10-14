@@ -49,8 +49,6 @@ window.JEZICI.en = {
       citat: "\"Every tree is known by its own fruit.\"",
       citatIzvor: "— Luke 6:44",
       idol: "Idol",
-      rasteIz: "Grows from the wounds",
-      plodovi: "Some fruits",
       odaberi: "Choose this sin",
       odabrano: "Chosen ✓",
       zatvori: "Close",
