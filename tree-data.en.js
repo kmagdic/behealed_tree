@@ -56,11 +56,7 @@ window.JEZICI.en = {
       zatvori: "Close",
       dodaj: "Add to tree",
       ukloni: "Remove from tree",
-      citaj: "Read",
-      laz: "Lie",
-      istina: "Truth",
-      istinaTekst: s => `${s}.`,
-      znak: "Sign of healing"
+      citaj: "Read"
     },
 
     k2: {

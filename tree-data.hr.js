@@ -70,11 +70,7 @@ window.JEZICI.hr = {
       zatvori: "Zatvori",
       dodaj: "Dodaj u stablo",
       ukloni: "Ukloni iz stabla",
-      citaj: "Čitaj",
-      laz: "Laž",
-      istina: "Istina",
-      istinaTekst: s => `Priznajem da ${s}.`,
-      znak: "Znak ozdravljenja"
+      citaj: "Čitaj"
     },
 
     k2: {

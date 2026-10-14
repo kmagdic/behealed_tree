@@ -1062,14 +1062,13 @@ function OpisPloda({ plod, odabran, onToggle, onZatvori }) {
   );
 }
 
+// Laž, istina i znak ozdravljenja namjerno se ne prikazuju pri izradi stabla —
+// dolaze tek u molitvama (korisnikov izbor).
 function OpisRane({ rana, odabran, onToggle, onZatvori }) {
   return (
     <Popup naslov={rana.naziv} podnaslov={rana.osjecaj} onZatvori={onZatvori}
       gumb={<button type="button" className="btn btn-p" onClick={() => { onToggle(rana.id); onZatvori(); }}>{odabran ? t('k1.ukloni') : t('k1.dodaj')}</button>}>
       <div className="pop-tekst">{odlomci(rana.opis || rana.pojasnjenje)}</div>
-      {rana.laz && <div className="pop-red"><b>{t('k1.laz')}:</b> „{rana.laz}“</div>}
-      {rana.istinaKratko && <div className="pop-red"><b>{t('k1.istina')}:</b> {t('k1.istinaTekst', rana.istinaKratko)}</div>}
-      {rana.znakIscjeljenja && <div className="pop-red"><b>{t('k1.znak')}:</b> {rana.znakIscjeljenja}{rana.sakrament ? ` · ${rana.sakrament}` : ''}</div>}
     </Popup>
   );
 }
