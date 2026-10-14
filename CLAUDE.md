@@ -295,9 +295,10 @@ Rane, zavjeti, osude i rane iz djetinjstva **zajednički su svim stablima** — 
 
 **Stanje ploče (14.10.2026.):** svih 7 stabala je na ploči redom slijeva nadesno: Stablo 1 Oholost (x −882) … Stablo 7 Lijenost (x 8718), s korakom od 1600. Ispod svakog stabla je okvir „<Grijeh> – tekstovi“ s tablicom plodova i dokumentom. Tablica plodova nije dijete okvira jer je šira od njega, pa se pri premještanju okvira mora premjestiti zasebno. Stabla 1–6 generira `gen.js` iz `tree-data.hr.js`: raspored plodova u luku s provjerom preklapanja i crta, a broj na crti po formuli gore. Pozadinska slika dodaje se s `image_create` (središte 554,662, širina 1000) i zatim ručno šalje u pozadinu (Arrange → Send to back), jer se slika dodana nakon kartica crta iznad njih.
 
+**Kratki opisi plodova** (svih 85, za 7 grijeha) su u `opisi-plodova.hr.json`: `{grijehId: {plodId: {naziv, opis, navod?}}}`, a ključevi su ID-evi iz `tree-data.hr.js`. Opis je u prvom licu i muškom rodu, po obrascu „… Npr. …“. `navod` je odlomak iz Svetog pisma, dodan samo gdje stvarno govori o tom plodu (63 od 85). Na Miru stoji u istoj ćeliji, u zagradi na kraju opisa. Aplikacija ovu datoteku još ne čita. Ako se opisi uvedu u aplikaciju, ide u polje `plodovi[].opis` i treba ih napisati i na engleskom.
+
 **Što od baze još nije na Miru:**
 - **Stabla 2–6**: pozadinska slika je dodana, ali još nije poslana u pozadinu (u Stablu 1 jest).
-- **Kratki opis ploda** (stupac u tablici) je prazan za Oholost, Zavist, Srditost, Bludnost, Neumjerenost i Škrtost, ukupno 74 ploda. Upisan je samo za Lijenost. U `tree-data.hr.js` to polje ne postoji.
 - **Stablo Lijenosti**: crte prema ranama još imaju stare boje (npr. Nemoć `#8fcbc2`, Sram `#e0a8c6`).
 - **Okviri rana i legenda** još imaju stare pastelne boje rana.
 - **`deblo`** (naziv, opis, pitanje) i po grijehu **`korijen`** (`opis`, `primjeri` „Oslanjam se na sebe kada…“).

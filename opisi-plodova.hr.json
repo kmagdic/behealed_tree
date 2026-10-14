@@ -1,0 +1,431 @@
+{
+  "_napomena": "Kratki opisi plodova (prvo lice, muški rod, „… Npr. …“) i navod iz Svetog pisma gdje odgovara. Izvor: Miro ploča HWP Trees, tablice „<Grijeh> – plodovi“. Ključevi su ID-evi iz tree-data.hr.js.",
+  "ponos": {
+    "samopravednost": {
+      "naziv": "Samopravednost",
+      "opis": "Uvjeren sam da sam bolji i ispravniji od drugih pa ne vidim vlastite grijehe. Npr. u svađi uvijek nabrajam tuđe pogreške, a svoje ne spominjem.",
+      "navod": "Lk 18,9-14"
+    },
+    "samoobmana": {
+      "naziv": "Samoobmana",
+      "opis": "Gradim o sebi sliku koja nije istinita i ne dopuštam da je išta uzdrma. Npr. sebi kažem da nemam problem, iako mi ga drugi već dugo pokazuju.",
+      "navod": "1 Iv 1,8"
+    },
+    "samopromocija": {
+      "naziv": "Samopromocija",
+      "opis": "Stalno se trudim da me drugi vide, primijete i cijene. Npr. u razgovoru brzo skrenem na svoje uspjehe ili objavljujem da me netko pohvali.",
+      "navod": "Mt 6,1-4"
+    },
+    "osudjivanje": {
+      "naziv": "Osuđivanje drugih",
+      "opis": "Brzo donosim sud o drugima i gledam ih odozgo. Npr. u sebi komentiram kako se netko oblači, kako odgaja djecu ili kako živi vjeru.",
+      "navod": "Mt 7,1-5"
+    },
+    "kontrola": {
+      "naziv": "Potreba za kontrolom",
+      "opis": "Moram imati sve u svojim rukama jer ne vjerujem da će drugi ili Bog to dobro odraditi. Npr. preuzmem zadatak koji sam dao drugome jer ga radi „krivo“.",
+      "navod": "Izr 3,5-6"
+    },
+    "hvalisanje": {
+      "naziv": "Hvalisanje",
+      "opis": "Pričam o sebi da ispadnem važniji, sposobniji ili pobožniji. Npr. uveličam ono što sam napravio ili usput spomenem koga sve poznajem.",
+      "navod": "1 Kor 4,7"
+    },
+    "netolerantnost": {
+      "naziv": "Netolerantnost",
+      "opis": "Teško podnosim ljude koji misle ili žive drukčije od mene. Npr. izbjegavam ih, prekidam ih ili s njima razgovaram s visine.",
+      "navod": "Rim 15,7"
+    },
+    "perfekcionizam": {
+      "naziv": "Perfekcionizam",
+      "opis": "Sve mora biti savršeno, i ja sam, jer greška znači da ne vrijedim. Npr. satima popravljam sitnice, a dobar rad ne mogu pustiti dok nije „idealan“.",
+      "navod": "2 Kor 12,9"
+    },
+    "kriticizam": {
+      "naziv": "Pretjerani kriticizam",
+      "opis": "Na drugima prvo vidim ono što ne valja i to im kažem. Npr. kod kuće ili na poslu primijetim svaku pogrešku, a rijetko pohvalim.",
+      "navod": "Ef 4,29"
+    },
+    "neprihvacanje_kritike": {
+      "naziv": "Ne prihvaćam kritiku",
+      "opis": "Kritika me pogodi kao napad pa se branim, opravdavam ili uzvraćam. Npr. kad mi netko ukaže na grešku, odmah nabrojim njegove.",
+      "navod": "Izr 12,1"
+    },
+    "usporedivanje": {
+      "naziv": "Stalno se uspoređujem",
+      "opis": "Svoju vrijednost mjerim prema drugima, pa sam ili iznad ili ispod njih. Npr. nakon susreta s prijateljima mislim tko je uspješniji, ljepši ili pametniji.",
+      "navod": "Gal 6,4"
+    },
+    "manipulacija": {
+      "naziv": "Manipulacija drugima",
+      "opis": "Navodim druge da rade ono što ja hoću, a da to izravno ne kažem. Npr. koristim krivnju, laskanje ili šutnju da dobijem svoje.",
+      "navod": "Mt 5,37"
+    },
+    "tvrdoglavost": {
+      "naziv": "Tvrdoglavost/Samovolja",
+      "opis": "Teško popuštam i radim po svome, i kad znam da nisam u pravu. Npr. ne prihvaćam savjet supruge, prijatelja ili ispovjednika jer „znam bolje“.",
+      "navod": "Izr 12,15"
+    },
+    "distanciranost": {
+      "naziv": "Emocionalna distanciranost",
+      "opis": "Držim ljude na udaljenosti da ne vide moju slabost. Npr. ne govorim kako se zapravo osjećam ni najbližima i sve rješavam sam.",
+      "navod": "Jak 5,16"
+    }
+  },
+  "zavist": {
+    "ljubomora": {
+      "naziv": "Ljubomora",
+      "opis": "Bojim se da će mi netko uzeti pažnju ili ljubav koju trebam. Npr. smeta mi kad se netko blizak druži s drugima ili kad drugoga hvale.",
+      "navod": "1 Kor 13,4"
+    },
+    "zlovolja": {
+      "naziv": "Zlovolja prema uspjehu drugih",
+      "opis": "Kad drugome nešto uspije, u meni se javi neugoda, a ne radost. Npr. kolegi čestitam na promaknuću, a u sebi se nadam da neće uspjeti.",
+      "navod": "Rim 12,15"
+    },
+    "ogovaranje": {
+      "naziv": "Ogovaranje",
+      "opis": "Govorim o drugima iza leđa, osobito o onima kojima zavidim. Npr. u društvu prepričavam tuđe pogreške ili sumnjam u to kako je netko nešto stekao.",
+      "navod": "Jak 4,11"
+    },
+    "podrivanje": {
+      "naziv": "Podrivanje/Sabotaža drugih",
+      "opis": "Tiho radim protiv onih koji imaju ono što ja želim. Npr. ne prenesem važnu informaciju kolegi ili prešutim njegovu zaslugu pred šefom.",
+      "navod": "Post 37,3-4"
+    },
+    "nezahvalnost": {
+      "naziv": "Nezahvalnost",
+      "opis": "Vidim ono što nemam, a ne ono što sam primio. Npr. rijetko zahvalim Bogu ili ukućanima, a često se žalim na ono što mi nedostaje.",
+      "navod": "Lk 17,11-19"
+    },
+    "usporedivanje_z": {
+      "naziv": "Opsesivno uspoređivanje",
+      "opis": "Stalno se uspoređujem s drugima i uvijek izgubim. Npr. skrolam tuđe objave i nakon toga se osjećam lošije o svom životu.",
+      "navod": "Iv 21,21-22"
+    },
+    "kopiranje": {
+      "naziv": "Imitiranje tuđeg života",
+      "opis": "Pokušavam živjeti tuđi život umjesto svoga. Npr. kupujem, oblačim se ili biram posao kao netko kome se divim, a ne kao ja.",
+      "navod": "Ps 139,13-14"
+    },
+    "pohlepa_status": {
+      "naziv": "Pohlepa za statusom",
+      "opis": "Želim položaj i ugled da bih se osjećao vrijednim. Npr. mučim se s tim što nisam dobio funkciju ili titulu koju je dobio netko drugi.",
+      "navod": "Mk 10,35-45"
+    },
+    "gorcina_z": {
+      "naziv": "Gorčina prema uspješnima",
+      "opis": "Nosim u sebi gorčinu prema onima kojima ide bolje. Npr. govorim da je netko uspio samo zbog veza ili sreće.",
+      "navod": "Mt 20,1-16"
+    },
+    "umanjivanje": {
+      "naziv": "Umanjivanje tuđih dostignuća",
+      "opis": "Umanjujem tuđi uspjeh da se ja ne bih osjećao manji. Npr. na tuđu pohvalu dodam „nije to ništa posebno“ ili „i ja bih to mogao“.",
+      "navod": "Fil 2,3"
+    },
+    "kompetitivnost": {
+      "naziv": "Nezdrava kompetitivnost",
+      "opis": "Moram biti bolji od drugih, i kad to nije važno. Npr. ne mogu se opustiti u igri ili razgovoru dok ne pobijedim ili ne kažem zadnju riječ.",
+      "navod": "Lk 22,24-27"
+    },
+    "financijska_usporedba": {
+      "naziv": "Uspoređivanje financija/imovine",
+      "opis": "Mjerim se prema onome što drugi imaju. Npr. pratim tko ima veći stan, noviji auto ili bolje ljetovanje i nikad nisam zadovoljan.",
+      "navod": "Heb 13,5"
+    }
+  },
+  "ljutnja": {
+    "samopravednost_l": {
+      "naziv": "Samopravednost",
+      "opis": "Uvjeren sam da imam pravo biti ljut jer su drugi krivi. Npr. ne ispričam se nakon svađe jer je „on počeo“.",
+      "navod": "Lk 15,25-32"
+    },
+    "gorcina": {
+      "naziv": "Gorčina",
+      "opis": "Stara povreda ostaje u meni i truje kako gledam ljude. Npr. godinama se vraćam na ono što mi je netko rekao ili učinio.",
+      "navod": "Heb 12,15"
+    },
+    "ogorcenost": {
+      "naziv": "Ogorčenost",
+      "opis": "Razočaran sam životom, ljudima ili Bogom i to se osjeti u svemu. Npr. na svaki prijedlog odmah kažem što neće valjati."
+    },
+    "depresija": {
+      "naziv": "Depresija",
+      "opis": "Ljutnja koju ne izrazim okrene se protiv mene i postane težina i tuga. Npr. danima sam bezvoljan i ne vidim smisao. Ako to traje, potraži i stručnu pomoć.",
+      "navod": "Ps 42,6"
+    },
+    "pasivna_agresija": {
+      "naziv": "Pasivna agresija",
+      "opis": "Ljutnju ne kažem otvoreno nego je pokažem zaobilazno. Npr. šutim, kasnim, „zaboravim“ ili napravim nešto napola da drugoga kaznim.",
+      "navod": "Ef 4,26"
+    },
+    "tracanje": {
+      "naziv": "Tračanje/Sarkazam",
+      "opis": "Bodem riječima, kroz šalu ili iza leđa. Npr. pred drugima se „u šali“ rugam supruzi, djeci ili kolegi.",
+      "navod": "Jak 3,5-10"
+    },
+    "osveta": {
+      "naziv": "Osvetoljubivost",
+      "opis": "Želim da onaj tko me povrijedio osjeti istu bol. Npr. u sebi smišljam kako da mu vratim ili se radujem kad mu loše krene.",
+      "navod": "Rim 12,19"
+    },
+    "nasilje_verbalno": {
+      "naziv": "Verbalno nasilje",
+      "opis": "U ljutnji vičem, vrijeđam ili ponižavam. Npr. kažem djeci ili supruzi riječi koje kasnije ne mogu vratiti.",
+      "navod": "Kol 3,8"
+    },
+    "izolacija": {
+      "naziv": "Povlačenje/Izolacija",
+      "opis": "Kad sam ljut, povučem se i zatvorim. Npr. danima ne razgovaram s nekim ili izbjegavam obiteljska okupljanja.",
+      "navod": "Mt 5,23-24"
+    },
+    "kontroliranje": {
+      "naziv": "Kontroliranje ponašanja",
+      "opis": "Pokušavam upravljati drugima da se ne bih osjećao nemoćno. Npr. određujem ukućanima kako će raditi, trošiti ili s kim će se družiti."
+    },
+    "emocionalna_hladnoca": {
+      "naziv": "Emocionalna hladnoća",
+      "opis": "Ljutnju skrivam iza hladnoće i udaljenosti. Npr. odgovaram kratko i bez topline pa drugi ne znaju što se sa mnom događa."
+    },
+    "perfekcionizam_l": {
+      "naziv": "Perfekcionizam",
+      "opis": "Ljuti me kad stvari nisu kako treba, i kod mene i kod drugih. Npr. planem zbog nereda, kašnjenja ili sitne greške."
+    },
+    "kriticizam_l": {
+      "naziv": "Oštar kriticizam",
+      "opis": "Moje riječi o drugima su oštre i bez milosrđa. Npr. kritiziram tako da se drugi osjeća poniženo, a ne da mu pomognem.",
+      "navod": "Gal 6,1"
+    },
+    "nestrpljivost": {
+      "naziv": "Kronična nestrpljivost",
+      "opis": "Brzo planem kad nešto ne ide mojim tempom. Npr. nervozan sam u prometu, u redu u trgovini ili kad dijete sporo shvaća.",
+      "navod": "Jak 1,19"
+    },
+    "eksplozivnost": {
+      "naziv": "Eksplozivni ispadi bijesa",
+      "opis": "Ljutnja se nakupi pa izbije naglo i jače nego što stvar zaslužuje. Npr. lupam vratima, bacam stvari ili vičem zbog sitnice.",
+      "navod": "Izr 29,11"
+    }
+  },
+  "pohota": {
+    "bludnost": {
+      "naziv": "Bludnost/Promiskuitet",
+      "opis": "Tražim tjelesnu bliskost izvan predanja i vjernosti braka. Npr. ulazim u kratke veze ili odnose bez obveze.",
+      "navod": "1 Kor 6,18-20"
+    },
+    "pornografija": {
+      "naziv": "Pornografija",
+      "opis": "Gledam seksualne sadržaje da utješim samoću, stres ili prazninu. Npr. kasno navečer, kad sam sam, posežem za mobitelom.",
+      "navod": "Mt 5,28"
+    },
+    "opsesivni_odnosi": {
+      "naziv": "Opsesivni romantični odnosi",
+      "opis": "Vezujem se za osobu tako da bez nje ne mogu disati. Npr. stalno provjeravam poruke i sve podređujem toj vezi."
+    },
+    "masturb": {
+      "naziv": "Kompulzivna masturbacija",
+      "opis": "Posežem za samozadovoljavanjem kao za brzim olakšanjem napetosti ili boli. Npr. nakon teškog dana ili svađe, i kad to ne želim."
+    },
+    "emotionalni_aff": {
+      "naziv": "Emocionalne afere",
+      "opis": "Dijelim srce i intimu s osobom koja nije moj bračni drug. Npr. tajno se dopisujem i povjeravam nekome više nego supruzi.",
+      "navod": "Izr 4,23"
+    },
+    "seksualna_fantazija": {
+      "naziv": "Seksualne fantazije/Maštanje",
+      "opis": "U mislima zamišljam i hranim seksualne slike. Npr. dopuštam da mi misli o nekoj osobi odu dalje nego što bih priznao.",
+      "navod": "Fil 4,8"
+    },
+    "preljub": {
+      "naziv": "Preljub",
+      "opis": "Pogazio sam bračnu vjernost, svoju ili tuđu. Npr. ušao sam u odnos s osobom koja nije moja supruga ili je u braku.",
+      "navod": "Iv 8,1-11"
+    },
+    "manipulacija_p": {
+      "naziv": "Manipulacija u vezama",
+      "opis": "U vezi upravljam drugim da dobijem bliskost ili kontrolu. Npr. koristim ljubomoru, krivnju ili šutnju da se drugi prilagodi meni."
+    },
+    "ovisnost_o_ljubavi": {
+      "naziv": "Ovisnost o ljubavi/odobravanju",
+      "opis": "Trebam tuđu pažnju i potvrdu da bih se osjećao vrijednim. Npr. teško podnosim biti sam i skačem iz veze u vezu.",
+      "navod": "Iv 4,7-18"
+    },
+    "flert": {
+      "naziv": "Pretjerani flert",
+      "opis": "Zavodim pogledom i riječima da osjetim da sam poželjan. Npr. flertam s kolegicom ili na društvenim mrežama iako sam u vezi."
+    },
+    "seks_kao_bijeg": {
+      "naziv": "Seks kao bijeg od boli",
+      "opis": "Koristim seks da ne osjetim tugu, strah ili samoću. Npr. tražim tjelesnu bliskost baš kad mi je najteže, umjesto razgovora.",
+      "navod": "Mt 11,28"
+    },
+    "idolizacija_partnera": {
+      "naziv": "Idolizacija partnera",
+      "opis": "Od voljene osobe očekujem ono što samo Bog može dati. Npr. o njezinu raspoloženju ovisi moj mir i cijeli dan.",
+      "navod": "Jr 2,13"
+    }
+  },
+  "prozdrljivost": {
+    "prejedanje": {
+      "naziv": "Prejedanje",
+      "opis": "Jedem više nego što mi treba, i kad više nisam gladan. Npr. ne mogu stati dok ne pojedem sve što je na stolu.",
+      "navod": "1 Kor 10,31"
+    },
+    "alkoholizam": {
+      "naziv": "Prekomjerno pijenje alkohola",
+      "opis": "Pijem da se opustim, zaboravim ili izdržim. Npr. bez nekoliko pića ne mogu zaspati, opustiti se u društvu ili završiti dan.",
+      "navod": "Ef 5,18"
+    },
+    "droge": {
+      "naziv": "Ovisnost o drogama",
+      "opis": "Posežem za drogom ili lijekovima da pobjegnem od stvarnosti. Npr. uzimam nešto „samo vikendom“ ili tablete bez stvarne potrebe.",
+      "navod": "1 Kor 6,19-20"
+    },
+    "samoindulgencija": {
+      "naziv": "Samoindulgencija",
+      "opis": "Ugađam sebi u svemu i teško podnosim i najmanje odricanje. Npr. ne mogu propustiti ništa što mi pruža užitak, ni u postu.",
+      "navod": "Lk 9,23"
+    },
+    "emocionalno_jedenje": {
+      "naziv": "Emocionalno jedenje",
+      "opis": "Jedem kad sam tužan, ljut ili usamljen, a ne kad sam gladan. Npr. nakon svađe ili teškog dana otvaram hladnjak.",
+      "navod": "Ps 34,9"
+    },
+    "dijete_ciklusi": {
+      "naziv": "Ciklusi dijeta/prejedanja",
+      "opis": "Strogo se ograničavam pa onda popustim i pretjeram. Npr. tjedan dana stroge dijete završi vikendom kad pojedem sve redom."
+    },
+    "bulimija_an": {
+      "naziv": "Poremećaji hranjenja",
+      "opis": "Hrana i tijelo postali su mi izvor tjeskobe i kontrole. Npr. preskačem obroke, izazivam povraćanje ili jedem u tajnosti. Ovdje je važno potražiti i stručnu pomoć.",
+      "navod": "Ps 139,14"
+    },
+    "kava_slatkisi": {
+      "naziv": "Ovisnost o kavi/slatkišima",
+      "opis": "Bez kave ili slatkog ne mogu funkcionirati ni smiriti se. Npr. cijeli dan se tješim čokoladom, kolačima ili kavom za kavom."
+    },
+    "pusenje": {
+      "naziv": "Pušenje/nikotinska ovisnost",
+      "opis": "Cigareta mi je utjeha i bijeg od napetosti. Npr. zapalim čim osjetim stres, iako sam više puta odlučio prestati.",
+      "navod": "1 Kor 6,12"
+    },
+    "ekrani": {
+      "naziv": "Ovisnost o ekranima/internetu",
+      "opis": "Ekran mi ispunjava svaku prazninu i svaki trenutak tišine. Npr. skrolam, igram ili gledam serije dok mi vrijeme i san ne nestanu.",
+      "navod": "Ps 90,12"
+    },
+    "kupovanje": {
+      "naziv": "Kompulzivno kupovanje",
+      "opis": "Kupujem da bih se na trenutak osjećao bolje. Npr. naručujem stvari koje ne trebam pa kasnije osjećam krivnju.",
+      "navod": "Iv 4,13-14"
+    }
+  },
+  "pohlepa": {
+    "skrtost": {
+      "naziv": "Škrtost/Gomilanje",
+      "opis": "Teško mi je dati ili podijeliti; skupljam za svaki slučaj i nikad mi nije dosta. Npr. ne dam ništa za potrebite, a ormari su mi puni stvari koje ne koristim.",
+      "navod": "Lk 12,15-21"
+    },
+    "kradja": {
+      "naziv": "Krađa/Prijevara",
+      "opis": "Uzmem ili prisvojim ono što nije moje, sitno ili krupno, i opravdam to. Npr. prešutim kad mi vrate previše novca ili „posudim“ s posla.",
+      "navod": "Ef 4,28"
+    },
+    "iskoristavanje": {
+      "naziv": "Iskorištavanje drugih",
+      "opis": "Gledam ljude kroz ono što mi mogu donijeti. Npr. družim se s nekim dok mi koristi, a radnike ili ukućane plaćam i hvalim manje nego što zaslužuju.",
+      "navod": "Jak 5,4"
+    },
+    "materijalizm": {
+      "naziv": "Materijalizam",
+      "opis": "Stvari i novac su mi važniji od ljudi i od Boga; sigurnost tražim u onome što imam. Npr. misli mi se stalno vrte oko kupnje, cijena i imovine.",
+      "navod": "Mt 6,19-21"
+    },
+    "workaholic": {
+      "naziv": "Radoholizam radi novca",
+      "opis": "Radim preko svake mjere da zaradim više, a obitelj, odmor i molitva čekaju. Npr. nedjelje i večeri provodim na poslu „jer treba“.",
+      "navod": "Ps 127,2"
+    },
+    "rizik_financ": {
+      "naziv": "Riskantne financijske odluke",
+      "opis": "Ulažem ili se kockam u nadi da ću se brzo obogatiti, i kad to ugrožava obitelj. Npr. kladionice, kriptovalute ili krediti za koje znam da ih teško mogu vratiti.",
+      "navod": "1 Tim 6,9-10"
+    },
+    "laganje_novac": {
+      "naziv": "Laganje o financijama",
+      "opis": "Skrivam ili uljepšavam koliko imam, zarađujem ili trošim. Npr. obitelj ne zna za dug ili račun, a poreznoj prijavim manje.",
+      "navod": "Dj 5,1-11"
+    },
+    "nezdrava_stednja": {
+      "naziv": "Opsesivna štednja/kontrola",
+      "opis": "Svaki trošak me tjeskobno muči pa kontroliram svaki euro, svoj i tuđi. Npr. ukućanima zamjeram svaku kupnju i ne dopuštam si ni nužno.",
+      "navod": "Mt 6,25-34"
+    },
+    "trosenje_ekscesivno": {
+      "naziv": "Ekscesivno trošenje",
+      "opis": "Trošim da ne osjetim prazninu ili tugu, pa kupujem više nego što trebam i mogu. Npr. nakon teškog dana naručujem stvari i kartice su mi u minusu.",
+      "navod": "Lk 15,13"
+    },
+    "statusni_simboli": {
+      "naziv": "Opsesija statusnim simbolima",
+      "opis": "Vrijednost mjerim onim što imam i pokazujem drugima. Npr. auto, sat ili mobitel biram da me drugi cijene, a ne zato što mi trebaju.",
+      "navod": "1 Sam 16,7"
+    }
+  },
+  "ljenost": {
+    "prokrastinacija": {
+      "naziv": "Prokrastinacija",
+      "opis": "Odgađam ono što znam da trebam učiniti, pa me to stalno prati. Npr. važan razgovor ili papiri ostaju „za sutra“.",
+      "navod": "Izr 6,6-11"
+    },
+    "odustajanje": {
+      "naziv": "Lako odustajem",
+      "opis": "Čim nešto postane teško ili ne ide odmah, prestajem. Npr. ostavim vježbanje ili molitvu nakon prvog neuspjeha.",
+      "navod": "Gal 6,9"
+    },
+    "pasivnost": {
+      "naziv": "Pasivnost",
+      "opis": "Čekam da drugi odluče i pokrenu umjesto mene. Npr. u obitelji ili na poslu šutim i puštam da se „riješi samo“.",
+      "navod": "Mt 25,24-30"
+    },
+    "duhovna_mlakost": {
+      "naziv": "Duhovna mlakost",
+      "opis": "Vjera mi je postala navika bez žara; molim rijetko i rastreseno. Npr. misu odradim kao obvezu.",
+      "navod": "Otk 3,15-16"
+    },
+    "izbjegavanje": {
+      "naziv": "Izbjegavanje odgovornosti",
+      "opis": "Izmičem obvezama i posljedicama, krivnju prebacujem na druge ili okolnosti. Npr. „Nisam stigao, nitko mi nije rekao.“",
+      "navod": "Post 3,12"
+    },
+    "ekrani_l": {
+      "naziv": "Gubljenje vremena na ekranima",
+      "opis": "Satima skrolam ili gledam serije da ne osjetim umor ili prazninu. Npr. mobitel u ruci do kasno u noć.",
+      "navod": "Ef 5,15-16"
+    },
+    "zanemarivanje_odnosa": {
+      "naziv": "Zanemarivanje odnosa",
+      "opis": "Ne ulažem trud u bliske ljude; javljam se tek kad moram. Npr. tjednima ne nazovem prijatelja ni roditelje.",
+      "navod": "1 Iv 3,18"
+    },
+    "nedovrsenost": {
+      "naziv": "Nedovršeni projekti",
+      "opis": "Počinjem s oduševljenjem, a ne dovršim. Npr. napola uređena soba ili tečaj koji sam napustio.",
+      "navod": "Lk 14,28-30"
+    },
+    "kasnjenje": {
+      "naziv": "Kronično kašnjenje",
+      "opis": "Stalno kasnim i ne držim se dogovorenog vremena. Npr. na posao, sastanke i misu dolazim zadnji."
+    },
+    "minimalan_napor": {
+      "naziv": "Minimalan napor u svemu",
+      "opis": "Radim samo onoliko koliko moram da me nitko ne prozove. Npr. posao odradim „da prođe“, bez truda.",
+      "navod": "Kol 3,23"
+    },
+    "bijeg_od_tisine": {
+      "naziv": "Bijeg od tišine i refleksije",
+      "opis": "Ne podnosim tišinu pa je stalno punim bukom. Npr. upalim glazbu, vijesti ili mobitel čim ostanem sam.",
+      "navod": "Ps 46,11"
+    }
+  }
+}
