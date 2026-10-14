@@ -293,6 +293,24 @@ Rane, zavjeti, osude i rane iz djetinjstva **zajednički su svim stablima** — 
 - **Tablica za „puno stavki, malo polja“** (plodovi, zavjeti, osude, djetinjstvo), **dokument za „jedna stavka, puno polja“** (grijeh, rana). U dokumentu su naslovi `###` i oznake prije dvotočke u bloku „Ukratko“ ključevi polja — ne mijenjaju se. `molitva` rane se ne uređuje: to je `lazi + "\n\n" + istina`.
 - **Ograničenje Miro tablica:** širinu stupca i prijelom teksta u ćeliji nije moguće postaviti kroz MCP; korisnik ih širi mišem, a klik na red otvara cijeli zapis. Korisnik je odlučio da tablice ostaju.
 
+**Stanje ploče (14.10.2026.):** svih 7 stabala je na ploči redom slijeva nadesno: Stablo 1 Oholost (x −882) … Stablo 7 Lijenost (x 8718), s korakom od 1600. Ispod svakog stabla je okvir „<Grijeh> – tekstovi“ s tablicom plodova i dokumentom. Tablica plodova nije dijete okvira jer je šira od njega, pa se pri premještanju okvira mora premjestiti zasebno. Stabla 1–6 generira `gen.js` iz `tree-data.hr.js`: raspored plodova u luku s provjerom preklapanja i crta, a broj na crti po formuli gore. Pozadinska slika dodaje se s `image_create` (središte 554,662, širina 1000) i zatim ručno šalje u pozadinu (Arrange → Send to back), jer se slika dodana nakon kartica crta iznad njih.
+
+**Što od baze još nije na Miru:**
+- **Stabla 2–6**: pozadinska slika je dodana, ali još nije poslana u pozadinu (u Stablu 1 jest).
+- **Kratki opis ploda** (stupac u tablici) je prazan za Oholost, Zavist, Srditost, Bludnost, Neumjerenost i Škrtost, ukupno 74 ploda. Upisan je samo za Lijenost. U `tree-data.hr.js` to polje ne postoji.
+- **Stablo Lijenosti**: crte prema ranama još imaju stare boje (npr. Nemoć `#8fcbc2`, Sram `#e0a8c6`).
+- **Okviri rana i legenda** još imaju stare pastelne boje rana.
+- **`deblo`** (naziv, opis, pitanje) i po grijehu **`korijen`** (`opis`, `primjeri` „Oslanjam se na sebe kada…“).
+- **`kriveSlikeBoga`** (14 stavki; polje `izvor` se nikad ne prikazuje).
+- **`zeljeSrca`** (7).
+- **`oprost`**: koraci `osoba` (14), `sebe` (10) i `bog` (11), s ključem `molitva`.
+- **`iscjeljenje`** (6 koraka `{naslov, stavke[]}`).
+- **`opceMolitve`**: `lazi`, `osudaOsobe`, `osudaBoga`, `zavjeti`.
+- **`smrtneRane[].istinaKratko`** (za Pečat i blagoslov), **`ikona`**, **`bojaBg`** i **`bojaLight`** grijeha.
+- **Sav engleski** (`tree-data.en.js`) i tekstovi sučelja (`ui`), za koje Miro vjerojatno nije potreban.
+- **Stalni ID-evi** stavki (tihi redak `id:` ili stupac ID), potrebni za uvoz i engleski.
+- **Uvoz** s ploče u `tree-data.hr.js` još nije napisan.
+
 **Engleski (plan):** struktura (brojevi, rane ploda, rane zavjeta) uređuje se samo na hrvatskoj ploči. Engleski ide na zasebnu ploču „HWP Trees – EN“ s istim rasporedom i samo tekstovima iz `tree-data.en.js`, pisanima iz izvornika. Prije toga svaka stavka treba stalni ID (tihi redak `id: …` u dokumentu, stupac ID u tablici), jer se sada stavke prepoznaju po hrvatskom nazivu. Uvoz označava engleske stavke čiji se hrvatski tekst promijenio.
 
 **Rad s pločom:** Claude ostavlja karticu s pločom otvorenu u pregledniku (Brave, Claude in Chrome) radi vizualnih provjera. Canvas Composer traži svjež `data-baseline-hash`; dok korisnik istodobno uređuje isto područje, izmjene se odbijaju — tada pričekati, ne forsirati.
