@@ -33,7 +33,13 @@ html,body{height:100%;background:var(--cream);overflow:hidden;}
 /* Chrome Auto Dark: donju traku (Android 15+) boji pozadina stranice prije tamnjenja — vidi skriptu na kraju <head> */
 html.auto-tamno,html.auto-tamno body{background:#1F1E1A;}
 /* ── CONFIG FLAG (uredi ovdje) ── */
-body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
+body{font-family:'Inter',sans-serif;font-size:0.875rem;color:var(--txt);}
+/* Svi fontovi su u rem (1rem = 16px), pa ovo jedno mjesto skalira sav tekst.
+   Postotak poštuje veličinu slova koju je korisnik namjestio u pregledniku. */
+html{font-size:106.25%;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+/* Na mobitelu jače; polja za pisanje najmanje 16px, inače iOS zumira stranicu pri tipkanju */
+@media(max-width:860px){html{font-size:118.75%;}textarea{font-size:max(0.8125rem,16px);}}
+@media print{html{font-size:100%;}}
 #root{height:100vh;display:flex;flex-direction:column;}
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-thumb{background:var(--bark-l);border-radius:3px;}
@@ -52,19 +58,21 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .hdr-brand>div{min-width:0;overflow:hidden;}
 .hdr-brand>svg{flex-shrink:0;}
 /* Naslov je dug ("Be Healed - Tree of Life"): na uskom zaslonu se skrati, a gumbi i jezik ostaju */
-.hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hdr-sub{font-size:10px;color:var(--light);letter-spacing:.08em;text-transform:uppercase;}
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:1.0625rem;font-weight:500;color:var(--bark-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr-sub{font-size:0.625rem;color:var(--light);letter-spacing:.08em;text-transform:uppercase;}
 .hdr-tree{display:flex;align-items:center;gap:6px;min-width:0;}
-.hdr-tree-name{font-size:11px;font-weight:400;color:var(--light);background:transparent;border:none;outline:none;font-family:'Inter',sans-serif;padding:2px 4px;border-radius:4px;min-width:60px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .15s,color .15s;cursor:text;}
+.hdr-tree-name{font-size:0.6875rem;font-weight:400;color:var(--light);background:transparent;border:none;outline:none;font-family:'Inter',sans-serif;padding:2px 4px;border-radius:4px;min-width:60px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:background .15s,color .15s;cursor:text;}
 @media(max-width:860px){.hdr-tree-name{max-width:140px;}}
 .hdr-tree-name:focus{background:rgba(139,107,74,.08);color:var(--mid);text-overflow:clip;overflow:visible;}
-.hdr-tree-del{width:18px;height:18px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0;}
+.hdr-tree-del{width:18px;height:18px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:0.8125rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;padding:0;}
 .hdr-tree-del:hover,.hdr-tree-del:active{background:rgba(180,60,60,.15);color:#a03030;}
 .hdr-right .btn{white-space:nowrap;}
+/* Na mobitelu je u headeru tijesno: tekst ostaje približno stare veličine, da ime stabla stane */
+@media(max-width:500px){.hdr .hdr-title{font-size:0.9rem;}.hdr .hdr-tree-name{font-size:0.6rem;}.hdr .btn-sm{font-size:0.65rem;}.hdr .jezik button{font-size:0.56rem;}}
 @media(max-width:500px){.hdr{padding:10px 14px;}.hdr-tree-name{max-width:100px;}.hdr-sub{display:none;}.hdr .hdr-right{gap:5px;margin-left:8px;}.hdr-mol-txt,.hdr-btn-txt{display:none;}.hdr .hdr-mol,.hdr .hdr-right .btn-s{padding:5px 7px;}.hdr-tree-name{min-width:0;}}
 .hdr-right{display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:10px;}
 .jezik{display:flex;border:1px solid var(--bark-l);border-radius:14px;overflow:hidden;flex-shrink:0;}
-.jezik button{border:none;background:transparent;color:var(--light);font:500 10.5px 'Inter',sans-serif;letter-spacing:.05em;padding:4px 8px;cursor:pointer;transition:all .15s;}
+.jezik button{border:none;background:transparent;color:var(--light);font:500 0.65625rem 'Inter',sans-serif;letter-spacing:.05em;padding:4px 8px;cursor:pointer;transition:all .15s;}
 .jezik button:hover{color:var(--bark-d);}
 .jezik button.on{background:var(--bark-d);color:#fff;cursor:default;}
 
@@ -76,8 +84,8 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
   .tree-pane{display:flex;height:380px;flex-shrink:0;order:2;transition:height .3s ease;}
   .tree-pane.vel-0{height:220px;}
   .tree-pane.vel-2{height:min(620px,85vh);}
-  .tree-pane.vel-0 .lbl{font-size:9.5px;padding:2px 7px;max-width:90px;}
-  .tree-pane.vel-0 .lbl.sin{font-size:11px;padding:3px 10px;}
+  .tree-pane.vel-0 .lbl{font-size:0.59375rem;padding:2px 7px;max-width:5.625rem;}
+  .tree-pane.vel-0 .lbl.sin{font-size:0.6875rem;padding:3px 10px;}
   .tree-pane.vel-0 .tree-pane-title{padding:10px 18px 4px;}
   .tree-pane .tree-vel{display:flex;}
   .left{order:1;overflow-y:auto;flex:1;}
@@ -114,44 +122,44 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
   transition:opacity .7s ease;
 }
 .tree-pane-inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
-.tree-pane-title{padding:18px 18px 10px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--bark-d);opacity:.65;letter-spacing:.02em;}
+.tree-pane-title{padding:18px 18px 10px;text-align:center;font-family:'Cormorant Garamond',serif;font-size:0.875rem;color:var(--bark-d);opacity:.65;letter-spacing:.02em;}
 
 .tree-overlay{position:relative;flex:1;}
 
 /* Gumbi za veličinu stabla — samo na mobitelu */
 .tree-vel{display:none;position:absolute;top:8px;right:8px;z-index:30;gap:4px;}
-.tree-vel button{width:30px;height:30px;border-radius:50%;border:1px solid var(--bark-l);background:rgba(253,250,246,.9);color:var(--bark-d);font:500 17px/1 'Inter',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+.tree-vel button{width:30px;height:30px;border-radius:50%;border:1px solid var(--bark-l);background:rgba(253,250,246,.9);color:var(--bark-d);font:500 1.0625rem/1 'Inter',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
 .tree-vel button:disabled{opacity:.35;cursor:default;}
 
 /* LABELS */
 .lbl{
   position:absolute;transform:translate(-50%,-50%);
   background:white;border-radius:20px;padding:4px 10px;
-  font-size:11px;font-weight:500;color:var(--txt);
+  font-size:0.6875rem;font-weight:500;color:var(--txt);
   box-shadow:0 2px 10px var(--shd);white-space:nowrap;
-  max-width:120px;overflow:hidden;text-overflow:ellipsis;
+  max-width:7.5rem;overflow:hidden;text-overflow:ellipsis;
   pointer-events:all;z-index:10;border:1.5px solid transparent;
   animation:pop .4s cubic-bezier(.34,1.56,.64,1) both;
   cursor:pointer;
 }
 .lbl:hover{z-index:20;box-shadow:0 4px 16px var(--shd);}
-.lbl.sin{border-color:var(--bark);background:var(--bark);color:white;font-family:'Cormorant Garamond',serif;font-size:13px;padding:5px 14px;cursor:default;}
+.lbl.sin{border-color:var(--bark);background:var(--bark);color:white;font-family:'Cormorant Garamond',serif;font-size:0.8125rem;padding:5px 14px;cursor:default;}
 .lbl.fruit{border-color:var(--leaf);color:#2C5A30;}
-.lbl.fruit.p2{font-size:12.5px;padding:5px 12px;}
-.lbl.fruit.p3{font-size:14px;padding:6px 14px;font-weight:600;}
+.lbl.fruit.p2{font-size:0.78125rem;padding:5px 12px;}
+.lbl.fruit.p3{font-size:0.875rem;padding:6px 14px;font-weight:600;}
 .lbl.wound{border-color:var(--root);color:var(--bark-d);}
-.lbl.wound.p2{font-size:12.5px;padding:5px 12px;}
-.lbl.wound.p3{font-size:14px;padding:6px 14px;font-weight:600;}
+.lbl.wound.p2{font-size:0.78125rem;padding:5px 12px;}
+.lbl.wound.p3{font-size:0.875rem;padding:6px 14px;font-weight:600;}
 .lbl.vow{border-color:var(--gold);color:#5C4010;}
 /* Tooltip popup */
 .lbl-tooltip{
   position:absolute;transform:translate(-50%,-50%);
   background:var(--bark-d);color:white;
   border-radius:10px;padding:8px 12px;
-  font-size:12px;line-height:1.5;
+  font-size:0.75rem;line-height:1.5;
   box-shadow:0 6px 20px var(--shd);
   z-index:50;pointer-events:none;
-  max-width:180px;white-space:normal;text-align:center;
+  max-width:11.25rem;white-space:normal;text-align:center;
   animation:pop .2s ease both;
 }
 .lbl-tooltip::after{
@@ -160,10 +168,10 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
   border-top-color:var(--bark-d);
 }
 @keyframes pop{from{opacity:0;transform:translate(-50%,-50%) scale(.5);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
-.tree-hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--light);text-align:center;font-style:italic;pointer-events:none;width:200px;line-height:1.5;}
+.tree-hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:0.6875rem;color:var(--light);text-align:center;font-style:italic;pointer-events:none;width:200px;line-height:1.5;}
 
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;transition:all .18s ease;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.8125rem;font-weight:500;transition:all .18s ease;}
 .btn:disabled{opacity:.42;cursor:not-allowed;}
 .btn-p{background:var(--bark);color:white;}
 .btn-p:not(:disabled):hover{background:var(--bark-d);transform:translateY(-1px);box-shadow:0 4px 12px var(--shd);}
@@ -171,55 +179,55 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .btn-s:hover{background:rgba(139,107,74,.06);}
 .btn-g{background:transparent;color:var(--mid);padding:7px 11px;}
 .btn-g:hover{color:var(--bark);background:rgba(139,107,74,.06);}
-.btn-sm{padding:5px 11px;font-size:12px;}
-.btn-lg{padding:12px 22px;font-size:14px;}
+.btn-sm{padding:5px 11px;font-size:0.75rem;}
+.btn-lg{padding:12px 22px;font-size:0.875rem;}
 
 /* WELCOME */
 .welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 28px;text-align:center;}
-.w-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,46px);font-weight:300;color:var(--bark-d);line-height:1.15;margin-bottom:14px;}
-.w-desc{font-size:13px;color:var(--mid);line-height:1.7;max-width:380px;margin-bottom:8px;}
+.w-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.75rem,4vw,2.875rem);font-weight:300;color:var(--bark-d);line-height:1.15;margin-bottom:14px;}
+.w-desc{font-size:0.8125rem;color:var(--mid);line-height:1.7;max-width:380px;margin-bottom:8px;}
 .w-verse{background:rgba(139,107,74,.06);border-left:3px solid var(--bark-l);padding:13px 16px;border-radius:0 8px 8px 0;max-width:360px;margin:20px 0 28px;text-align:left;}
-.w-verse p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--mid);line-height:1.6;margin-bottom:3px;}
-.w-verse cite{font-size:10px;color:var(--light);}
+.w-verse p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9375rem;color:var(--mid);line-height:1.6;margin-bottom:3px;}
+.w-verse cite{font-size:0.625rem;color:var(--light);}
 .w-actions{display:flex;flex-direction:column;gap:9px;width:100%;max-width:290px;}
 /* Molitve na početnoj: kartica, ne gumb — jasno istaknuta, a stablo ostaje glavna radnja */
 .w-mol{display:flex;align-items:center;gap:12px;width:100%;margin-top:6px;padding:12px 14px;background:linear-gradient(135deg,#FBF5E8,#F5EAD3);border:1.5px solid var(--gold-l);border-radius:10px;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:all .18s ease;}
 .w-mol:hover{border-color:var(--gold);box-shadow:0 3px 14px rgba(196,154,60,.2);transform:translateY(-1px);}
 .w-mol-ico{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.w-mol-t{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--bark-d);line-height:1.15;}
-.w-mol-chev{margin-left:auto;color:var(--gold);font-size:22px;line-height:1;}
+.w-mol-t{font-family:'Cormorant Garamond',serif;font-size:1.125rem;font-weight:600;color:var(--bark-d);line-height:1.15;}
+.w-mol-chev{margin-left:auto;color:var(--gold);font-size:1.375rem;line-height:1;}
 .hdr .hdr-mol{color:var(--gold);font-weight:600;}
 .hdr .hdr-mol:hover{color:#A57F2C;background:rgba(196,154,60,.1);}
 .w-install{margin-top:18px;width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;}
-.w-help{margin-top:10px;background:rgba(139,107,74,.06);border:1px solid rgba(139,107,74,.14);border-radius:8px;padding:14px 16px;text-align:left;font-size:12.5px;color:var(--mid);line-height:1.6;}
-.w-help h4{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);margin-bottom:6px;}
+.w-help{margin-top:10px;background:rgba(139,107,74,.06);border:1px solid rgba(139,107,74,.14);border-radius:8px;padding:14px 16px;text-align:left;font-size:0.78125rem;color:var(--mid);line-height:1.6;}
+.w-help h4{font-family:'Cormorant Garamond',serif;font-size:1.0625rem;font-weight:500;color:var(--bark-d);margin-bottom:6px;}
 .w-help p+p{margin-top:5px;}
 .w-help strong{color:var(--bark);font-weight:600;}
 
 /* TREES LIST */
 .trees-wrap{padding:26px 26px 36px;}
 .s-head{margin-bottom:22px;}
-.s-head h2{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;color:var(--bark-d);margin-bottom:5px;}
-.s-head p{font-size:13px;color:var(--mid);line-height:1.5;}
+.s-head h2{font-family:'Cormorant Garamond',serif;font-size:1.6875rem;font-weight:400;color:var(--bark-d);margin-bottom:5px;}
+.s-head p{font-size:0.8125rem;color:var(--mid);line-height:1.5;}
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
 .tcard{background:white;border-radius:11px;padding:15px;cursor:pointer;border:2px solid transparent;box-shadow:0 2px 8px var(--sh);transition:all .2s ease;position:relative;overflow:hidden;}
 .tcard:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shd);border-color:var(--bark-l);}
 .tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cc,var(--bark));}
-.tcard-icon{font-size:22px;margin-bottom:7px;}
-.tcard-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);margin-bottom:3px;}
-.tcard-status{font-size:11px;color:var(--light);margin-bottom:9px;}
+.tcard-icon{font-size:1.375rem;margin-bottom:7px;}
+.tcard-name{font-family:'Cormorant Garamond',serif;font-size:1.0625rem;font-weight:500;color:var(--bark-d);margin-bottom:3px;}
+.tcard-status{font-size:0.6875rem;color:var(--light);margin-bottom:9px;}
 .tcard-prog{height:3px;background:var(--cream);border-radius:2px;overflow:hidden;}
 .tcard-fill{height:100%;border-radius:2px;transition:width .4s ease;}
 .tcard-add{background:rgba(139,107,74,.04);border:2px dashed var(--bark-l);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:100px;color:var(--bark);cursor:pointer;}
 .tcard-add:hover{background:rgba(139,107,74,.08);border-color:var(--bark);}
-.tcard-add span{font-size:11px;font-weight:500;}
+.tcard-add span{font-size:0.6875rem;font-weight:500;}
 .tcard-akcije{position:absolute;top:7px;right:7px;display:flex;align-items:center;gap:2px;}
-.tcard-del,.tcard-zvj,.tcard-hvat{width:22px;height:22px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.tcard-del,.tcard-zvj,.tcard-hvat{width:22px;height:22px;border-radius:50%;border:none;background:rgba(139,107,74,.08);color:var(--light);font-size:0.875rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tcard-del:hover,.tcard-del:active{background:rgba(180,60,60,.15);color:#a03030;}
-.tcard-zvj,.tcard-hvat{border-radius:6px;border:none;background:none;color:var(--bark-l);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:color .15s,opacity .15s,transform .15s;}
+.tcard-zvj,.tcard-hvat{border-radius:6px;border:none;background:none;color:var(--bark-l);font-size:1rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:color .15s,opacity .15s,transform .15s;}
 .tcard-zvj:hover{color:var(--gold);transform:scale(1.12);}
 .tcard-zvj.on{color:var(--gold);}
-.tcard-hvat{cursor:grab;touch-action:none;font-size:15px;letter-spacing:-1px;}
+.tcard-hvat{cursor:grab;touch-action:none;font-size:0.9375rem;letter-spacing:-1px;}
 .tcard-hvat:hover{color:var(--bark);}
 /* Na računalu se prazna zvjezdica i hvataljka pojave tek na hover — kartica ostaje mirna. */
 @media(hover:hover){.tcard-hvat,.tcard-zvj:not(.on){opacity:0;}.tcard:hover .tcard-hvat,.tcard:hover .tcard-zvj,.tcard-akcije :focus-visible{opacity:1;}}
@@ -228,7 +236,7 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .tgrid.vuce-se,.tgrid.vuce-se *{cursor:grabbing!important;}
 .tgrid.vuce-se .tcard:hover{transform:none;}
 .tcard.vuce{transform:scale(1.03)!important;box-shadow:0 10px 28px var(--shd);border-color:var(--gold);opacity:.92;z-index:2;}
-.s-head .stabla-savjet{font-size:11.5px;color:var(--light);margin-top:4px;}
+.s-head .stabla-savjet{font-size:0.71875rem;color:var(--light);margin-top:4px;}
 
 /* GUIDED */
 .guided{flex:1;display:flex;flex-direction:column;}
@@ -238,11 +246,11 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .si.klik:hover .sdot,.si.klik:focus-visible .sdot{box-shadow:0 0 0 3px rgba(196,154,60,.35);}
 .si.klik:hover .slbl,.si.klik:focus-visible .slbl{color:var(--bark-d);}
 .si:focus-visible{outline:none;}
-.sdot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all .3s;}
+.sdot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.625rem;font-weight:700;transition:all .3s;}
 .sdot.done{background:var(--bark);color:white;}
 .sdot.active{background:var(--bark-d);color:white;box-shadow:0 0 0 3px rgba(139,107,74,.2);}
 .sdot.fut{background:white;color:var(--light);border:1.5px solid var(--bark-l);}
-.slbl{font-size:9px;color:var(--light);white-space:nowrap;}
+.slbl{font-size:0.5625rem;color:var(--light);white-space:nowrap;}
 .sline{flex:1;height:2px;background:var(--bark-l);opacity:.35;margin-bottom:14px;}
 .sline.done{opacity:1;background:var(--bark);}
 
@@ -250,17 +258,17 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .anim{animation:slideIn .3s ease both;}
 @keyframes slideIn{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-.ime-stabla{display:block;width:100%;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;line-height:1.2;color:var(--bark-d);background:transparent;border:none;border-bottom:1.5px dashed transparent;border-radius:0;outline:none;padding:2px 0 4px;margin-bottom:9px;cursor:text;transition:border-color .15s;text-overflow:ellipsis;}
+.ime-stabla{display:block;width:100%;font-family:'Cormorant Garamond',serif;font-size:1.875rem;font-weight:500;line-height:1.2;color:var(--bark-d);background:transparent;border:none;border-bottom:1.5px dashed transparent;border-radius:0;outline:none;padding:2px 0 4px;margin-bottom:9px;cursor:text;transition:border-color .15s;text-overflow:ellipsis;}
 .ime-stabla:hover{border-bottom-color:var(--bark-l);}
 .ime-stabla:focus{border-bottom-color:var(--gold);text-overflow:clip;}
 .ime-stabla::placeholder{color:var(--bark-l);}
-@media(max-width:500px){.ime-stabla{font-size:26px;}}
-.eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bark-l);margin-bottom:5px;}
-.stitle{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;color:var(--bark-d);margin-bottom:9px;line-height:1.25;}
-.sbody{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px;}
+@media(max-width:500px){.ime-stabla{font-size:1.625rem;}}
+.eyebrow{font-size:0.625rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bark-l);margin-bottom:5px;}
+.stitle{font-family:'Cormorant Garamond',serif;font-size:1.4375rem;font-weight:500;color:var(--bark-d);margin-bottom:9px;line-height:1.25;}
+.sbody{font-size:0.8125rem;color:var(--mid);line-height:1.7;margin-bottom:16px;}
 .scripture{background:var(--cream);border-left:3px solid var(--gold-l);padding:11px 15px;border-radius:0 8px 8px 0;margin-bottom:16px;}
-.scripture p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:3px;}
-.scripture cite{font-size:10px;color:var(--light);}
+.scripture p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.875rem;color:var(--mid);line-height:1.6;margin-bottom:3px;}
+.scripture cite{font-size:0.625rem;color:var(--light);}
 
 .sfooter{padding:13px 24px 18px;border-top:1px solid rgba(139,107,74,.1);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:var(--warm);}
 
@@ -269,26 +277,26 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .sopt{padding:11px 9px;border-radius:9px;border:2px solid transparent;background:var(--cream);cursor:pointer;transition:all .18s;text-align:center;}
 .sopt:hover{border-color:var(--bark-l);background:white;transform:translateY(-1px);box-shadow:0 3px 10px var(--sh);}
 .sopt.sel{border-color:var(--bark);background:white;box-shadow:0 3px 14px var(--shd);}
-.sopt-ico{font-size:19px;margin-bottom:4px;}
-.sopt-n{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--bark-d);margin-bottom:1px;}
-.sopt-s{font-size:10px;color:var(--light);}
+.sopt-ico{font-size:1.1875rem;margin-bottom:4px;}
+.sopt-n{font-family:'Cormorant Garamond',serif;font-size:0.875rem;font-weight:500;color:var(--bark-d);margin-bottom:1px;}
+.sopt-s{font-size:0.625rem;color:var(--light);}
 .sopt{position:relative;}
-.sopt-opis{position:absolute;top:2px;right:2px;padding:5px 7px;border:0;background:none;font-size:13px;line-height:1;color:var(--root);opacity:.4;cursor:pointer;border-radius:50%;transition:opacity .15s;}
+.sopt-opis{position:absolute;top:2px;right:2px;padding:5px 7px;border:0;background:none;font-size:0.8125rem;line-height:1;color:var(--root);opacity:.4;cursor:pointer;border-radius:50%;transition:opacity .15s;}
 .sopt-opis:hover,.sopt-opis:focus-visible{color:var(--bark-d);opacity:1;}
-.chip-info{border:0;background:none;padding:2px 0 2px 2px;margin:-2px -4px -2px 0;font-size:10px;line-height:1;color:inherit;opacity:.28;cursor:pointer;transition:opacity .15s;}
+.chip-info{border:0;background:none;padding:2px 0 2px 2px;margin:-2px -4px -2px 0;font-size:0.625rem;line-height:1;color:inherit;opacity:.28;cursor:pointer;transition:opacity .15s;}
 .chip-info:hover,.chip-info:focus-visible{opacity:1;}
 @media(hover:none){.chip-info{padding:6px 4px 6px 6px;margin:-6px -8px -6px -2px;}}
 
 /* POPUP — opis grijeha u koraku 1 */
 .pop-pozadina{position:fixed;inset:0;z-index:1000;background:rgba(44,31,20,.42);display:flex;align-items:center;justify-content:center;padding:16px;}
 .pop{position:relative;background:var(--warm);border-radius:14px;max-width:540px;width:100%;max-height:86vh;overflow:auto;padding:26px 24px 18px;box-shadow:0 12px 40px rgba(44,31,20,.28);outline:none;}
-.pop-x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:24px;line-height:1;color:var(--mid);cursor:pointer;padding:4px 8px;}
-.pop-ico{font-size:26px;text-align:center;}
-.pop-naslov{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--bark-d);text-align:center;margin:2px 0 2px;}
-.pop-idol{text-align:center;font-size:12px;color:var(--mid);margin-bottom:14px;}
+.pop-x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:1.5rem;line-height:1;color:var(--mid);cursor:pointer;padding:4px 8px;}
+.pop-ico{font-size:1.625rem;text-align:center;}
+.pop-naslov{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--bark-d);text-align:center;margin:2px 0 2px;}
+.pop-idol{text-align:center;font-size:0.75rem;color:var(--mid);margin-bottom:14px;}
 .pop-naslov + .pop-tekst{margin-top:12px;}
-.pop-tekst p{font-size:13.5px;line-height:1.6;color:var(--txt);margin:0 0 10px;}
-.pop-red{font-size:12px;color:var(--mid);margin-top:6px;line-height:1.5;}
+.pop-tekst p{font-size:0.84375rem;line-height:1.6;color:var(--txt);margin:0 0 10px;}
+.pop-red{font-size:0.75rem;color:var(--mid);margin-top:6px;line-height:1.5;}
 .pop-red b{color:var(--bark-d);font-weight:600;}
 .pop-gumbi{display:flex;justify-content:space-between;gap:10px;margin-top:18px;}
 @media print{.pop-pozadina{display:none!important;}}
@@ -299,20 +307,20 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
   display:inline-flex;align-items:center;gap:5px;
   padding:5px 11px;border-radius:20px;
   border:1.5px solid var(--bark-l);background:white;
-  font-size:12px;color:var(--mid);cursor:pointer;
+  font-size:0.75rem;color:var(--mid);cursor:pointer;
   transition:all .18s ease;position:relative;
   user-select:none;
 }
 .chip:hover{border-color:var(--bark);color:var(--bark);}
 .chip.sel{background:var(--bark);color:white;border-color:var(--bark);}
 .chip.sug{border-color:var(--gold);background:rgba(196,154,60,.07);}
-.chip.sug::before{content:'✦';font-size:8px;color:var(--gold);}
+.chip.sug::before{content:'✦';font-size:0.5rem;color:var(--gold);}
 .chip.sel.sug{background:var(--bark);border-color:var(--bark);}
 .chip.sel.sug::before{color:rgba(255,255,255,.6);}
 
 /* PRIORITY SIZE VARIANTS */
-.chip.p2{font-size:13px;padding:6px 13px;}
-.chip.p3{font-size:15px;padding:8px 16px;font-weight:600;border-width:2px;}
+.chip.p2{font-size:0.8125rem;padding:6px 13px;}
+.chip.p3{font-size:0.9375rem;padding:8px 16px;font-weight:600;border-width:2px;}
 .chip.sel.p2{transform:scale(1.02);}
 .chip.sel.p3{transform:scale(1.04);box-shadow:0 3px 12px var(--shd);}
 
@@ -328,7 +336,7 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 /* Priority toggle */
 .prio-toggle{
   display:inline-flex;align-items:center;gap:3px;
-  font-size:10px;color:var(--light);cursor:pointer;
+  font-size:0.625rem;color:var(--light);cursor:pointer;
   padding:2px 6px;border-radius:10px;
   transition:all .15s;
   background:rgba(139,107,74,.06);
@@ -337,65 +345,65 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 }
 .prio-toggle:hover{background:rgba(139,107,74,.14);color:var(--bark);}
 
-.suggest-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:4px;}
-.more-tag{font-size:10px;color:var(--light);margin:10px 0 6px;letter-spacing:.03em;}
+.suggest-tag{font-size:0.625rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:4px;}
+.more-tag{font-size:0.625rem;color:var(--light);margin:10px 0 6px;letter-spacing:.03em;}
 .divider{height:1px;background:rgba(139,107,74,.1);margin:16px 0;}
 
 /* FIELDS */
 .field{margin-bottom:14px;}
-.flabel{display:block;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);margin-bottom:5px;}
-textarea,input[type="text"]{width:100%;padding:9px 12px;border:1.5px solid rgba(139,107,74,.22);border-radius:8px;background:white;font-family:'Inter',sans-serif;font-size:13px;color:var(--txt);resize:vertical;line-height:1.5;transition:border-color .2s;}
+.flabel{display:block;font-size:0.6875rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);margin-bottom:5px;}
+textarea,input[type="text"]{width:100%;padding:9px 12px;border:1.5px solid rgba(139,107,74,.22);border-radius:8px;background:white;font-family:'Inter',sans-serif;font-size:0.8125rem;color:var(--txt);resize:vertical;line-height:1.5;transition:border-color .2s;}
 textarea:focus,input:focus{outline:none;border-color:var(--bark);box-shadow:0 0 0 3px rgba(139,107,74,.1);}
 textarea::placeholder,input::placeholder{color:var(--light);}
 
 /* WOUND REVEAL */
 .wlies{margin-top:14px;}
 .wlie{background:rgba(176,160,144,.1);border-radius:8px;padding:9px 12px;margin-bottom:7px;}
-.wlie-n{font-weight:600;font-size:12px;color:var(--bark-d);margin-bottom:2px;}
-.wlie-t{font-style:italic;font-size:12px;color:var(--mid);line-height:1.5;}
+.wlie-n{font-weight:600;font-size:0.75rem;color:var(--bark-d);margin-bottom:2px;}
+.wlie-t{font-style:italic;font-size:0.75rem;color:var(--mid);line-height:1.5;}
 
 /* AI PANEL */
 
 /* SUMMARY */
 .sum-block{margin-bottom:20px;}
-.sum-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:500;color:var(--bark-d);margin-bottom:11px;padding-bottom:6px;border-bottom:1px solid rgba(139,107,74,.12);}
+.sum-title{font-family:'Cormorant Garamond',serif;font-size:1.1875rem;font-weight:500;color:var(--bark-d);margin-bottom:11px;padding-bottom:6px;border-bottom:1px solid rgba(139,107,74,.12);}
 
 /* PRAYER */
 .prayer-wrap{padding:22px 24px 36px;}
 .p-banner{background:linear-gradient(135deg,#F2EAE0,#E8DDD0);border:1px solid var(--bark-l);border-radius:13px;padding:20px;text-align:center;margin-bottom:22px;}
-.p-banner h2{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:400;color:var(--bark-d);margin-bottom:5px;}
-.p-banner p{font-size:13px;color:var(--mid);}
+.p-banner h2{font-family:'Cormorant Garamond',serif;font-size:1.5625rem;font-weight:400;color:var(--bark-d);margin-bottom:5px;}
+.p-banner p{font-size:0.8125rem;color:var(--mid);}
 .pcard{background:white;border-radius:11px;padding:20px;box-shadow:0 2px 12px var(--sh);margin-bottom:14px;}
 .pcard-head{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
-.fico{width:30px;height:30px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.pcard-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--bark-d);}
-.ptext{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;line-height:1.85;color:var(--mid);white-space:pre-wrap;}
-.pcard-sub{font-size:12px;color:var(--mid);font-style:italic;margin-top:2px;line-height:1.4;}
+.fico{width:30px;height:30px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:0.8125rem;flex-shrink:0;}
+.pcard-title{font-family:'Cormorant Garamond',serif;font-size:1.125rem;font-weight:500;color:var(--bark-d);}
+.ptext{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9375rem;line-height:1.85;color:var(--mid);white-space:pre-wrap;}
+.pcard-sub{font-size:0.75rem;color:var(--mid);font-style:italic;margin-top:2px;line-height:1.4;}
 .pcard-desno{margin-left:auto;display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .pcard.oznacena{box-shadow:0 0 0 1.5px var(--gold-l),0 2px 12px var(--sh);}
 .pcard.istaknuto{animation:isticanje 1.8s ease;}
 @keyframes isticanje{0%,30%{box-shadow:0 0 0 3px var(--gold),0 2px 12px var(--sh);}100%{box-shadow:0 2px 12px var(--sh);}}
 /* Zvjezdica: označi molitvu koja ti je važna */
-.zvj{background:none;border:none;cursor:pointer;font-size:19px;line-height:1;color:var(--bark-l);padding:2px 4px;border-radius:6px;transition:color .15s,transform .15s;}
+.zvj{background:none;border:none;cursor:pointer;font-size:1.1875rem;line-height:1;color:var(--bark-l);padding:2px 4px;border-radius:6px;transition:color .15s,transform .15s;}
 .zvj:hover{color:var(--gold);transform:scale(1.12);}
 .zvj.on{color:var(--gold);}
-.umetak .zvj{font-size:15px;vertical-align:-1px;}
+.umetak .zvj{font-size:0.9375rem;vertical-align:-1px;}
 /* Krjepost / znak iscjeljenja ispod molitve */
 /* Dodatak ispod molitve: zatvoren je samo sitan, prigušen natpis; okvir se pojavi kad se otvori */
-.mol-dodatak{margin-top:12px;font-size:13px;color:var(--txt);line-height:1.5;}
+.mol-dodatak{margin-top:12px;font-size:0.8125rem;color:var(--txt);line-height:1.5;}
 .mol-dodatak>details.znak[open]{padding:8px 12px;background:rgba(122,158,126,.1);border-radius:8px;}
-.mol-dod-ozn{font:600 9.5px 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);margin-right:4px;}
-.mol-dod-sak{color:var(--mid);font-size:12px;}
+.mol-dod-ozn{font:600 0.59375rem 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);margin-right:4px;}
+.mol-dod-sak{color:var(--mid);font-size:0.75rem;}
 details.isus{margin-top:6px;}
-details.isus>summary{display:inline-block;cursor:pointer;list-style:none;font-size:12px;font-weight:500;color:var(--bark);}
+details.isus>summary{display:inline-block;cursor:pointer;list-style:none;font-size:0.75rem;font-weight:500;color:var(--bark);}
 details.isus>summary::-webkit-details-marker{display:none;}
 /* Razmak prije › mora biti margin — razmak u content se u inline-blocku briše */
 details.isus>summary::after{content:'›';margin-left:5px;color:var(--gold);display:inline-block;transition:transform .2s;}
 details.isus[open]>summary::after{transform:rotate(90deg);}
-details.isus p{margin-top:6px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.55;color:var(--mid);}
+details.isus p{margin-top:6px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;line-height:1.55;color:var(--mid);}
 .mol-natrag{text-align:right;margin-top:8px;}
 /* Povratak na sažetak: samo mala strelica u krugu, gotovo nevidljiva dok se ne dotakne */
-.mol-natrag button{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;padding:0;border:1px solid var(--bark-l);border-radius:50%;background:none;font-size:10px;line-height:1;color:var(--bark-l);opacity:.45;cursor:pointer;transition:all .15s;}
+.mol-natrag button{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;padding:0;border:1px solid var(--bark-l);border-radius:50%;background:none;font-size:0.625rem;line-height:1;color:var(--bark-l);opacity:.45;cursor:pointer;transition:all .15s;}
 .mol-natrag button:hover,.mol-natrag button:focus-visible{opacity:1;color:var(--gold);border-color:var(--gold);outline:none;}
 /* Red sažetka koji vodi na molitvu */
 .mol-vodi{cursor:pointer;border-radius:6px;transition:background .15s;}
@@ -404,10 +412,10 @@ details.isus p{margin-top:6px;font-family:'Cormorant Garamond',serif;font-style:
 span.mol-vodi{padding:0 3px;margin:0 -3px;text-decoration:underline dotted var(--bark-l);text-underline-offset:3px;}
 /* Strelica ↓ jasno kaže da klik vodi dolje na molitvu */
 /* Strelica u malom krugu — tiha dok se red ne dotakne */
-span.mol-vodi::after{content:'↓';display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;margin-left:5px;border:1px solid var(--bark-l);border-radius:50%;font-size:9px;font-weight:400;color:var(--bark-l);vertical-align:1px;opacity:.75;transition:all .15s;}
+span.mol-vodi::after{content:'↓';display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;margin-left:5px;border:1px solid var(--bark-l);border-radius:50%;font-size:0.5625rem;font-weight:400;color:var(--bark-l);vertical-align:1px;opacity:.75;transition:all .15s;}
 span.mol-vodi:hover::after{color:var(--gold);border-color:var(--gold);opacity:1;}
 .mol-tablica td.mol-ide{width:1%;padding:7px 6px 7px 8px;text-align:right;vertical-align:middle;}
-.mol-tablica td.mol-ide span{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid var(--bark-l);border-radius:50%;font-size:10px;line-height:1;color:var(--bark-l);opacity:.7;transition:all .15s;}
+.mol-tablica td.mol-ide span{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid var(--bark-l);border-radius:50%;font-size:0.625rem;line-height:1;color:var(--bark-l);opacity:.7;transition:all .15s;}
 .mol-vodi:hover td.mol-ide span,.mol-vodi:focus-visible td.mol-ide span{color:var(--gold);border-color:var(--gold);opacity:1;transform:translateY(1px);}
 /* Ikona i naziv grijeha ostaju u istom redu i na uskom zaslonu */
 .ikona-naziv{display:flex;gap:6px;align-items:baseline;}
@@ -417,14 +425,14 @@ span.mol-vodi:hover::after{color:var(--gold);border-color:var(--gold);opacity:1;
 @keyframes pojava{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 .mol-toc button.skriveno{opacity:.5;border-style:dashed;}
 .mol-dalje-red{display:flex;flex-direction:column;align-items:center;gap:8px;margin:22px 0 4px;}
-.mol-dalje{font:600 13px 'Inter',sans-serif;color:#fff;background:var(--bark);border:none;border-radius:22px;padding:11px 22px;cursor:pointer;box-shadow:0 2px 10px rgba(92,64,48,.2);transition:all .18s;}
+.mol-dalje{font:600 0.8125rem 'Inter',sans-serif;color:#fff;background:var(--bark);border:none;border-radius:22px;padding:11px 22px;cursor:pointer;box-shadow:0 2px 10px rgba(92,64,48,.2);transition:all .18s;}
 .mol-dalje:hover{background:var(--bark-d);transform:translateY(-1px);}
-.mol-dalje-red .mol-poveznica{font-size:11.5px;color:var(--light);}
+.mol-dalje-red .mol-poveznica{font-size:0.71875rem;color:var(--light);}
 /* Označene molitve: samo poveznice na vrhu molitvenika */
 .mol-moje{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;margin:6px 0 4px;}
-.mol-moje-ozn{font:600 10px 'Inter',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
-.mol-moje-prazno{font-size:11.5px;color:var(--light);font-style:italic;}
-.mol-moje button{font:500 11.5px 'Inter',sans-serif;color:var(--bark-d);background:#FBF5E8;border:1px solid var(--gold-l);border-radius:20px;padding:4px 11px;cursor:pointer;}
+.mol-moje-ozn{font:600 0.625rem 'Inter',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+.mol-moje-prazno{font-size:0.71875rem;color:var(--light);font-style:italic;}
+.mol-moje button{font:500 0.71875rem 'Inter',sans-serif;color:var(--bark-d);background:#FBF5E8;border:1px solid var(--gold-l);border-radius:20px;padding:4px 11px;cursor:pointer;}
 .mol-moje button::before{content:'★ ';color:var(--gold);}
 .mol-moje button:hover{border-color:var(--gold);}
 .umetak.istaknuto{animation:isticanjeUmetka 1.8s ease;border-radius:6px;}
@@ -441,23 +449,23 @@ details.mol-korak>summary{cursor:pointer;list-style:none;font-weight:600;color:v
 details.mol-korak>summary::-webkit-details-marker{display:none;}
 details.mol-korak>summary::after{content:'›';margin-left:6px;color:var(--gold);display:inline-block;transition:transform .2s;}
 details.mol-korak[open]>summary::after{transform:rotate(90deg);}
-details.isus blockquote{margin:6px 0 0;padding-left:10px;border-left:2px solid var(--gold-l);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16.5px;line-height:1.5;color:var(--txt);}
-details.znak>summary,details.znak details.isus>summary{color:var(--light);font-size:10px;font-weight:400;opacity:.6;transition:color .15s,opacity .15s;}
+details.isus blockquote{margin:6px 0 0;padding-left:10px;border-left:2px solid var(--gold-l);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.03125rem;line-height:1.5;color:var(--txt);}
+details.znak>summary,details.znak details.isus>summary{color:var(--light);font-size:0.625rem;font-weight:400;opacity:.6;transition:color .15s,opacity .15s;}
 details.znak>summary:hover,details.znak details.isus>summary:hover{color:var(--leaf);opacity:1;}
 details.znak[open]>summary{color:var(--leaf);opacity:1;}
 details.znak details.isus[open]>summary{color:var(--bark);opacity:1;}
 details.znak>summary::after,details.znak details.isus>summary::after{color:var(--bark-l);}
-details.isus .znak-tekst{margin-top:4px;font:400 12px/1.45 'Inter',sans-serif;font-style:normal;color:#2C5A30;}
-details.isus .znak-sak{margin-top:3px;font:400 12px/1.45 'Inter',sans-serif;font-style:normal;color:var(--bark);}
+details.isus .znak-tekst{margin-top:4px;font:400 0.75rem/1.45 'Inter',sans-serif;font-style:normal;color:#2C5A30;}
+details.isus .znak-sak{margin-top:3px;font:400 0.75rem/1.45 'Inter',sans-serif;font-style:normal;color:var(--bark);}
 .znak-sak strong{font-weight:600;}
 details.opis-grijeha{margin:-4px 0 12px;}
 details.opis-grijeha[open]{padding:8px 12px;background:rgba(196,154,60,.07);border-radius:8px;}
 details.opis-grijeha[open]>summary{color:var(--bark);}
 /* Poveznice grijeh ↔ rana: običan sitan tekst, bez gumba i strelica */
-details.isus .opis-veze{margin-top:9px;font:400 10.5px/1.6 'Inter',sans-serif;color:var(--light);}
+details.isus .opis-veze{margin-top:9px;font:400 0.65625rem/1.6 'Inter',sans-serif;color:var(--light);}
 .opis-veza{background:none;border:none;padding:0;font:inherit;color:var(--mid);text-decoration:underline dotted var(--bark-l);text-underline-offset:2px;cursor:pointer;transition:color .15s;}
 .opis-veza:hover,.opis-veza:focus-visible{color:var(--gold);outline:none;}
-details.isus .opis-tekst p{margin-top:7px;font:400 13.5px/1.6 'Inter',sans-serif;font-style:normal;color:var(--txt);}
+details.isus .opis-tekst p{margin-top:7px;font:400 0.84375rem/1.6 'Inter',sans-serif;font-style:normal;color:var(--txt);}
 .mol-tablica details.znak{margin-top:2px;}
 .print-only{display:none;}
 
@@ -472,7 +480,7 @@ details.isus .opis-tekst p{margin-top:7px;font:400 13.5px/1.6 'Inter',sans-serif
 .mol-toc::-webkit-scrollbar{display:none;}
 .mol-toc button:first-child{margin-left:auto;}
 .mol-toc button:last-child{margin-right:auto;}
-.mol-toc button{flex-shrink:0;white-space:nowrap;font:500 11px 'Inter',sans-serif;color:var(--mid);background:transparent;border:1px solid rgba(196,168,130,.55);border-radius:20px;padding:4px 8px;cursor:pointer;transition:all .15s;}
+.mol-toc button{flex-shrink:0;white-space:nowrap;font:500 0.6875rem 'Inter',sans-serif;color:var(--mid);background:transparent;border:1px solid rgba(196,168,130,.55);border-radius:20px;padding:4px 8px;cursor:pointer;transition:all .15s;}
 .mol-toc button:hover{color:var(--bark-d);border-color:var(--bark-l);}
 .mol-toc button.on{color:var(--bark-d);border-color:var(--gold);background:#FBF5E8;}
 .mol-sec,.mol-wrap .pcard,details.umetak{scroll-margin-top:52px;}
@@ -485,16 +493,16 @@ details.isus .opis-tekst p{margin-top:7px;font:400 13.5px/1.6 'Inter',sans-serif
 }
 .mol-toc button:hover{background:var(--cream);}
 .mol-sec{margin:30px 0 12px;}
-.mol-sec h3{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--bark-d);display:flex;align-items:baseline;gap:10px;}
-.mol-br{font:600 11px 'Inter',sans-serif;color:var(--gold);letter-spacing:.06em;}
-.mol-uvod{font-size:13px;color:var(--mid);font-style:italic;line-height:1.55;margin-top:4px;}
-.molitva p{font-family:'Cormorant Garamond',serif;font-size:18.5px;line-height:1.6;color:var(--txt);margin-bottom:12px;}
+.mol-sec h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--bark-d);display:flex;align-items:baseline;gap:10px;}
+.mol-br{font:600 0.6875rem 'Inter',sans-serif;color:var(--gold);letter-spacing:.06em;}
+.mol-uvod{font-size:0.8125rem;color:var(--mid);font-style:italic;line-height:1.55;margin-top:4px;}
+.molitva p{font-family:'Cormorant Garamond',serif;font-size:1.15625rem;line-height:1.6;color:var(--txt);margin-bottom:12px;}
 .molitva p:last-child{margin-bottom:0;}
 .molitva .red{display:block;margin-bottom:5px;white-space:pre-line;}
-.mol-oznaka{font:600 9.5px 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--bark);margin:16px 0 5px;}
+.mol-oznaka{font:600 0.59375rem 'Inter',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--bark);margin:16px 0 5px;}
 .mol-oznaka:first-child{margin-top:0;}
 .mol-oznaka.istina{color:var(--leaf);}
-.ref{font:400 11px 'Inter',sans-serif;color:var(--light);white-space:nowrap;}
+.ref{font:400 0.6875rem 'Inter',sans-serif;color:var(--light);white-space:nowrap;}
 .ref a{color:inherit;text-decoration:underline dotted;text-underline-offset:2px;}
 .ref a:hover{color:var(--gold);text-decoration-style:solid;}
 .upis{font-style:italic;color:var(--bark);background:rgba(196,154,60,.12);border-radius:3px;padding:0 3px;}
@@ -503,49 +511,49 @@ details.pcard>summary::-webkit-details-marker{display:none;}
 details.pcard>summary .pcard-head{margin-bottom:0;}
 details.pcard[open]>summary .pcard-head{margin-bottom:14px;}
 details.pcard:not([open]){padding:13px 20px;}
-.chev{margin-left:auto;color:var(--bark-l);font-size:18px;transition:transform .2s;}
+.chev{margin-left:auto;color:var(--bark-l);font-size:1.125rem;transition:transform .2s;}
 details[open]>summary .chev{transform:rotate(90deg);}
-.mol-tablica{width:100%;border-collapse:collapse;font-size:13px;line-height:1.45;}
-.mol-tablica th{font:600 9.5px 'Inter',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--light);text-align:left;padding:0 8px 6px 0;}
+.mol-tablica{width:100%;border-collapse:collapse;font-size:0.8125rem;line-height:1.45;}
+.mol-tablica th{font:600 0.59375rem 'Inter',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--light);text-align:left;padding:0 8px 6px 0;}
 .mol-tablica td{padding:7px 8px 7px 0;border-top:1px solid rgba(139,107,74,.12);vertical-align:top;color:var(--txt);}
 .mol-tablica td:first-child{font-weight:500;white-space:nowrap;padding-right:16px;width:1%;}
-.mol-tablica .laz{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15.5px;color:var(--mid);}
-.mol-zelje{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px 16px;font-size:13px;}
+.mol-tablica .laz{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.96875rem;color:var(--mid);}
+.mol-zelje{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px 16px;font-size:0.8125rem;}
 .mol-zelje li{padding:4px 0;color:var(--txt);}
-.mol-zelje span{color:var(--mid);font-size:12px;}
-.mol-podnaslov{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--bark-d);margin:18px 0 8px;}
+.mol-zelje span{color:var(--mid);font-size:0.75rem;}
+.mol-podnaslov{font-family:'Cormorant Garamond',serif;font-size:1.0625rem;font-weight:500;color:var(--bark-d);margin:18px 0 8px;}
 .mol-podnaslov:first-child{margin-top:0;}
-.lanac-red{display:grid;grid-template-columns:118px 1fr;gap:10px;padding:8px 0;border-top:1px solid rgba(139,107,74,.1);font-size:13px;line-height:1.5;}
+.lanac-red{display:grid;grid-template-columns:118px 1fr;gap:10px;padding:8px 0;border-top:1px solid rgba(139,107,74,.1);font-size:0.8125rem;line-height:1.5;}
 .lanac-red:first-child{border-top:none;padding-top:0;}
-.lanac-ozn{font-size:11.5px;color:var(--mid);font-weight:500;}
-.lanac-red em{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--mid);}
+.lanac-ozn{font-size:0.71875rem;color:var(--mid);font-weight:500;}
+.lanac-red em{font-family:'Cormorant Garamond',serif;font-size:0.9375rem;color:var(--mid);}
 .mol-tabovi{display:flex;gap:4px;background:var(--cream);border-radius:10px;padding:4px;margin-bottom:12px;}
-.mol-tabovi button{flex:1;border:none;background:transparent;font:500 12px 'Inter',sans-serif;color:var(--mid);padding:8px 6px;border-radius:7px;cursor:pointer;}
+.mol-tabovi button{flex:1;border:none;background:transparent;font:500 0.75rem 'Inter',sans-serif;color:var(--mid);padding:8px 6px;border-radius:7px;cursor:pointer;}
 .mol-tabovi button.on{background:white;color:var(--bark-d);box-shadow:0 1px 4px var(--sh);}
 .mol-tab:not(.on){display:none;}
 .koraci{list-style:none;}
-.koraci>li{display:grid;grid-template-columns:24px 1fr;gap:10px;margin-bottom:12px;font-size:14px;line-height:1.55;color:var(--txt);}
-.korak-br{width:22px;height:22px;border-radius:50%;background:var(--cream);font:600 10.5px 'Inter',sans-serif;color:var(--bark);display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.koraci>li{display:grid;grid-template-columns:24px 1fr;gap:10px;margin-bottom:12px;font-size:0.875rem;line-height:1.55;color:var(--txt);}
+.korak-br{width:22px;height:22px;border-radius:50%;background:var(--cream);font:600 0.65625rem 'Inter',sans-serif;color:var(--bark);display:flex;align-items:center;justify-content:center;margin-top:1px;}
 .koraci ul{list-style:none;margin-top:5px;}
-.koraci ul li{font-size:13px;color:var(--mid);padding-left:14px;position:relative;margin-bottom:3px;}
+.koraci ul li{font-size:0.8125rem;color:var(--mid);padding-left:14px;position:relative;margin-bottom:3px;}
 .koraci ul li::before{content:'·';position:absolute;left:3px;color:var(--gold);font-weight:700;}
 .umetak{margin-top:6px;}
-.umetak>summary{display:inline-block;font-size:12px;font-weight:500;color:var(--bark);cursor:pointer;list-style:none;}
+.umetak>summary{display:inline-block;font-size:0.75rem;font-weight:500;color:var(--bark);cursor:pointer;list-style:none;}
 .umetak>summary::-webkit-details-marker{display:none;}
 .umetak>summary::before{content:'✝ ';color:var(--gold);}
 .umetak .molitva{margin-top:8px;padding:10px 0 4px 14px;border-left:2px solid var(--gold-l);}
-.umetak .molitva p{font-size:16.5px;}
-.mol-poveznica{background:none;border:none;padding:0;font:500 12px 'Inter',sans-serif;color:var(--bark);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
-.mol-napomena{font-size:12.5px;font-style:italic;color:var(--mid);margin-bottom:12px;line-height:1.5;}
+.umetak .molitva p{font-size:1.03125rem;}
+.mol-poveznica{background:none;border:none;padding:0;font:500 0.75rem 'Inter',sans-serif;color:var(--bark);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.mol-napomena{font-size:0.78125rem;font-style:italic;color:var(--mid);margin-bottom:12px;line-height:1.5;}
 @media(max-width:500px){
   .prayer-wrap{padding:18px 16px 32px;}
   .lanac-red{grid-template-columns:1fr;gap:2px;}
   .mol-tablica td:first-child{white-space:normal;}
-  .molitva p{font-size:17.5px;}
+  .molitva p{font-size:1.09375rem;}
 }
 
 /* TOAST */
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bark-d);color:white;padding:8px 18px;border-radius:20px;font-size:12px;z-index:999;pointer-events:none;animation:tIn .3s ease,tOut .3s ease 2.5s forwards;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bark-d);color:white;padding:8px 18px;border-radius:20px;font-size:0.75rem;z-index:999;pointer-events:none;animation:tIn .3s ease,tOut .3s ease 2.5s forwards;}
 @keyframes tIn{from{opacity:0;transform:translateX(-50%) translateY(10px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 @keyframes tOut{to{opacity:0;}}
 
@@ -1195,7 +1203,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
 
           {/* Reveal suggestions after typing or explicitly */}
           {!showSuggested && (
-            <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowSuggested(true)}>
+            <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:'0.6875rem'}} onClick={()=>setShowSuggested(true)}>
               {t('k2.prijedlozi')}
             </button>
           )}
@@ -1219,7 +1227,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                 ))}
               </div>
               {!showAllFruits && sinDef.plodovi.length > 6 && (
-                <button className="btn btn-g btn-sm" style={{marginBottom:10,marginTop:2,fontSize:11}}
+                <button className="btn btn-g btn-sm" style={{marginBottom:10,marginTop:2,fontSize:'0.6875rem'}}
                   onClick={()=>setShowAllFruits(true)}>
                   {t('k2.josPlodova', sinDef.plodovi.length - 6)}
                 </button>
@@ -1229,7 +1237,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
           )}
 
           {sel.length > 0 && (
-            <p style={{fontSize:11,color:'var(--light)',marginTop:8}}>
+            <p style={{fontSize:'0.6875rem',color:'var(--light)',marginTop:8}}>
               {t('k2.oznaceno', sel.length)}
             </p>
           )}
@@ -1296,7 +1304,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
 
           {/* Show all wounds toggle */}
           {!showAllW && (
-            <button className="btn btn-g btn-sm" style={{marginBottom:10,fontSize:11}} onClick={()=>setShowAllW(true)}>
+            <button className="btn btn-g btn-sm" style={{marginBottom:10,fontSize:'0.6875rem'}} onClick={()=>setShowAllW(true)}>
               {t('k3.ostale')}
             </button>
           )}
@@ -1330,7 +1338,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                     <textarea
                       rows={2}
                       placeholder={t('k3.komentar')}
-                      style={{fontSize:12,marginTop:4,borderRadius:6,padding:'6px 8px'}}
+                      style={{fontSize:'0.75rem',marginTop:4,borderRadius:6,padding:'6px 8px'}}
                       value={(data.woundComments||{})[w.id]||''}
                       onChange={e => patch({woundComments:{...(data.woundComments||{}), [w.id]: e.target.value}})}
                       onClick={e => e.stopPropagation()}
@@ -1372,7 +1380,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
       ? list
       : list.filter((x,i) => i < PRIKAZI || (jeOdabran && jeOdabran(x)));
     const JosGumb = ({kljuc, ukupno}) => (!vidiSve[kljuc] && ukupno > PRIKAZI) ? (
-      <button className="btn btn-g btn-sm" style={{marginBottom:10,marginTop:2,fontSize:11}}
+      <button className="btn btn-g btn-sm" style={{marginBottom:10,marginTop:2,fontSize:'0.6875rem'}}
         onClick={()=>setVidiSve({...vidiSve,[kljuc]:true})}>
         {t('josN', ukupno - PRIKAZI)}
       </button>
@@ -1393,7 +1401,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
           <h2 className="stitle">{t('k4.naslov')}</h2>
           <p className="sbody"><Bogato text={t('k4.tijelo')}/></p>
           {selWoundNames.length > 0 && (
-            <div style={{fontSize:11,color:'var(--mid)',background:'rgba(196,154,60,.08)',border:'1px solid rgba(196,154,60,.3)',borderRadius:7,padding:'8px 11px',marginBottom:13,lineHeight:1.5}}>
+            <div style={{fontSize:'0.6875rem',color:'var(--mid)',background:'rgba(196,154,60,.08)',border:'1px solid rgba(196,154,60,.3)',borderRadius:7,padding:'8px 11px',marginBottom:13,lineHeight:1.5}}>
               <Bogato text={t('k4.istaknuto', selWoundNames.join(', '))}/>
             </div>
           )}
@@ -1404,9 +1412,9 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
               value={data.customVow||''} onChange={e=>patch({customVow:e.target.value})}/>
           </div>
           {!showVowList
-            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowVowList(true)}>{t('k4.prijedloziZavjeta')}</button>
+            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:'0.6875rem'}} onClick={()=>setShowVowList(true)}>{t('k4.prijedloziZavjeta')}</button>
             : <div style={{animation:'fadeIn .3s ease'}}>
-                <p style={{fontSize:11,color:'var(--light)',marginBottom:7}}>{t('odaberiPrepoznate')}</p>
+                <p style={{fontSize:'0.6875rem',color:'var(--light)',marginBottom:7}}>{t('odaberiPrepoznate')}</p>
                 <div className="chips" style={{marginBottom:8}}>
                   {dio('zavjeti', sortByWounds(DATA.unutarnjiZavjeti), z=>sv.includes(z.id)).map(z => {
                     const veza = matchesWounds(z);
@@ -1414,7 +1422,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                       <div key={z.id} className={`chip ${sv.includes(z.id)?'sel':''}`}
                         title={veza ? t('izviruIzRane', veza) : ''}
                         style={sv.includes(z.id)?{background:'var(--gold)',borderColor:'var(--gold)'}:{borderColor:'var(--gold)',background: veza?'rgba(196,154,60,.16)':'rgba(196,154,60,.04)', opacity: veza?1:.55}}
-                        onClick={()=>tv(z.id)}>{z.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                        onClick={()=>tv(z.id)}>{z.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:'0.5625rem'}}>◂ {veza}</span>}</div>
                     );
                   })}
                 </div>
@@ -1430,9 +1438,9 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
               value={data.customJudgment||''} onChange={e=>patch({customJudgment:e.target.value})}/>
           </div>
           {!showJudgeList
-            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowJudgeList(true)}>{t('k4.prijedloziOsuda')}</button>
+            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:'0.6875rem'}} onClick={()=>setShowJudgeList(true)}>{t('k4.prijedloziOsuda')}</button>
             : <div style={{animation:'fadeIn .3s ease'}}>
-                <p style={{fontSize:11,color:'var(--light)',marginBottom:7}}>{t('odaberiPrepoznate')}</p>
+                <p style={{fontSize:'0.6875rem',color:'var(--light)',marginBottom:7}}>{t('odaberiPrepoznate')}</p>
                 <div className="chips" style={{marginBottom:8}}>
                   {dio('osude', sortByWounds(DATA.gorkeOsude), o=>sj.includes(o.id)).map(o => {
                     const veza = matchesWounds(o);
@@ -1440,7 +1448,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                       <div key={o.id} className={`chip ${sj.includes(o.id)?'sel':''}`}
                         title={veza ? t('izviruIzRane', veza) : ''}
                         style={sj.includes(o.id)?{background:'var(--root)',borderColor:'var(--root)',color:'white'}:{borderColor:'var(--root)',background: veza?'rgba(176,160,144,.18)':'rgba(176,160,144,.04)', opacity: veza?1:.55}}
-                        onClick={()=>tj(o.id)}>{o.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                        onClick={()=>tj(o.id)}>{o.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:'0.5625rem'}}>◂ {veza}</span>}</div>
                     );
                   })}
                 </div>
@@ -1454,16 +1462,16 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
           <div onClick={()=>setShowGodList(!showGodList)}
             style={{display:'flex',alignItems:'center',gap:7,cursor:'pointer',userSelect:'none',
                     padding:'7px 0',marginBottom: showGodList?4:0}}>
-            <span style={{fontSize:10,color:'var(--bark-d)',transition:'transform .2s',
+            <span style={{fontSize:'0.625rem',color:'var(--bark-d)',transition:'transform .2s',
                           transform: showGodList?'rotate(90deg)':'none'}}>▶</span>
             <span className="suggest-tag" style={{color:'var(--bark-d)',margin:0,cursor:'pointer'}}>{t('k4.slikaBoga')}</span>
             {!showGodList && sgi.length>0 &&
-              <span style={{fontSize:10,color:'var(--bark-d)',background:'rgba(92,64,48,.12)',
+              <span style={{fontSize:'0.625rem',color:'var(--bark-d)',background:'rgba(92,64,48,.12)',
                             borderRadius:8,padding:'1px 7px'}}>{sgi.length}</span>}
           </div>
           {showGodList && (
             <div style={{animation:'fadeIn .3s ease',marginBottom:6}}>
-              <p style={{fontSize:11.5,color:'var(--mid)',marginBottom:9,lineHeight:1.5}}>
+              <p style={{fontSize:'0.71875rem',color:'var(--mid)',marginBottom:9,lineHeight:1.5}}>
                 {t('k4.slikaBogaUvod')}
               </p>
               <div className="chips" style={{marginBottom:8}}>
@@ -1473,7 +1481,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                     <div key={k.id} className={`chip ${sgi.includes(k.id)?'sel':''}`}
                       title={k.opis}
                       style={sgi.includes(k.id)?{background:'var(--bark-d)',borderColor:'var(--bark-d)',color:'#fff'}:{borderColor:'var(--bark-d)',background: veza?'rgba(92,64,48,.13)':'rgba(92,64,48,.04)', opacity: veza?1:.55}}
-                      onClick={()=>tgi(k.id)}>{k.naziv}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                      onClick={()=>tgi(k.id)}>{k.naziv}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:'0.5625rem'}}>◂ {veza}</span>}</div>
                   );
                 })}
               </div>
@@ -1489,9 +1497,9 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
               value={data.woundEvent||''} onChange={e=>patch({woundEvent:e.target.value})}/>
           </div>
           {!showChildList
-            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:11}} onClick={()=>setShowChildList(true)}>{t('k4.staSeDogodi')}</button>
+            ? <button className="btn btn-g btn-sm" style={{marginBottom:12,fontSize:'0.6875rem'}} onClick={()=>setShowChildList(true)}>{t('k4.staSeDogodi')}</button>
             : <div style={{animation:'fadeIn .3s ease'}}>
-                <p style={{fontSize:11,color:'var(--mid)',marginBottom:6,lineHeight:1.5}}>
+                <p style={{fontSize:'0.6875rem',color:'var(--mid)',marginBottom:6,lineHeight:1.5}}>
                   <Bogato text={t('k4.tipA')}/>
                 </p>
                 <div className="chips" style={{marginBottom:10}}>
@@ -1500,12 +1508,12 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                     return (
                       <div key={r.id} className="chip" onClick={()=>dodajRanu(r.tekst)}
                         style={{borderColor:'var(--root)',background: veza?'rgba(176,160,144,.18)':'rgba(176,160,144,.04)', opacity: veza?1:.55}}>
-                        {r.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                        {r.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:'0.5625rem'}}>◂ {veza}</span>}</div>
                     );
                   })}
                 </div>
                 <JosGumb kljuc="djA" ukupno={DATA.raneDjetinjstva.filter(r=>r.tip==='A').length}/>
-                <p style={{fontSize:11,color:'var(--mid)',marginBottom:6,lineHeight:1.5}}>
+                <p style={{fontSize:'0.6875rem',color:'var(--mid)',marginBottom:6,lineHeight:1.5}}>
                   <Bogato text={t('k4.tipB')}/>
                 </p>
                 <div className="chips" style={{marginBottom:8}}>
@@ -1514,7 +1522,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                     return (
                       <div key={r.id} className="chip" onClick={()=>dodajRanu(r.tekst)}
                         style={{borderColor:'var(--root)',background: veza?'rgba(176,160,144,.18)':'rgba(176,160,144,.04)', opacity: veza?1:.55}}>
-                        {r.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:9}}>◂ {veza}</span>}</div>
+                        {r.tekst}{veza && <span style={{opacity:.7,marginLeft:5,fontSize:'0.5625rem'}}>◂ {veza}</span>}</div>
                     );
                   })}
                 </div>
@@ -1570,9 +1578,9 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
           <div className="sum-block">
             <div className="sum-title">{t('k5.grijeh')}</div>
             <div style={{display:'flex',alignItems:'center',gap:10,padding:'9px 13px',background:sinDef.bojaBg,borderRadius:9,color:'white',width:'fit-content'}}>
-              <span style={{fontSize:17}}>{sinDef.ikona}</span>
-              <span style={{fontFamily:'Cormorant Garamond,serif',fontSize:17}}>{sinDef.naziv}</span>
-              <span style={{fontSize:11,opacity:.8}}>— {sinDef.idolatrija}</span>
+              <span style={{fontSize:'1.0625rem'}}>{sinDef.ikona}</span>
+              <span style={{fontFamily:'Cormorant Garamond,serif',fontSize:'1.0625rem'}}>{sinDef.naziv}</span>
+              <span style={{fontSize:'0.6875rem',opacity:.8}}>— {sinDef.idolatrija}</span>
             </div>
             {data.woundReflection && (
               <div className="wlie" style={{marginTop:8}}>
@@ -1592,7 +1600,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                   <div key={w.id} className="wlie" style={{borderLeft:`3px solid ${p===3?'var(--bark)':p===2?'var(--bark-l)':'var(--root)'}`}}>
                     <div className="wlie-n">{rd?.naziv||w.naziv} {'●'.repeat(p)}{'○'.repeat(3-p)}</div>
                     {rd && <div className="wlie-t">"{rd.laz}"</div>}
-                    {comment && <div style={{fontSize:12,color:'var(--mid)',marginTop:4,fontStyle:'italic'}}>💬 {comment}</div>}
+                    {comment && <div style={{fontSize:'0.75rem',color:'var(--mid)',marginTop:4,fontStyle:'italic'}}>💬 {comment}</div>}
                   </div>
                 );
               })}
@@ -1660,13 +1668,13 @@ function PrintTree({ tree }) {
         ];
         const pos = positions[i]||{left:'50%',top:'15%'};
         return (
-          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #7A9E7E',borderRadius:12,padding:'2px 7px',fontSize:9,color:'#2C5A30',fontWeight:500,whiteSpace:'nowrap',...pos}}>
+          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #7A9E7E',borderRadius:12,padding:'2px 7px',fontSize:'0.5625rem',color:'#2C5A30',fontWeight:500,whiteSpace:'nowrap',...pos}}>
             {naziv.length>14?naziv.slice(0,13)+'…':naziv}
           </div>
         );
       })}
       {sinDef && (
-        <div style={{position:'absolute',left:'50%',top:'56%',transform:'translate(-50%,-50%)',background:sinDef.bojaBg,borderRadius:8,padding:'3px 10px',fontSize:10,color:'white',fontFamily:'serif',whiteSpace:'nowrap'}}>
+        <div style={{position:'absolute',left:'50%',top:'56%',transform:'translate(-50%,-50%)',background:sinDef.bojaBg,borderRadius:8,padding:'3px 10px',fontSize:'0.625rem',color:'white',fontFamily:'serif',whiteSpace:'nowrap'}}>
           {sinDef.ikona} {sinDef.naziv}
         </div>
       )}
@@ -1678,7 +1686,7 @@ function PrintTree({ tree }) {
         ];
         const pos = positions[i]||{left:'50%',top:'83%'};
         return (
-          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #B0A090',borderRadius:12,padding:'2px 7px',fontSize:9,color:'#5C4030',fontWeight:500,whiteSpace:'nowrap',...pos}}>
+          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #B0A090',borderRadius:12,padding:'2px 7px',fontSize:'0.5625rem',color:'#5C4030',fontWeight:500,whiteSpace:'nowrap',...pos}}>
             {(rd?.naziv||w.naziv).length>13?(rd?.naziv||w.naziv).slice(0,12)+'…':(rd?.naziv||w.naziv)}
           </div>
         );
@@ -1687,7 +1695,7 @@ function PrintTree({ tree }) {
         const positions = [{left:'28%',top:'93%'},{left:'65%',top:'93%'}];
         const pos = positions[i]||{left:'50%',top:'93%'};
         return (
-          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #C49A3C',borderRadius:12,padding:'2px 7px',fontSize:9,color:'#5C4010',whiteSpace:'nowrap',...pos}}>
+          <div key={i} style={{position:'absolute',transform:'translate(-50%,-50%)',background:'white',border:'1.5px solid #C49A3C',borderRadius:12,padding:'2px 7px',fontSize:'0.5625rem',color:'#5C4010',whiteSpace:'nowrap',...pos}}>
             {v.length>14?v.slice(0,13)+'…':v}
           </div>
         );
@@ -1854,7 +1862,7 @@ function PopisStabala({ trees, onOpen, onDelete, onNew, onStar, onReorder }) {
               <div className="tcard-icon">{sd?.ikona||'🌳'}</div>
               <div className="tcard-name">{sd?.naziv||t('stabla.novo')}</div>
               <div className="tcard-status">{st.completed?t('stabla.dovrseno'):t('stabla.korak', (st.step||0)+1)}</div>
-              {st.createdAt && <div style={{fontSize:10,color:'var(--light)',marginBottom:6}}>{st.createdAt}</div>}
+              {st.createdAt && <div style={{fontSize:'0.625rem',color:'var(--light)',marginBottom:6}}>{st.createdAt}</div>}
               <div className="tcard-prog"><div className="tcard-fill" style={{width:`${prog}%`,background:sd?.bojaBg||'var(--bark)'}}/></div>
             </div>
           );
@@ -2236,7 +2244,7 @@ function Sazetak({ tree }) {
             {rd ? <span {...naKlik('st-r-' + rd.id)}><strong>{rd.naziv}</strong></span> : <strong>{w.naziv}</strong>}
             {rd && <> — <em>{t('molitvenik.citat', rd.laz)}</em></>}
             {rd && <ZnakRane r={rd} okvir={false}/>}
-            {komentari[w.id] && <div style={{fontSize:12,color:'var(--mid)'}}>{komentari[w.id]}</div>}
+            {komentari[w.id] && <div style={{fontSize:'0.75rem',color:'var(--mid)'}}>{komentari[w.id]}</div>}
           </div>
         );
       })}</>)}
@@ -2318,7 +2326,7 @@ function Molitvenik({ onBack }) {
   return (
     <div className="mol-skrol" style={{flex:1,overflowY:'auto'}}>
       <div className="prayer-wrap mol-wrap">
-        <h1 className="print-only" style={{fontFamily:'serif',fontSize:24,color:'#5C4030',marginBottom:4}}>{t('molitvenik.naslov')}</h1>
+        <h1 className="print-only" style={{fontFamily:'serif',fontSize:'1.5rem',color:'#5C4030',marginBottom:4}}>{t('molitvenik.naslov')}</h1>
         <div className="p-banner">
           <h2>{t('molitvenik.naslov')}</h2>
           <p>{t('molitvenik.podnaslov')}</p>
@@ -2467,8 +2475,8 @@ function PrayerScreen({ tree, onBack, onMolitvenik, onUpdate }) {
       <div className="prayer-wrap mol-wrap">
 
         <div className="print-only">
-          <h1 style={{fontFamily:'serif',fontSize:24,color:'#5C4030',marginBottom:4}}>{JEZICI[LANG].naslov}</h1>
-          <h2 style={{fontFamily:'serif',fontSize:18,fontWeight:400,color:'#8B6B4A',marginBottom:12}}>{t('panel.naslov', sinDef.naziv)} {sinDef.ikona}</h2>
+          <h1 style={{fontFamily:'serif',fontSize:'1.5rem',color:'#5C4030',marginBottom:4}}>{JEZICI[LANG].naslov}</h1>
+          <h2 style={{fontFamily:'serif',fontSize:'1.125rem',fontWeight:400,color:'#8B6B4A',marginBottom:12}}>{t('panel.naslov', sinDef.naziv)} {sinDef.ikona}</h2>
         </div>
 
         <input className="ime-stabla" value={imeStabla(tree)}
@@ -2519,19 +2527,19 @@ function PrayerScreen({ tree, onBack, onMolitvenik, onUpdate }) {
         {korak('st-znakovi', null, <>
           <div className="pcard" style={{background:'linear-gradient(135deg,#F2EAE0,#E8DDD0)',border:'1px solid var(--bark-l)'}}>
             {raneDef.map(rd => (
-              <div key={rd.id} style={{padding:'7px 10px',marginBottom:6,background:'rgba(122,158,126,.12)',borderRadius:6,fontSize:13,color:'#2C5A30'}}>
+              <div key={rd.id} style={{padding:'7px 10px',marginBottom:6,background:'rgba(122,158,126,.12)',borderRadius:6,fontSize:'0.8125rem',color:'#2C5A30'}}>
                 <div style={{display:'flex',alignItems:'center',gap:7}}>
                   <span style={{color:'var(--leaf)'}}>✓</span>
                   <strong>{rd.naziv}</strong> → {rd.znakIscjeljenja}
                 </div>
                 {rd.sakrament && (
-                  <div style={{marginTop:3,marginLeft:20,fontSize:11.5,color:'var(--mid)'}}>
+                  <div style={{marginTop:3,marginLeft:20,fontSize:'0.71875rem',color:'var(--mid)'}}>
                     <Bogato text={t('molitve.sakrament', rd.sakrament, rd.identitet, rd.poslanje)}/>
                   </div>
                 )}
               </div>
             ))}
-            <div style={{marginTop:9,padding:'7px 10px',background:'rgba(196,154,60,.12)',borderRadius:6,fontSize:13,fontStyle:'italic',color:'var(--mid)'}}>
+            <div style={{marginTop:9,padding:'7px 10px',background:'rgba(196,154,60,.12)',borderRadius:6,fontSize:'0.8125rem',fontStyle:'italic',color:'var(--mid)'}}>
               {t('molitve.krepost', sinDef.krepost.par || sinDef.krepost.naziv, sinDef.krepost.opis)}
             </div>
           </div>

@@ -250,6 +250,8 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 ## Konvencije koje se lako prekrše
 
+- **Veličine fonta pišu se u `rem`, nikad u `px`** — i u CSS-u i u inline stilovima (`fontSize:'0.75rem'`, ne `fontSize:12`). 1rem = 16px, pa je `12px` = `0.75rem`. Sav tekst skalira jedno pravilo na `html`: 106,25 % na računalu, 118,75 % na mobitelu (≤860px), 100 % u ispisu. Korisnik je tražio malo veća slova, ali **ne previše** — ne dizati te postotke bez pitanja. Iznimke: header na ≤500px namjerno je manji (inače se ime stabla reže), a `textarea` na mobitelu ima najmanje 16px jer iOS inače zumira stranicu pri tipkanju. Širine labela na stablu (`.lbl` `max-width`) su u `rem`, da rastu s tekstom.
+
 - **Postupno otvaranje**: nijedna lista se ne prikazuje cijela odjednom. Plodovi i sve liste u koraku 4 daju prvih `PRIKAZI` (6) pa `+ Još N`. Liste su prethodno sortirane po relevantnosti za odabrane rane, pa je prvih 6 ujedno najkorisnije. Već odabrane stavke ostaju vidljive i izvan reza. Pomoćnici: `dio(kljuc, list, jeOdabran)`, `<JosGumb kljuc ukupno/>`, stanje u `vidiSve`.
 
 - **Personalizacija koraka 4**: prijedlozi zavjeta, osuda, krivih slika Boga i rana iz djetinjstva istaknuti su ako im `rane[]` presijeca rane odabrane u koraku 3; ostali su prigušeni (`opacity .55`) ali odabirljivi. Oznaka `◂ <Rana>` pokazuje vezu.
