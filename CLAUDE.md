@@ -56,6 +56,12 @@ require('$D/node_modules/@babel/core').transformFileSync('$D/app.jsx',
 console.log('OK');"
 ```
 
+Babel ne vidi `<style>` ni ostatak HTML-a. **Nikad ne pisati `</style>` ni `</script>` u komentaru ili stringu** — HTML parser tu zatvori oznaku i cijeli CSS se ispiše kao tekst na stranici (dogodilo se). Mora biti točno jedan:
+
+```bash
+grep -c '</style>' index.html   # 1
+```
+
 Podaci:
 
 ```bash
