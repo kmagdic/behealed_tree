@@ -271,6 +271,9 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .sopt{position:relative;}
 .sopt-opis{position:absolute;top:2px;right:2px;padding:5px 7px;border:0;background:none;font-size:14px;line-height:1;color:var(--root);cursor:pointer;border-radius:50%;}
 .sopt-opis:hover,.sopt-opis:focus-visible{color:var(--bark-d);}
+.chip-info{border:0;background:none;padding:2px 0 2px 2px;margin:-2px -4px -2px 0;font-size:11px;line-height:1;color:inherit;opacity:.45;cursor:pointer;}
+.chip-info:hover,.chip-info:focus-visible{opacity:1;}
+@media(hover:none){.chip-info{padding:6px 4px 6px 6px;margin:-6px -8px -6px -2px;}}
 
 /* POPUP — opis grijeha u koraku 1 */
 .pop-pozadina{position:fixed;inset:0;z-index:1000;background:rgba(44,31,20,.42);display:flex;align-items:center;justify-content:center;padding:16px;}
@@ -279,6 +282,7 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .pop-ico{font-size:26px;text-align:center;}
 .pop-naslov{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--bark-d);text-align:center;margin:2px 0 2px;}
 .pop-idol{text-align:center;font-size:12px;color:var(--mid);margin-bottom:14px;}
+.pop-naslov + .pop-tekst{margin-top:12px;}
 .pop-tekst p{font-size:13.5px;line-height:1.6;color:var(--txt);margin:0 0 10px;}
 .pop-red{font-size:12px;color:var(--mid);margin-top:6px;line-height:1.5;}
 .pop-red b{color:var(--bark-d);font-weight:600;}
@@ -947,13 +951,17 @@ function StepBar({ cur, onGo, moze }) {
 }
 
 // ── PRIORITY CHIP ──
-function PChip({ label, id, selected, suggested, priority, onToggle, onPriority }) {
+function PChip({ label, id, selected, suggested, priority, onToggle, onPriority, onInfo }) {
   const p = priority || 1;
   const cls = ['chip', selected?'sel':'', suggested?'sug':'', `p${p}`].filter(Boolean).join(' ');
   return (
     <div className={cls} onClick={() => onToggle(id)}>
       {selected && <span className="prio-dot"/>}
       {label}
+      {onInfo && (
+        <button type="button" className="chip-info" aria-label={t('molitvenik.staJe', label)} title={t('molitvenik.staJe', label)}
+          onClick={e => { e.stopPropagation(); onInfo(id); }}>ⓘ</button>
+      )}
       {selected && onPriority && (
         <button
           className="prio-toggle"
@@ -968,9 +976,9 @@ function PChip({ label, id, selected, suggested, priority, onToggle, onPriority 
 }
 
 // ── GUIDED FLOW ──
-// Popup „Što je ovaj grijeh?“ u koraku 1: idol, pojašnjenje, rane iz kojih raste i
-// nekoliko plodova, uz gumb za odabir. Esc ili klik izvan kartice zatvara.
-function OpisGrijeha({ sin, odabran, onOdaberi, onZatvori }) {
+// Popup s opisom grijeha (korak 1), ploda (korak 2) ili rane (korak 3), otvara se na ⓘ.
+// Okvir je zajednički: Esc ili klik izvan kartice zatvara, fokus se vraća na ⓘ.
+function Popup({ ikona, naslov, podnaslov, gumb, onZatvori, children }) {
   const ref = useRef(null);
   useEffect(() => {
     const prije = document.activeElement;
@@ -979,34 +987,60 @@ function OpisGrijeha({ sin, odabran, onOdaberi, onZatvori }) {
     document.addEventListener('keydown', tipka);
     return () => { document.removeEventListener('keydown', tipka); prije && prije.focus && prije.focus(); };
   }, []);
-  if (!sin) return null;
-  const rane = DATA.raneZaGrijeh[sin.id] || [];
-  const plodovi = (sin.plodovi || []).slice(0, 6);
   return (
     <div className="pop-pozadina" onClick={onZatvori}>
       <div className="pop" role="dialog" aria-modal="true" aria-labelledby="pop-naslov"
         tabIndex={-1} ref={ref} onClick={e => e.stopPropagation()}>
         <button type="button" className="pop-x" aria-label={t('k1.zatvori')} onClick={onZatvori}>×</button>
-        <div className="pop-ico">{sin.ikona}</div>
-        <h3 id="pop-naslov" className="pop-naslov">{sin.naziv}</h3>
-        <div className="pop-idol">{t('k1.idol')}: {sin.idolatrija}</div>
-        <div className="pop-tekst">
-          {sin.pojasnjenje.split(/\n\n+/).map((p, i) => <p key={i}><Navodi text={p} bezUpisa/></p>)}
-        </div>
-        {rane.length > 0 && (
-          <div className="pop-red"><b>{t('k1.rasteIz')}:</b> {rane.map(r => r.naziv).join(' · ')}</div>
-        )}
-        {plodovi.length > 0 && (
-          <div className="pop-red"><b>{t('k1.plodovi')}:</b> {plodovi.map(p => p.naziv).join(' · ')}…</div>
-        )}
+        {ikona && <div className="pop-ico">{ikona}</div>}
+        <h3 id="pop-naslov" className="pop-naslov">{naslov}</h3>
+        {podnaslov && <div className="pop-idol">{podnaslov}</div>}
+        {children}
         <div className="pop-gumbi">
           <button type="button" className="btn btn-g" onClick={onZatvori}>{t('k1.zatvori')}</button>
-          <button type="button" className="btn btn-p" onClick={() => onOdaberi(sin)}>
-            {odabran ? t('k1.odabrano') : t('k1.odaberi')}
-          </button>
+          {gumb}
         </div>
       </div>
     </div>
+  );
+}
+
+const odlomci = tekst => tekst.split(/\n\n+/).map((p, i) => <p key={i}><Navodi text={p} bezUpisa/></p>);
+
+function OpisGrijeha({ sin, odabran, onOdaberi, onZatvori }) {
+  const rane = DATA.raneZaGrijeh[sin.id] || [];
+  const plodovi = (sin.plodovi || []).slice(0, 6);
+  return (
+    <Popup ikona={sin.ikona} naslov={sin.naziv} podnaslov={`${t('k1.idol')}: ${sin.idolatrija}`} onZatvori={onZatvori}
+      gumb={<button type="button" className="btn btn-p" onClick={() => onOdaberi(sin)}>{odabran ? t('k1.odabrano') : t('k1.odaberi')}</button>}>
+      <div className="pop-tekst">{odlomci(sin.pojasnjenje)}</div>
+      {rane.length > 0 && <div className="pop-red"><b>{t('k1.rasteIz')}:</b> {rane.map(r => r.naziv).join(' · ')}</div>}
+      {plodovi.length > 0 && <div className="pop-red"><b>{t('k1.plodovi')}:</b> {plodovi.map(p => p.naziv).join(' · ')}…</div>}
+    </Popup>
+  );
+}
+
+function OpisPloda({ plod, odabran, onToggle, onZatvori }) {
+  const rane = (plod.izRana || []).map(id => DATA.ranaById[id]).filter(Boolean);
+  return (
+    <Popup naslov={plod.naziv} onZatvori={onZatvori}
+      gumb={<button type="button" className="btn btn-p" onClick={() => { onToggle(plod.id); onZatvori(); }}>{odabran ? t('k1.ukloni') : t('k1.dodaj')}</button>}>
+      <div className="pop-tekst">{odlomci(plod.opis)}</div>
+      {plod.navod && <div className="pop-red"><b>{t('k1.citaj')}:</b> <Navodi text={`(${plod.navod})`} bezUpisa/></div>}
+      {rane.length > 0 && <div className="pop-red"><b>{t('k1.rasteIz')}:</b> {rane.map(r => r.naziv).join(' · ')}</div>}
+    </Popup>
+  );
+}
+
+function OpisRane({ rana, odabran, onToggle, onZatvori }) {
+  return (
+    <Popup naslov={rana.naziv} podnaslov={rana.osjecaj} onZatvori={onZatvori}
+      gumb={<button type="button" className="btn btn-p" onClick={() => { onToggle(rana.id); onZatvori(); }}>{odabran ? t('k1.ukloni') : t('k1.dodaj')}</button>}>
+      <div className="pop-tekst">{odlomci(rana.opis || rana.pojasnjenje)}</div>
+      {rana.laz && <div className="pop-red"><b>{t('k1.laz')}:</b> „{rana.laz}“</div>}
+      {rana.istinaKratko && <div className="pop-red"><b>{t('k1.istina')}:</b> {t('k1.istinaTekst', rana.istinaKratko)}</div>}
+      {rana.znakIscjeljenja && <div className="pop-red"><b>{t('k1.znak')}:</b> {rana.znakIscjeljenja}{rana.sakrament ? ` · ${rana.sakrament}` : ''}</div>}
+    </Popup>
   );
 }
 
@@ -1022,7 +1056,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
   const [showGodList, setShowGodList] = useState(false);
   const [showChildList, setShowChildList] = useState(false);
   const [vidiSve, setVidiSve] = useState({});
-  const [opisGrijeha, setOpisGrijeha] = useState(null); // id grijeha čiji je opis otvoren u koraku 1
+  const [opis, setOpis] = useState(null); // otvoreni popup opisa: {vrsta:'g'|'p'|'r', id}
   const PRIKAZI = 6;
 
   const sinDef = DATA.smrtniGrijesi.find(s => s.id === data.sinId);
@@ -1062,10 +1096,11 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
       : data.name;
     patch({sinId: sin.id, name: autoName, _autoName: data._autoName !== false});
   }
-  function otvoriOpis(sin) {
-    setOpisGrijeha(sin.id);
-    if(typeof gtag!=='undefined') gtag('event','opis_grijeha_otvoren',{grijeh:sin.id,jezik:LANG});
+  function otvoriOpis(vrsta, id) {
+    setOpis({vrsta, id});
+    if(typeof gtag!=='undefined') gtag('event','opis_otvoren',{vrsta:{g:'grijeh',p:'plod',r:'rana'}[vrsta],stavka:id,grijeh:data.sinId||'nije_odabran',jezik:LANG});
   }
+  const zatvoriOpis = () => setOpis(null);
 
   if (step === 0) return (
     <div className="guided">
@@ -1086,17 +1121,17 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
               {sin.pojasnjenje && (
                 <button type="button" className="sopt-opis"
                   aria-label={t('molitvenik.staJe', sin.naziv)} title={t('molitvenik.staJe', sin.naziv)}
-                  onClick={e => { e.stopPropagation(); otvoriOpis(sin); }}>ⓘ</button>
+                  onClick={e => { e.stopPropagation(); otvoriOpis('g', sin.id); }}>ⓘ</button>
               )}
             </div>
           ))}
         </div>
       </div></div>
-      {opisGrijeha && (
-        <OpisGrijeha sin={DATA.smrtniGrijesi.find(s => s.id === opisGrijeha)}
-          odabran={data.sinId === opisGrijeha}
-          onOdaberi={sin => { odaberiGrijeh(sin); setOpisGrijeha(null); }}
-          onZatvori={() => setOpisGrijeha(null)}/>
+      {opis && opis.vrsta === 'g' && (
+        <OpisGrijeha sin={DATA.smrtniGrijesi.find(s => s.id === opis.id)}
+          odabran={data.sinId === opis.id}
+          onOdaberi={sin => { odaberiGrijeh(sin); zatvoriOpis(); }}
+          onZatvori={zatvoriOpis}/>
       )}
       <div className="sfooter">
         <button className="btn btn-g" onClick={onBack}><IBack/> {t('natrag')}</button>
@@ -1157,6 +1192,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                     priority={getPriority(priorities, f.id)}
                     onToggle={(id) => toggleFruit(id, f.naziv)}
                     onPriority={setPriority}
+                    onInfo={f.opis ? (id => otvoriOpis('p', id)) : undefined}
                   />
                 ))}
               </div>
@@ -1176,6 +1212,10 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             </p>
           )}
         </div></div>
+        {opis && opis.vrsta === 'p' && sinDef.plodovi.find(f=>f.id===opis.id) && (
+          <OpisPloda plod={sinDef.plodovi.find(f=>f.id===opis.id)} odabran={!!sel.find(x=>x.id===opis.id)}
+            onToggle={id => toggleFruit(id, sinDef.plodovi.find(f=>f.id===id).naziv)} onZatvori={zatvoriOpis}/>
+        )}
         <div className="sfooter">
           <button className="btn btn-g" onClick={prev}><IBack/> {t('natrag')}</button>
           <button className="btn btn-p" onClick={next}>{t('dalje')}</button>
@@ -1226,6 +1266,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                   priority={getPriority(priorities, r.id)}
                   onToggle={(id) => toggleWound(id, rd?.naziv||r.naziv)}
                   onPriority={setPriority}
+                  onInfo={id => otvoriOpis('r', id)}
                 />
               );
             })}
@@ -1246,6 +1287,7 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
                     priority={getPriority(priorities, r.id)}
                     onToggle={(id) => toggleWound(id, r.naziv)}
                     onPriority={setPriority}
+                    onInfo={id => otvoriOpis('r', id)}
                   />
                 ))}
               </div>
@@ -1277,6 +1319,10 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
             </div>
           )}
         </div></div>
+        {opis && opis.vrsta === 'r' && DATA.ranaById[opis.id] && (
+          <OpisRane rana={DATA.ranaById[opis.id]} odabran={!!sel.find(x=>x.id===opis.id)}
+            onToggle={id => toggleWound(id, DATA.ranaById[id].naziv)} onZatvori={zatvoriOpis}/>
+        )}
         <div className="sfooter">
           <button className="btn btn-g" onClick={prev}><IBack/> {t('natrag')}</button>
           <button className="btn btn-p" onClick={next}>{t('dalje')}</button>

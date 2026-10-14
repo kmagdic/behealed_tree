@@ -153,6 +153,8 @@ Workflow i prekidač ne treba dirati. Prije objave provjeri da se strukture pokl
 4. **Zavjeti i osude** — zavjeti, gorke osude, *(sklopljeno)* krive slike Boga, rana iz djetinjstva
 5. **Pregled** — sve uneseno, sortirano po prioritetu
 
+**Opisi na ⓘ (popup)**: kartice grijeha (korak 1) i čipovi plodova i rana (koraci 2–3, `PChip` prop `onInfo`) imaju mali, prigušeni ⓘ. On otvara `Popup`, zajednički okvir koji se zatvara tipkom Esc ili klikom izvan njega, s jednim od sadržaja: `OpisGrijeha` (idol, `pojasnjenje`, rane, plodovi i gumb za odabir), `OpisPloda` (`opis`, `navod`, rane iz kojih plod raste) ili `OpisRane` (`osjecaj`, `opis`, laž, istina, znak ozdravljenja i sakrament). U popupima ploda i rane gumb dodaje ili uklanja stavku. Stanje je `opis = {vrsta:'g'|'p'|'r', id}` u `GuidedFlow`, a GA event `opis_otvoren`. Ⓘ ploda pojavljuje se samo ako plod ima `opis`. Opis i navod ploda (`plodovi[].opis`, `navod`) zasad postoje samo u `tree-data.hr.js`; izvor im je `opisi-plodova.hr.json`, odnosno Miro. Engleski opisi plodova još nisu napisani, pa na engleskom ⓘ imaju samo grijesi i rane.
+
 **Traka koraka** (`StepBar`): klik na korak vodi na njega (`idiNa`) — naprijed kao `next()` (sprema `step`, GA), natrag kao `prev()`. Bez odabranog grijeha klikabilan je samo korak 1.
 
 **Ime stabla** uređuje se na tri mjesta: u headeru (`.hdr-tree-name`), krupno na vrhu Pregleda i na vrhu molitvenog ekrana (`.ime-stabla`, skriveno u ispisu). Prazno ime se pri izlasku vraća na automatsko. `GuidedFlow` drži vlastitu kopiju stabla, pa `useEffect` u nju prepisuje `name`/`_autoName` iz propa — bez toga bi sljedeći `patch()` pregazio ime promijenjeno u headeru.

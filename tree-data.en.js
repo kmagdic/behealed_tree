@@ -53,7 +53,14 @@ window.JEZICI.en = {
       plodovi: "Some fruits",
       odaberi: "Choose this sin",
       odabrano: "Chosen ✓",
-      zatvori: "Close"
+      zatvori: "Close",
+      dodaj: "Add to tree",
+      ukloni: "Remove from tree",
+      citaj: "Read",
+      laz: "Lie",
+      istina: "Truth",
+      istinaTekst: s => `${s}.`,
+      znak: "Sign of healing"
     },
 
     k2: {
