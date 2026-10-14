@@ -270,6 +270,33 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 - **Nema AI integracije.** `window.claude.complete()` je uklonjen jer ne postoji ni na objavljenoj stranici — gumb je vodio u prazno. Ako se ikad vraća, mora ići preko serverske rute i imati vidljivo stanje greške.
 
+## Miro ploča „HWP Trees“ (vizualni pregled i unos sadržaja)
+
+https://miro.com/app/board/uXjVEaEmAMQ=/ — stabla sedam grijeha i svi tekstovi iz `tree-data.hr.js`. Ploča je **alat za unos**: korisnik uređuje u Miru, a Claude čita ploču (Miro MCP, `canvas_read_as_svg`), pokaže razlike prema `tree-data.hr.js` i tek nakon potvrde upisuje. Zato sve veze moraju biti tekst ili broj, nikad samo boja ili položaj. Uvoz još nije napisan; postoji samo dogovoreni oblik.
+
+**Raspored** (odozgo prema dolje, kao stablo):
+
+| Red | Što | Oblik |
+|---|---|---|
+| Stabla | okvir „Stablo N - <Grijeh>“ (1168×1341) s `tree-bg.jpg`; stabla jedno do drugoga | plodovi u luku krošnje, grijeh na deblu, rane u korijenju |
+| Ispod svakog stabla | „<Grijeh> – tekstovi“ | tablica „<Grijeh> – plodovi“ (Plod · Rane · Kratki opis) + dokument (`# Grijeh`, `### Ukratko`, Što je ovaj grijeh?, Molitva odricanja, Iz evanđelja) |
+| Lijevo gore | „Legenda“ | boje rana, kako čitati, kako uređivati |
+| Korijenje – rane | 7 okvira „Rana – <naziv>“ | zaglavlje u boji rane, „Vodi u grijehe“, dokument (`### Ukratko` + Što je ova rana?, Odričem se, Proglašavam istinu) |
+| Duboko korijenje | „Unutarnji zavjeti“, „Gorke osude“, „Rane iz djetinjstva“ | po jedna tablica |
+
+Rane, zavjeti, osude i rane iz djetinjstva **zajednički su svim stablima** — postoje jednom, ne po stablu.
+
+**Pravila koja korisnik želi:**
+- Na karticama stabla **samo nazivi**, bez kodova. Rane ploda biraju se u tablici (stupac Rane, višestruki izbor). Kartice rana na stablu su poveznice na okvir rane (plavo i podcrtano je u redu).
+- **Broj na crti** grijeh–plod i grijeh–rana (0–100) je izveden, **nije statistika** (tako piše i u legendi): rana = `60 · udio plodova s tom ranom + 25 (rana u g.rane) + 15 (grijeh u r.vodiKaGrijesima)`, plod = zbroj jačina njegovih rana skaliran na najviše 100. Veličina kartice prati broj (≥70 / 40–69 / <40, kao p1–p3 u aplikaciji); najčešći plodovi na vrhu krošnje, najjače rane najdublje.
+- **Pastelne boje** rana su iste na svim stablima (Napuštenost `#DCEBFA`, Sram `#F8DDEB`, Strah `#FCE4CF`, Nemoć `#D6F0EC`, Odbačenost `#E6E0F8`, Beznađe `#E9E8E4`, Zbunjenost `#FBF3C9`; plod `#E3EDE0`, grijeh `#F0DDCF`).
+- **Tablica za „puno stavki, malo polja“** (plodovi, zavjeti, osude, djetinjstvo), **dokument za „jedna stavka, puno polja“** (grijeh, rana). U dokumentu su naslovi `###` i oznake prije dvotočke u bloku „Ukratko“ ključevi polja — ne mijenjaju se. `molitva` rane se ne uređuje: to je `lazi + "\n\n" + istina`.
+- **Ograničenje Miro tablica:** širinu stupca i prijelom teksta u ćeliji nije moguće postaviti kroz MCP; korisnik ih širi mišem, a klik na red otvara cijeli zapis. Korisnik je odlučio da tablice ostaju.
+
+**Engleski (plan):** struktura (brojevi, rane ploda, rane zavjeta) uređuje se samo na hrvatskoj ploči. Engleski ide na zasebnu ploču „HWP Trees – EN“ s istim rasporedom i samo tekstovima iz `tree-data.en.js`, pisanima iz izvornika. Prije toga svaka stavka treba stalni ID (tihi redak `id: …` u dokumentu, stupac ID u tablici), jer se sada stavke prepoznaju po hrvatskom nazivu. Uvoz označava engleske stavke čiji se hrvatski tekst promijenio.
+
+**Rad s pločom:** Claude ostavlja karticu s pločom otvorenu u pregledniku (Brave, Claude in Chrome) radi vizualnih provjera. Canvas Composer traži svjež `data-baseline-hash`; dok korisnik istodobno uređuje isto područje, izmjene se odbijaju — tada pričekati, ne forsirati.
+
 ## Dizajnerski tokeni
 
 CSS custom properties na `:root`:
