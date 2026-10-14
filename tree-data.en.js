@@ -47,7 +47,14 @@ window.JEZICI.en = {
       naslov: "What is your primary deadly sin?",
       tijelo: "Think about the sins you keep returning to. Which pattern is strongest in your life?",
       citat: "\"Every tree is known by its own fruit.\"",
-      citatIzvor: "— Luke 6:44"
+      citatIzvor: "— Luke 6:44",
+      staJe: "What is this sin? ›",
+      idol: "Idol",
+      rasteIz: "Grows from the wounds",
+      plodovi: "Some fruits",
+      odaberi: "Choose this sin",
+      odabrano: "Chosen ✓",
+      zatvori: "Close"
     },
 
     k2: {

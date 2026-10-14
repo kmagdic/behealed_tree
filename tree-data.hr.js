@@ -61,7 +61,14 @@ window.JEZICI.hr = {
       naslov: "Koji je tvoj primarni smrtni grijeh?",
       tijelo: "Razmisli o grijesima kojima se stalno vraćaš. Koji ti je najsnažniji obrazac ponašanja?",
       citat: "\"Svako se stablo poznaje po svom rodu.\"",
-      citatIzvor: "— Luka 6,44"
+      citatIzvor: "— Luka 6,44",
+      staJe: "Što je ovaj grijeh? ›",
+      idol: "Idol",
+      rasteIz: "Raste iz rana",
+      plodovi: "Neki plodovi",
+      odaberi: "Odaberi ovaj grijeh",
+      odabrano: "Odabrano ✓",
+      zatvori: "Zatvori"
     },
 
     k2: {
