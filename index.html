@@ -1022,14 +1022,13 @@ function OpisGrijeha({ sin, odabran, onOdaberi, onZatvori }) {
   );
 }
 
+// Rane iz kojih plod raste namjerno se ovdje ne prikazuju (korisnikov izbor, zasad).
 function OpisPloda({ plod, odabran, onToggle, onZatvori }) {
-  const rane = (plod.izRana || []).map(id => DATA.ranaById[id]).filter(Boolean);
   return (
     <Popup naslov={plod.naziv} onZatvori={onZatvori}
       gumb={<button type="button" className="btn btn-p" onClick={() => { onToggle(plod.id); onZatvori(); }}>{odabran ? t('k1.ukloni') : t('k1.dodaj')}</button>}>
       <div className="pop-tekst">{odlomci(plod.opis)}</div>
       {plod.navod && <div className="pop-red"><b>{t('k1.citaj')}:</b> <Navodi text={`(${plod.navod})`} bezUpisa/></div>}
-      {rane.length > 0 && <div className="pop-red"><b>{t('k1.rasteIz')}:</b> {rane.map(r => r.naziv).join(' · ')}</div>}
     </Popup>
   );
 }
