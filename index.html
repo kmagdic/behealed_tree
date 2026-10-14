@@ -268,8 +268,9 @@ body{font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);}
 .sopt-ico{font-size:19px;margin-bottom:4px;}
 .sopt-n{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--bark-d);margin-bottom:1px;}
 .sopt-s{font-size:10px;color:var(--light);}
-.sopt-opis{margin-top:6px;padding:2px 4px;border:0;background:none;font:inherit;font-size:10.5px;color:var(--mid);text-decoration:underline dotted;text-underline-offset:2px;cursor:pointer;}
-.sopt-opis:hover{color:var(--bark-d);}
+.sopt{position:relative;}
+.sopt-opis{position:absolute;top:2px;right:2px;padding:5px 7px;border:0;background:none;font-size:14px;line-height:1;color:var(--root);cursor:pointer;border-radius:50%;}
+.sopt-opis:hover,.sopt-opis:focus-visible{color:var(--bark-d);}
 
 /* POPUP — opis grijeha u koraku 1 */
 .pop-pozadina{position:fixed;inset:0;z-index:1000;background:rgba(44,31,20,.42);display:flex;align-items:center;justify-content:center;padding:16px;}
@@ -1084,9 +1085,8 @@ function GuidedFlow({ tree, onUpdate, onFinish, onBack }) {
               <div className="sopt-s">{sin.idolatrija}</div>
               {sin.pojasnjenje && (
                 <button type="button" className="sopt-opis"
-                  onClick={e => { e.stopPropagation(); otvoriOpis(sin); }}>
-                  {t('k1.staJe')}
-                </button>
+                  aria-label={t('molitvenik.staJe', sin.naziv)} title={t('molitvenik.staJe', sin.naziv)}
+                  onClick={e => { e.stopPropagation(); otvoriOpis(sin); }}>ⓘ</button>
               )}
             </div>
           ))}

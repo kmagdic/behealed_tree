@@ -48,7 +48,6 @@ window.JEZICI.en = {
       tijelo: "Think about the sins you keep returning to. Which pattern is strongest in your life?",
       citat: "\"Every tree is known by its own fruit.\"",
       citatIzvor: "— Luke 6:44",
-      staJe: "What is this sin? ›",
       idol: "Idol",
       rasteIz: "Grows from the wounds",
       plodovi: "Some fruits",
