@@ -7,7 +7,6 @@
   "scope": "./",
   "display": "standalone",
   "background_color": "#F7F3EE",
-  "theme_color": "#F7F3EE",
   "user_preferences": {
     "color_scheme": {
       "dark": { "theme_color": "#1F1E1A", "background_color": "#1F1E1A" }
