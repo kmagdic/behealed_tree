@@ -64,7 +64,7 @@ window.JEZICI.hr = {
       citatIzvor: "— Luka 6,44",
       idol: "Idol",
       odaberi: "Odaberi ovaj grijeh",
-      privatnost: "Sve što ovdje zapišeš ostaje samo na tvom mobitelu ili računalu. Ne šalje se na internet i nitko drugi to ne može pročitati — ni mi. Zato se tvoja stabla vide samo na ovom uređaju, u ovom pregledniku. Bilježimo samo anonimne brojke o korištenju, nikad ono što napišeš.",
+      privatnost: "Sve što ovdje zapišeš sprema se samo u tvoj preglednik (odnosno aplikaciju) na ovom mobitelu ili računalu — ne šalje se na internet. Nitko drugi to ne može pročitati, pa ni mi. Zato se tvoja stabla vide samo ovdje.",
       odabrano: "Odabrano ✓",
       zatvori: "Zatvori",
       dodaj: "Dodaj u stablo",

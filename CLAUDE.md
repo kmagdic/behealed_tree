@@ -280,7 +280,7 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 - **Verzija** na dnu početnog ekrana (`.w-verzija`, *Verzija 49 · 23. 10. 2026.*): broj = broj commitova, datum = datum zadnjeg commita, klik vodi na commit. Upisuje ih korak *Verzija* u `static.yml` (`sed` na redak `const VERZIJA = { broj: 'dev', … }` — ne mijenjati ga; checkout ima `fetch-depth: 0` zbog brojanja). Lokalno piše *Verzija dev*.
 
-- **Napomena o privatnosti** (`k1.privatnost`, `.privatnost` s `ILock`) ispod grijeha u koraku 1: upisano ostaje na uređaju, GA bilježi samo anonimne brojke. Ako GA ikad počne slati upisani tekst ili nazive rana, napomena više nije istinita — uskladi je.
+- **Napomena o privatnosti** (`k1.privatnost`, `.privatnost` s `ILock`) ispod grijeha u koraku 1: upisano se sprema samo u preglednik/aplikaciju na uređaju i ne šalje se na internet (GA namjerno ne spominje — šalje samo anonimne brojke, ne tekst). Ako GA ikad počne slati upisani tekst ili nazive rana, napomena više nije istinita — uskladi je.
 
 - **Poziv Duhu Svetome** (`k2.duh`, `k3.duh`, `k4.duh`, `.duh` — kurziv serif ispod `sbody`): u koracima 2–4 blag poziv da se korisnik smiri i zamoli Duha Svetoga za uvid. Isti ton kao poticaji (pozivajući, ne zapovjedni); molitva u koraku 4 je u muškom rodu kao i ostale.
 
