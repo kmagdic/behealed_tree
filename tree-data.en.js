@@ -50,6 +50,7 @@ window.JEZICI.en = {
       citatIzvor: "— Luke 6:44",
       idol: "Idol",
       odaberi: "Choose this sin",
+      privatnost: "Everything you write here stays only on your phone or computer. It is never sent over the internet, and no one else can read it — not even us. That's why your trees appear only on this device, in this browser. We count only anonymous usage numbers, never what you write.",
       odabrano: "Chosen ✓",
       zatvori: "Close",
       dodaj: "Add to tree",
