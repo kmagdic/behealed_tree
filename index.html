@@ -196,6 +196,9 @@ html{font-size:106.25%;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 .w-mol-ico{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .w-mol-t{font-family:'Cormorant Garamond',serif;font-size:1.125rem;font-weight:600;color:var(--bark-d);line-height:1.15;}
 .w-mol-chev{margin-left:auto;color:var(--gold);font-size:1.375rem;line-height:1;}
+.w-verzija{margin-top:28px;font-size:0.625rem;color:var(--root);opacity:.6;letter-spacing:.03em;text-decoration:none;}
+.w-verzija:hover{opacity:1;}
+@media print{.w-verzija{display:none;}}
 .hdr .hdr-mol{color:var(--gold);font-weight:600;}
 .hdr .hdr-mol:hover{color:#A57F2C;background:rgba(196,154,60,.1);}
 .w-install{margin-top:18px;width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;}
@@ -615,6 +618,8 @@ const CONFIG = /*EDITMODE-BEGIN*/{
 // Svaki jezik je jedna datoteka tree-data.<kod>.js koja puni window.JEZICI[kod].
 // Novi jezik: datoteka + <script> tag u <head> + kod u PODRZANI.
 const JEZICI = window.JEZICI;
+// Verzija = commit SHA koji deploy upiše u tree-data.<jezik>.js?v=… (lokalno 'dev').
+const VERZIJA = new URL(document.querySelector('script[src*="tree-data."]')?.src || location.href).searchParams.get('v') || 'dev';
 const PODRZANI = ['hr', 'en'];
 const ZADANI = 'hr';
 const SK_JEZIK = 'drvo_lang';
@@ -2721,6 +2726,9 @@ function App() {
           )}
         </div>
       )}
+      {VERZIJA === 'dev'
+        ? <span className="w-verzija">v dev</span>
+        : <a className="w-verzija" href={'https://github.com/kmagdic/behealed_tree/commit/' + VERZIJA} target="_blank" rel="noopener">v {VERZIJA.slice(0, 7)}</a>}
     </div>
   );
 
