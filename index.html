@@ -618,8 +618,8 @@ const CONFIG = /*EDITMODE-BEGIN*/{
 // Svaki jezik je jedna datoteka tree-data.<kod>.js koja puni window.JEZICI[kod].
 // Novi jezik: datoteka + <script> tag u <head> + kod u PODRZANI.
 const JEZICI = window.JEZICI;
-// Verzija = commit SHA koji deploy upiše u tree-data.<jezik>.js?v=… (lokalno 'dev').
-const VERZIJA = new URL(document.querySelector('script[src*="tree-data."]')?.src || location.href).searchParams.get('v') || 'dev';
+// Broj (broj commitova), datum i SHA upisuje deploy (static.yml) — ne mijenjati redak, sed cilja na njega.
+const VERZIJA = { broj: 'dev', datum: '', sha: '' };
 const PODRZANI = ['hr', 'en'];
 const ZADANI = 'hr';
 const SK_JEZIK = 'drvo_lang';
@@ -2726,9 +2726,10 @@ function App() {
           )}
         </div>
       )}
-      {VERZIJA === 'dev'
-        ? <span className="w-verzija">v dev</span>
-        : <a className="w-verzija" href={'https://github.com/kmagdic/behealed_tree/commit/' + VERZIJA} target="_blank" rel="noopener">v {VERZIJA.slice(0, 7)}</a>}
+      <a className="w-verzija" href={VERZIJA.sha ? 'https://github.com/kmagdic/behealed_tree/commit/' + VERZIJA.sha : undefined} target="_blank" rel="noopener">
+        {t('pocetna.verzija')} {VERZIJA.broj}
+        {VERZIJA.datum && ' · ' + new Date(VERZIJA.datum + 'T12:00').toLocaleDateString(LANG === 'hr' ? 'hr-HR' : 'en-GB')}
+      </a>
     </div>
   );
 

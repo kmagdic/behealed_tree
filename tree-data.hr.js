@@ -155,6 +155,7 @@ window.JEZICI.hr = {
       citat: "\"Svako se stablo poznaje po svom rodu. Jer ne beru smokve s trnja, ni grožđa s kupine.\"",
       citatIzvor: "— Luka 6,44",
       izgradi: "Izgradi novo stablo",
+      verzija: "Verzija",
       mojaStablaN: n => `Moja stabla (${n})`
     },
 

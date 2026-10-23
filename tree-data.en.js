@@ -141,6 +141,7 @@ window.JEZICI.en = {
       citat: "\"Every tree is known by its own fruit. For figs are not gathered from thorns, nor are grapes picked from a bramble bush.\"",
       citatIzvor: "— Luke 6:44",
       izgradi: "Grow a new tree",
+      verzija: "Version",
       mojaStablaN: n => `My trees (${n})`
     },
 

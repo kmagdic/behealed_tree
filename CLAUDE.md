@@ -278,6 +278,8 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 - **Naslov aplikacije je `Be Healed - Tree of Life` u svim jezicima** — `JEZICI[kod].naslov`, `pocetna.naslov`, `<title>` i `name` u manifestu. Ne prevodi se. Ispod ikone na početnom zaslonu stoji skraćeno **`Be Healed - Tree`** (`short_name` u manifestu i `apple-mobile-web-app-title` za iOS). U headeru se na uskom zaslonu skraćuje s „…“ (`.hdr-title`), da gumbi i prekidač jezika ostanu vidljivi.
 
+- **Verzija** na dnu početnog ekrana (`.w-verzija`, *Verzija 49 · 23. 10. 2026.*): broj = broj commitova, datum = datum zadnjeg commita, klik vodi na commit. Upisuje ih korak *Verzija* u `static.yml` (`sed` na redak `const VERZIJA = { broj: 'dev', … }` — ne mijenjati ga; checkout ima `fetch-depth: 0` zbog brojanja). Lokalno piše *Verzija dev*.
+
 - **Nema AI integracije.** `window.claude.complete()` je uklonjen jer ne postoji ni na objavljenoj stranici — gumb je vodio u prazno. Ako se ikad vraća, mora ići preko serverske rute i imati vidljivo stanje greške.
 
 ## Miro ploča „HWP Trees“ (vizualni pregled i unos sadržaja)

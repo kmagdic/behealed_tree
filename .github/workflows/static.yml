@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # cijela povijest — broj verzije je broj commitova
       - name: Setup Pages
         uses: actions/configure-pages@v5
       # tree-data.<jezik>.js se mijenja često; bez ovoga preglednici serviraju staru
@@ -38,6 +40,13 @@ jobs:
       # Hvata sve jezične datoteke, pa novi jezik ne traži izmjenu ovdje.
       - name: Cache-busting za tree-data.*.js
         run: sed -i "s/\(tree-data\.[a-z]*\.js\)?v=dev/\1?v=${GITHUB_SHA}/g" index.html
+      # Verzija na dnu početnog ekrana: broj commitova · datum zadnjeg commita.
+      - name: Verzija
+        run: |
+          BROJ=$(git rev-list --count HEAD)
+          DATUM=$(TZ=Europe/Zagreb git log -1 --date=format-local:%Y-%m-%d --format=%cd)
+          sed -i "s/const VERZIJA = { broj: 'dev', datum: '', sha: '' };/const VERZIJA = { broj: '${BROJ}', datum: '${DATUM}', sha: '${GITHUB_SHA}' };/" index.html
+          grep -q "broj: '${BROJ}'" index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
