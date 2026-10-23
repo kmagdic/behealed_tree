@@ -61,6 +61,7 @@ window.JEZICI.en = {
     k2: {
       oznaka: "Step 2 — Fruit (branches)",
       naslov: "How does this sin show itself in your life?",
+      duh: "Before you begin writing, pause for a moment. Breathe, quiet your heart, and ask the Holy Spirit to show you how this sin shows itself in your life. There is no hurry — let Him bring to light what you need to see.",
       tijelo: "Write in your own words what you notice in yourself.",
       poticaj: "Write what you notice in yourself... e.g. I withdraw when someone corrects me in front of others, I use sarcasm, I try to control people... If a particular situation comes to mind, feel free to describe it.",
       prijedlozi: "+ See suggestions",
@@ -74,6 +75,7 @@ window.JEZICI.en = {
       naslov: "Which wounds lie behind this sin?",
       citat: "\"When God looks at sin, He sees the pain within us.\"",
       citatIzvor: "— St. Julian of Norwich",
+      duh: "Take your time here. Be still and ask the Holy Spirit to gently lead you to the wound that is ready to be healed. You don't need to force anything — He knows the right moment.",
       tijelo: "If you can, recall **one specific moment** — healing usually comes through a particular memory rather than a general impression. But write only as much as you are able to right now.",
       poticaj: "Describe your wound... What painful event or experience lies behind this pattern? If you remember one particular moment, start there. What did you come to believe about yourself then?",
       najcesce: n => `✦ Most common wounds — ${n}`,
@@ -85,6 +87,7 @@ window.JEZICI.en = {
     k4: {
       oznaka: "Step 4 — Deep roots",
       naslov: "Vows and bitter judgments",
+      duh: "Pause again and ask the Holy Spirit for light: “Holy Spirit, show me what I decided in my pain, and whom I have judged in my heart.”",
       tijelo: "In our wounds we make decisions to protect ourselves — **inner vows**. We also **judge** others, or God, in response to the pain.",
       istaknuto: n => `Suggestions that spring from your wounds are highlighted: **${n}**. The others are dimmed, but you can still choose them.`,
       zavjeti: "⛓ Inner vows",

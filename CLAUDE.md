@@ -282,6 +282,8 @@ Skupne verzije izgovaraju dugi uvod **jednom** pa nabroje stavke — pojedinačn
 
 - **Napomena o privatnosti** (`k1.privatnost`, `.privatnost` s `ILock`) ispod grijeha u koraku 1: upisano ostaje na uređaju, GA bilježi samo anonimne brojke. Ako GA ikad počne slati upisani tekst ili nazive rana, napomena više nije istinita — uskladi je.
 
+- **Poziv Duhu Svetome** (`k2.duh`, `k3.duh`, `k4.duh`, `.duh` — kurziv serif ispod `sbody`): u koracima 2–4 blag poziv da se korisnik smiri i zamoli Duha Svetoga za uvid. Isti ton kao poticaji (pozivajući, ne zapovjedni); molitva u koraku 4 je u muškom rodu kao i ostale.
+
 - **Nema AI integracije.** `window.claude.complete()` je uklonjen jer ne postoji ni na objavljenoj stranici — gumb je vodio u prazno. Ako se ikad vraća, mora ići preko serverske rute i imati vidljivo stanje greške.
 
 ## Miro ploča „HWP Trees“ (vizualni pregled i unos sadržaja)
