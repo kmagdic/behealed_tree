@@ -75,7 +75,7 @@ window.JEZICI.hr = {
     k2: {
       oznaka: "Korak 2 — Plodovi (grane)",
       naslov: "Kako se ovaj grijeh manifestira u tvom životu?",
-      duh: "Prije nego počneš pisati, zastani na trenutak. Udahni, smiri se i zamoli Duha Svetoga da ti pokaže kako se ovaj grijeh očituje u tvom životu. Ne žuri — dopusti Mu da iznese na svjetlo ono što trebaš vidjeti.",
+      duh: "Prije pisanja zamoli Duha Svetoga da ti pokaže što trebaš vidjeti.",
       tijelo: "Napiši svojim riječima što primjećuješ u sebi.",
       poticaj: "Napiši što primjećuješ u sebi... npr. povlačim se kad me netko ispravi pred drugima, koristim sarkazam, kontroliram druge... Ako ti dođe neka konkretna situacija, slobodno je opiši.",
       prijedlozi: "+ Pogledaj prijedloge",
@@ -89,7 +89,7 @@ window.JEZICI.hr = {
       naslov: "Koje rane kriju se iza ovog grijeha?",
       citat: "\"Kada Bog gleda grijeh, vidi bol u nama.\"",
       citatIzvor: "— Sveta Juliana iz Norwicha",
-      duh: "Ovdje se ne žuri. Smiri se i zamoli Duha Svetoga da te nježno odvede do rane koja je spremna za iscjeljenje. Ne moraš ništa tražiti na silu — On zna pravi trenutak.",
+      duh: "Zastani na trenutak i smiri se. Zamoli Duha Svetoga da te nježno odvede do rane koja je spremna za iscjeljenje. Ne moraš ništa tražiti na silu — On zna pravi trenutak.",
       tijelo: "Ako možeš, sjeti se **jednog konkretnog trenutka** — iscjeljenje obično dolazi kroz određeno sjećanje, a ne kroz opći dojam. Ali piši onoliko koliko ti je u ovom trenutku moguće.",
       poticaj: "Opiši svoju ranu... Koji bolan događaj ili iskustvo stoji iza ovog obrasca? Ako se sjećaš jednog određenog trenutka, počni od njega. Što si tada povjerovao/la o sebi?",
       najcesce: n => `✦ Najčešće rane — ${n}`,
@@ -101,7 +101,7 @@ window.JEZICI.hr = {
     k4: {
       oznaka: "Korak 4 — Duboki korijeni",
       naslov: "Zavjeti i gorke osude",
-      duh: "Opet zastani i zamoli Duha Svetoga za svjetlo: „Duše Sveti, pokaži mi što sam u boli odlučio i koga sam u srcu osudio.“",
+      duh: "Ovo je najdublji dio, pa si uzmi vremena. Zastani, udahni nekoliko puta i u tišini pozovi Duha Svetoga. Možeš reći: „Duše Sveti, dođi. Pokaži mi što sam u boli odlučio da bih se zaštitio i koga sam u srcu osudio — možda roditelja, nekog bliskog ili čak Tebe. Daj mi hrabrosti da to pogledam zajedno s Tobom.“ Zatim samo pričekaj i zapiši ono što ti dođe, bez žurbe i bez osuđivanja sebe.",
       tijelo: "U ranama donosimo odluke da se zaštitimo — **unutarnji zavjeti**. Također **osuđujemo** druge ili Boga kao odgovor na bol.",
       istaknuto: n => `Istaknuti su prijedlozi koji izviru iz tvojih rana: **${n}**. Ostali su prigušeni, ali ih možeš odabrati.`,
       zavjeti: "⛓ Unutarnji zavjeti",
