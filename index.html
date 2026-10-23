@@ -2602,7 +2602,9 @@ function App() {
   const [uputeInstalacije, setUputeInstalacije] = useState(false);
   const instalPrompt = useRef(null);
   useEffect(()=>{
-    const ponudi = e => { e.preventDefault(); instalPrompt.current = e; };
+    // Bez preventDefault(): preglednik tada sam nudi instalaciju (ikona u adresnoj
+    // traci, traka na Androidu), a događaj ostaje i za naš gumb.
+    const ponudi = e => { instalPrompt.current = e; };
     const gotovo = () => { instalPrompt.current = null; setInstalirano(true);
       if(typeof gtag!=='undefined') gtag('event','aplikacija_instalirana',{jezik:LANG}); };
     window.addEventListener('beforeinstallprompt', ponudi);
